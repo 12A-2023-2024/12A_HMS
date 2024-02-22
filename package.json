@@ -1,0 +1,13 @@
+{
+  "name": "hms_12a",
+  "description": "Hotel Management System by 12A",
+  "scripts": {
+    "start": "concurrently \"tsc -w\" \"npx tailwindcss -i ./css/input.css -o ./css/output.css --watch\""
+  },
+  "dependencies": {
+
+  },
+  "devDependencies": {
+    "tailwind": "^4.0.0"
+  }
+}

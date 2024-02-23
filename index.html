@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12A XYZ Hotel</title>
+    <link rel="stylesheet" href="css/output.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="relative container mx-auto p-6">
+        <!-- Flex container -->
+        <div class="flex items-center justify-between">
+          <!-- Logo -->
+          <div class="pt-2">
+            <img src="img/logo.svg" alt="" />
+          </div>
+          <!-- Menu Items -->
+          <div class="hidden space-x-6 md:flex">
+            <a href="#" class="hover:text-darkGrayishBlue">Bemutatkozás</a>
+            <a href="#" class="hover:text-darkGrayishBlue">Ajánlataink</a>
+            <a href="#" class="hover:text-darkGrayishBlue">Foglalás</a>
+            <a href="#" class="hover:text-darkGrayishBlue">Szolgáltatásaink</a>
+            <a href="#" class="hover:text-darkGrayishBlue">Galéria</a>
+            <a href="#" class="hover:text-darkGrayishBlue">Kapcsolat</a>
+          </div>
+
+          <!-- Hamburger Icon -->
+          <button
+            id="menu-btn"
+            class="block hamburger md:hidden focus:outline-none"
+          >
+            <span class="hamburger-top"></span>
+            <span class="hamburger-middle"></span>
+            <span class="hamburger-bottom"></span>
+          </button>
+        </div>
+  
+        <!-- Mobile Menu -->
+        <div class="md:hidden">
+          <div
+            id="menu"
+            class="absolute flex-col items-center hidden self-end py-8 mt-10 space-y-6 font-bold bg-white sm:w-auto sm:self-center left-6 right-6 drop-shadow-md"
+          >
+            <a href="#">Bemutatkozás</a>
+            <a href="#">Ajánlataink</a>
+            <a href="#">Foglalás</a>
+            <a href="#">Szolgáltatásaink</a>
+            <a href="#">Galéria</a>
+            <a href="#">Kapcsolat</a>
+          </div>
+        </div>
+      </nav>
+
+    <script type="module" src="js/index.js"></script>
+</body>
+</html>

@@ -93,3 +93,16 @@
         - admin oldalon
         - wellness szolgáltatás igénybevétel
         - publikus oldalon az "wellness" oldal
+		
+		
+		
+# Techinkai adatok
+
+## Ajánlott VS Code Extension-ök:
+	- Tailwind CSS Intellisense
+	
+## Ajánlott devdependency
+	- prettier prettier-plugin-tailwindcss
+	
+## minta
+	- https://github.com/bradtraversy/tailwind-landing-page

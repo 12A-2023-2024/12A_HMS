@@ -1,3 +1,9 @@
 /node_modules
 /js
 /css/output.css
+/back-end/.vs
+/back-end/obj
+/back-end/bin
+/back-end/hms.db
+/back-end/hms.db-shm
+/back-end/hms.db-wal

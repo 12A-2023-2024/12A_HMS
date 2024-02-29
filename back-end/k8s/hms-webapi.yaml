@@ -1,0 +1,118 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: hms-pv
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/hms"
+    
+---    
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hms-pv-claim
+spec:
+  storageClassName: manual
+  volumeName: hms-pv
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hms-webapi-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: hms-webapi
+  template:
+    metadata:
+      labels:
+        component: hms-webapi
+    spec:
+      containers:
+        - name: backend
+          image: ghcr.io/jedlik-gyor/hmswebapi:1.0.1
+          imagePullPolicy: Always
+          env:
+          - name: BaseURL
+            value: "https://hms.jedlik.cloud/"
+          - name: ConnectionStrings__HMSDatabase
+            value: "Data Source=/app/storage/database/hms.db"
+          - name: security__salt
+            value: "/2gvVqnQHx4mny73+guPiw=="
+          - name: session__expirationInMinutes
+            value: "10"
+          - name: virtualdirectory
+            value: "/api"  
+          ports:
+            - containerPort: 8080   
+          volumeMounts:
+            - name: hms-persistent-storage
+              mountPath: "/app/storage"
+      volumes:
+        - name: hms-persistent-storage
+          persistentVolumeClaim:
+            claimName: hms-pv-claim
+
+      imagePullSecrets:
+        - name: jedlik-gyor-ghcr-io-registry-secret
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: hms-webapi-cluster-ip-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    component: hms-webapi
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hms-ingress-service
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    cert-manager.io/cluster-issuer: 'letsencrypt-prod'
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    #nginx.ingress.kubernetes.io/whitelist-source-range: 10.0.0.0/8, 193.225.219.0/24
+    
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - hms.jedlik.cloud
+      secretName: bp-jedlik-cloud
+  rules:
+    - host: hms.jedlik.cloud
+      http:
+        paths:
+          - path: /api/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: hms-webapi-cluster-ip-service
+                port:
+                  number: 80

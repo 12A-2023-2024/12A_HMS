@@ -62,14 +62,14 @@
         - felhasználó karbantartás
 
 ### 1. csoport
-    - Publikus weblap + admin
-        - admin oldalon
-        - éttermi fogyasztás
-        - publikus oldalon az "éttermi kínálat" oldal
-    - Bemutatkozás
+    - Publikus weblap megjelenítés
+		- Bemutatkozás
         - Ajánlataink
         - Galéria
         - Kapcsolat
+		- hírek
+	- admin
+		- fentiek szerkesztése
 ### 2. csoport
     - Szobák
         - szállodai rendszer admin felültetén

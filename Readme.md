@@ -74,6 +74,7 @@
     - Szobák
         - szállodai rendszer admin felültetén
         - publik weblapon a szobák oldal
+        - (csomagajánlat)
 ### 3. csoport
     - Foglalási rendszer
         - publikus oldalon
@@ -94,7 +95,9 @@
         - wellness szolgáltatás igénybevétel
         - publikus oldalon az "wellness" oldal
 		
-		
+
+
+
 		
 # Techinkai adatok
 

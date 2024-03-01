@@ -62,14 +62,30 @@
         - felhasználó karbantartás
 
 ### 1. csoport
-    - Publikus weblap + admin
-        - admin oldalon
-        - éttermi fogyasztás
-        - publikus oldalon az "éttermi kínálat" oldal
-    - Bemutatkozás
+    - Publikus weboldalak:
+        - Bemutatkozás
+            - Banner, ami görög jobbra (href)
+            - Banner, ami van x darab egymás mellett
+            - lábléc (minden oldalon)
+            - Admin oldalon változtatható képek, url, szövegek
         - Ajánlataink
+            - Felsoroljuk (szobák, étterem, koktél bár, wellness, egyéb ínyencségek)
+            - Nincs admin oldal
         - Galéria
+            - Képek
+            - Admin oldalon törölni és hozzáadni
         - Kapcsolat
+            - Felsorolni a social media (dict), telefonszám, email, lakcím, adószám stb
+            - Admin oldalon ezek módosítása
+        - Hírek
+            - Hírek felsorolva (dátum, kép, cím -> kattintásra szöveg)
+            - Admin oldalon törlés, létrehozás. (dátum, kép, cím, szöveg)
+
+        Adatbázisba:
+            - Bemutatkozás endpoint: képek, alt, href, Rajta lévő szöveg, kulcs (string, melyik részhez tartozik)
+            - Galéria endpoint: képek
+            - Kapcsolatok endpoint: social media (dict string:(string, ikon)), telefonszám, email, lakcím, adószám
+            - Hírek endpoint:  (dátum, kép, alt, cím, szöveg)
 ### 2. csoport
     - Szobák
         - szállodai rendszer admin felültetén

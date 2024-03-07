@@ -1,6 +1,7 @@
 import { ContactPage } from "./pages/contact/contact.js";
 import { HomePage } from "./pages/home/home.js";
 import { IntroductionPage } from "./pages/introduction/introduction.js";
+import { OffersPage } from "./pages/offers/offers.js";
 
 export const routes: {[key: string]: {page: any}} = {
     '': {
@@ -11,6 +12,9 @@ export const routes: {[key: string]: {page: any}} = {
     },
     'contact': {
         page: ContactPage
+    },
+    'offers': {
+        page: OffersPage
     }
 
 }

@@ -14,7 +14,5 @@ namespace HMS_WebAPI.Models
 
         public List<WellnessProductImageModel> Images { get; } = [];
 
-        public List<string> ImageUrls => this.Images.Select(x => x.Image.ImageUrl).ToList();
-
     }
 }

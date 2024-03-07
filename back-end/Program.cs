@@ -17,6 +17,7 @@ builder.Services.AddDbContext<HMSContext>(o =>
 {
     o.UseSqlite(builder.Configuration.GetConnectionString("HMSDatabase"));
 });
+StaticValues.BaseUrl = builder.Configuration.GetValue<string>("BaseURL") ?? "https://hms.jedlik.cloud/";
 
 builder.Services.AddAuthentication(options =>
 {

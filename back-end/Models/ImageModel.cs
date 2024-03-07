@@ -10,7 +10,7 @@ namespace HMS_WebAPI.Models
         public required string Path { get; set; }
 
         [NotMapped]
-        public string ImageUrl => $"/images/{Id}";
+        public string ImageUrl => $"{StaticValues.BaseUrl}images/{Id}";
 
     }
 }

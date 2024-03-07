@@ -3,6 +3,7 @@ using System;
 using HMS_WebAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HMS_WebAPI.Migrations
 {
     [DbContext(typeof(HMSContext))]
-    partial class HMSContextModelSnapshot : ModelSnapshot
+    [Migration("20240301083542_Guests")]
+    partial class Guests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.2");
@@ -120,109 +123,6 @@ namespace HMS_WebAPI.Migrations
                         {
                             Id = 6,
                             Name = "account"
-                        });
-                });
-
-            modelBuilder.Entity("HMS_WebAPI.Models.RoomParameterModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("roomParameters");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Kisállat bevihető"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Hűtőszekrény"
-                        });
-                });
-
-            modelBuilder.Entity("HMS_WebAPI.Models.RoomTypeModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Capacity")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("PricePerNigthPerPerson")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("roomTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Capacity = 4,
-                            Description = "Kétlégterű négyfős családi szoba",
-                            Name = "4 fős családi szoba",
-                            PricePerNigthPerPerson = 12999m
-                        });
-                });
-
-            modelBuilder.Entity("HMS_WebAPI.Models.RoomTypeParameterModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("RoomParameterId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("RoomTypeId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoomParameterId");
-
-                    b.HasIndex("RoomTypeId");
-
-                    b.ToTable("roomTypeParameters");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            RoomParameterId = 1,
-                            RoomTypeId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            RoomParameterId = 2,
-                            RoomTypeId = 1
                         });
                 });
 
@@ -377,25 +277,6 @@ namespace HMS_WebAPI.Migrations
                         });
                 });
 
-            modelBuilder.Entity("HMS_WebAPI.Models.RoomTypeParameterModel", b =>
-                {
-                    b.HasOne("HMS_WebAPI.Models.RoomParameterModel", "RoomParameter")
-                        .WithMany()
-                        .HasForeignKey("RoomParameterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HMS_WebAPI.Models.RoomTypeModel", "RoomType")
-                        .WithMany("Parameters")
-                        .HasForeignKey("RoomTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("RoomParameter");
-
-                    b.Navigation("RoomType");
-                });
-
             modelBuilder.Entity("HMS_WebAPI.Models.SessionModel", b =>
                 {
                     b.HasOne("HMS_WebAPI.Models.UserModel", "User")
@@ -429,11 +310,6 @@ namespace HMS_WebAPI.Migrations
             modelBuilder.Entity("HMS_WebAPI.Models.RoleModel", b =>
                 {
                     b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("HMS_WebAPI.Models.RoomTypeModel", b =>
-                {
-                    b.Navigation("Parameters");
                 });
 
             modelBuilder.Entity("HMS_WebAPI.Models.UserModel", b =>

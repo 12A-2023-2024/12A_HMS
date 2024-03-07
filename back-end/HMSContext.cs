@@ -6,6 +6,14 @@ namespace HMS_WebAPI
     public class HMSContext : DbContext
     {
         public DbSet<SessionModel> Sessions { get; set; }
+        public DbSet<GuestModel> Guests { get; set; }
+        public DbSet<RoomTypeParameterModel> RoomTypeParameters { get; set; }
+
+        public DbSet<ContactModel> Contacts { get; set; }
+        public DbSet<ContactSocialmediaItemModel> ContactSocialmedias { get; set; }
+        public DbSet<GalleryItemModel> galleryItems { get; set; }
+        public DbSet<IntroductionItemModel> introductionItems { get; set; }
+        public DbSet<NewsItemModel> NewsItems { get; set; }
 
         private string baseURL = "";
         private readonly byte[] salt;
@@ -33,6 +41,9 @@ namespace HMS_WebAPI
         {
             modelBuilder.Entity<UserModel>().HasIndex(u => u.LoginName).IsUnique();
             modelBuilder.Entity<SessionModel>().HasIndex(e => e.Token).IsUnique();
+            modelBuilder.Entity<GuestModel>().HasIndex(g => g.PassportNumber).IsUnique();
+            modelBuilder.Entity<RoomTypeModel>().HasIndex(r => r.Name).IsUnique();
+            modelBuilder.Entity<RoomParameterModel>().HasIndex(r => r.Name).IsUnique();
 
             modelBuilder.Entity<UserModel>().HasData([
                 new UserModel() { Id = 1, Name = "administrator", JobTitle = "rendszergazda", LoginName = "admin", PasswordHash = LoginRequestModel.HashPassword("admin", salt) },
@@ -59,7 +70,42 @@ namespace HMS_WebAPI
                 new { Id = 5, UserId = 5, RoleId = 5 }
             ]);
 
+            modelBuilder.Entity<GuestModel>().HasData([
+                new GuestModel() {Id = 1, Name = "Vendég Béla", PostalCode="9001", City="Győr", Address="Szent István út 7", DateOfBirth=new DateTime(2000, 1, 1), Citizenship="magyar", PlaceOfBirth ="Győr", PassportNumber="123456AB"}
+            ]);
+
+            modelBuilder.Entity<RoomParameterModel>().HasData([
+                new RoomParameterModel() { Id = 1, Name = "Kisállat bevihető"},
+                new RoomParameterModel() { Id = 2, Name = "Hűtőszekrény"}
+            ]);
+
+            modelBuilder.Entity<RoomTypeModel>().HasData([
+                new RoomTypeModel() { Id = 1, Name = "4 fős családi szoba", Capacity = 4, Description ="Kétlégterű négyfős családi szoba", PricePerNigthPerPerson = 12999 }
+            ]);
+
+            modelBuilder.Entity<RoomTypeParameterModel>().HasData([
+                new {Id = 1, RoomTypeId = 1, RoomParameterId = 1},
+                new {Id = 2, RoomTypeId = 1, RoomParameterId = 2}
+            ]);
+
+            //modelBuilder.Entity<ContactModel>().HasData([
+
+            //]);
+            //modelBuilder.Entity<ContactSocialmediaItemModel>().HasData([
+
+            //]);
+            //modelBuilder.Entity<GalleryItemModel>().HasData([
+
+            //]);
+            //modelBuilder.Entity<IntroductionItemModel>().HasData([
+
+            //]);
+            //modelBuilder.Entity<NewsItemModel>().HasData([
+
+            //]);
+
+
         }
 
-    }
+}
 }

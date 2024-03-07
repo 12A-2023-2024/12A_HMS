@@ -4,6 +4,7 @@
 /back-end/.vs
 /back-end/obj
 /back-end/bin
+/back-end/files
 /back-end/hms.db
 /back-end/hms.db-shm
 /back-end/hms.db-wal

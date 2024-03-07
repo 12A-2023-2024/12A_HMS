@@ -11,5 +11,7 @@ namespace HMS_WebAPI.Models
         public required string Title { get; set; }
         public required string Text { get; set; }
 
+        public int PictureId { get; set; }
+
     }
 }

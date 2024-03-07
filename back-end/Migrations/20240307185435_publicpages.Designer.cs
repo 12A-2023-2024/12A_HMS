@@ -3,6 +3,7 @@ using System;
 using HMS_WebAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HMS_WebAPI.Migrations
 {
     [DbContext(typeof(HMSContext))]
-    partial class HMSContextModelSnapshot : ModelSnapshot
+    [Migration("20240307185435_publicpages")]
+    partial class publicpages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.2");
@@ -101,6 +104,29 @@ namespace HMS_WebAPI.Migrations
                             IconId = 5,
                             Name = "Youtube",
                             SocialUrl = "https://www.youtube.com/@jedlikanyostechnikum_9189"
+                        });
+                });
+
+            modelBuilder.Entity("HMS_WebAPI.Models.GalleryItemModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PictureId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PictureId");
+
+                    b.ToTable("galleryItems");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            PictureId = 1
                         });
                 });
 
@@ -217,18 +243,6 @@ namespace HMS_WebAPI.Migrations
                             Id = 6,
                             OriginalFileName = "gyor-latkep.jpg",
                             Path = "./files\\BF\\33\\BF33F8E14361B2A8E2FD12B41EB24AF317833D08.jpg"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            OriginalFileName = "szauna-1.jpg",
-                            Path = "./files\\E9\\67\\E9671451232EDAB06D17512CB5273FF298619688.jpg"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            OriginalFileName = "szauna-2.jpg",
-                            Path = "./files\\ED\\14\\ED14694497590D9202A9EF5CCE98E4F035F721C8.jpg"
                         });
                 });
 
@@ -636,159 +650,6 @@ namespace HMS_WebAPI.Migrations
                         });
                 });
 
-            modelBuilder.Entity("HMS_WebAPI.Models.WellnessProductCatatoryModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("wellnessproductcatatories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Szépségápolás"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Masszázs"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Fürdő"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Szauna"
-                        });
-                });
-
-            modelBuilder.Entity("HMS_WebAPI.Models.WellnessProductImageModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ImageId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("WellnessProductId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ImageId");
-
-                    b.HasIndex("WellnessProductId");
-
-                    b.ToTable("wellnessproductimages");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ImageId = 7,
-                            WellnessProductId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ImageId = 8,
-                            WellnessProductId = 1
-                        });
-                });
-
-            modelBuilder.Entity("HMS_WebAPI.Models.WellnessProductModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("WellnessProductCatatoryId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WellnessProductCatatoryId");
-
-                    b.ToTable("wellnessproducts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Finn aroma szauna - 1 alkalom",
-                            Price = 7900m,
-                            WellnessProductCatatoryId = 4
-                        });
-                });
-
-            modelBuilder.Entity("HMS_WebAPI.Models.WellnessSaleModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("DateOfPayment")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DateOfSales")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("GuestId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("WellnessProductId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GuestId");
-
-                    b.HasIndex("WellnessProductId");
-
-                    b.ToTable("wellnesssales");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DateOfPayment = new DateTime(2024, 3, 6, 0, 0, 0, 0, DateTimeKind.Local),
-                            DateOfSales = new DateTime(2024, 3, 5, 0, 0, 0, 0, DateTimeKind.Local),
-                            GuestId = 1,
-                            Price = 7900m,
-                            WellnessProductId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DateOfSales = new DateTime(2024, 3, 6, 0, 0, 0, 0, DateTimeKind.Local),
-                            GuestId = 1,
-                            Price = 7900m,
-                            WellnessProductId = 1
-                        });
-                });
-
             modelBuilder.Entity("HMS_WebAPI.Models.ContactSocialmediaItemModel", b =>
                 {
                     b.HasOne("HMS_WebAPI.Models.ImageModel", "Icon")
@@ -798,6 +659,17 @@ namespace HMS_WebAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Icon");
+                });
+
+            modelBuilder.Entity("HMS_WebAPI.Models.GalleryItemModel", b =>
+                {
+                    b.HasOne("HMS_WebAPI.Models.PictureModel", "Picture")
+                        .WithMany()
+                        .HasForeignKey("PictureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Picture");
                 });
 
             modelBuilder.Entity("HMS_WebAPI.Models.IntroductionItemModel", b =>
@@ -882,55 +754,6 @@ namespace HMS_WebAPI.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("HMS_WebAPI.Models.WellnessProductImageModel", b =>
-                {
-                    b.HasOne("HMS_WebAPI.Models.ImageModel", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HMS_WebAPI.Models.WellnessProductModel", "WellnessProduct")
-                        .WithMany("Images")
-                        .HasForeignKey("WellnessProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Image");
-
-                    b.Navigation("WellnessProduct");
-                });
-
-            modelBuilder.Entity("HMS_WebAPI.Models.WellnessProductModel", b =>
-                {
-                    b.HasOne("HMS_WebAPI.Models.WellnessProductCatatoryModel", "WellnessProductCatatory")
-                        .WithMany()
-                        .HasForeignKey("WellnessProductCatatoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("WellnessProductCatatory");
-                });
-
-            modelBuilder.Entity("HMS_WebAPI.Models.WellnessSaleModel", b =>
-                {
-                    b.HasOne("HMS_WebAPI.Models.GuestModel", "Guest")
-                        .WithMany()
-                        .HasForeignKey("GuestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HMS_WebAPI.Models.WellnessProductModel", "WellnessProduct")
-                        .WithMany()
-                        .HasForeignKey("WellnessProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Guest");
-
-                    b.Navigation("WellnessProduct");
-                });
-
             modelBuilder.Entity("HMS_WebAPI.Models.RoleModel", b =>
                 {
                     b.Navigation("UserRoles");
@@ -944,11 +767,6 @@ namespace HMS_WebAPI.Migrations
             modelBuilder.Entity("HMS_WebAPI.Models.UserModel", b =>
                 {
                     b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("HMS_WebAPI.Models.WellnessProductModel", b =>
-                {
-                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

@@ -56,7 +56,8 @@
             fileToBase64(file)
                 .then( base64 => {
                     console.log(base64);
-                    const url = 'https://hms.jedlik.cloud/api/publicpages/gallery/uploadasbase64';
+                    const url = 'http://localhost:5034/publicpages/gallery/uploadasbase64';
+                    //const url = 'https://hms.jedlik.cloud/api/publicpages/gallery/uploadasbase64';
                     
                     const fetchOptions = {
                         method: 'post',
@@ -79,6 +80,5 @@
 
 
     </script>
-
 </body>
 </html>

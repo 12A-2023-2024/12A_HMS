@@ -6,13 +6,15 @@ namespace HMS_WebAPI.Models
     public class PictureModel
     {
         public int Id { get; set; }
-        public required string OriginalFileName { get; set; }
-        public required string Path { get; set; }
+        public required ImageModel Image { get; set; }
         public required string Alt { get; set; }
         public required string Href { get; set; }
 
-        [NotMapped]
-        public required string PictureUrl { get; set; }
+        public int ImageId { get; set; }
+
+        public string FileName => Image.OriginalFileName;
+        public string PictureUrl => Image.ImageUrl;
+
 
     }
 }

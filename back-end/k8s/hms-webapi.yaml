@@ -46,7 +46,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ghcr.io/jedlik-gyor/hmswebapi:1.0.2
+          image: ghcr.io/jedlik-gyor/hmswebapi:1.0.4
           imagePullPolicy: Always
           env:
           - name: BaseURL
@@ -59,7 +59,7 @@ spec:
             value: "10"
           - name: virtualdirectory
             value: "/api"  
-          - name: filepath
+          - name: filespath
             value: /app/storage/files            
           ports:
             - containerPort: 8080   

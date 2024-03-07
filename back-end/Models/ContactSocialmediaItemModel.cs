@@ -7,11 +7,10 @@ namespace HMS_WebAPI.Models
     {
         public int Id { get; set; }
         public required string Name { get; set; }
-        public required string Icon { get; set; }
+        public ImageModel Icon { get; set; } = null!;
         public required string SocialUrl { get; set; }
 
-
-        [NotMapped]
-        public required string IconUrl { get; set; }
+        public int IconId { get; set; }
+        public string IconURL => Icon.ImageUrl;
     }
 }

@@ -78,5 +78,136 @@ namespace HMS_WebAPI.Controllers
             );
         }
 
+        [HttpGet("contacts")]
+        public IActionResult Contacts()
+        {
+            return Ok
+            (
+                dbContext.Set<ContactModel>()
+                         .Select(c => new
+                         {
+                            c.Id,
+                            c.TaxNumber,
+                            c.PostalCode,
+                            c.City,
+                            c.Address,
+                            c.Email,
+                            c.Telephone,
+                            SocialMedia = dbContext.Set<ContactSocialmediaItemModel>().Include(c => c.Icon).Select(s => new
+                            {
+                                s.Id,
+                                s.Name,
+                                s.IconURL,
+                                s.SocialUrl
+                            })
+                         })
+            );
+        }
+
+        [HttpGet("gallery")]
+        public IActionResult Gallery()
+        {
+            return Ok
+            (
+                dbContext.Set<PictureModel>().Include(p => p.Image)
+                         .Select(p => new
+                         {
+                             p.Id,
+                             p.PictureUrl,
+                             p.Href,
+                             p.Alt
+                         })
+            );
+        }
+
+        [HttpGet("introduction")]
+        public IActionResult Introduction()
+        {
+            return Ok
+            (
+                dbContext.Set<IntroductionItemModel>().Include(i => i.Picture).ThenInclude(p => p.Image)
+                         .Select(i => new
+                         {
+                             i.Id,
+                             i.Section,
+                             i.Text,
+                             i.Picture.PictureUrl
+                         })
+            );
+        }
+
+        [HttpGet("news")]
+        public IActionResult News()
+        {
+            return Ok
+            (
+                dbContext.Set<NewsItemModel>().Include(n => n.Picture).ThenInclude(p => p.Image)
+                         .Select(n => new
+                         {
+                             n.Id,
+                             n.Title,
+                             n.Date,
+                             n.Text,
+                             n.Picture.PictureUrl
+                         })
+            );
+        }
+
+        [HttpGet("wellnessproductcategories")]
+        public IActionResult WellnessProductCategories()
+        {
+            return Ok
+            (
+                dbContext.Set<WellnessProductCatatoryModel>()
+                         .Select(w => new
+                         {
+                             w.Id,
+                             w.Name
+                         })
+            );
+        }
+
+        [HttpGet("wellnessproducts")]
+        public IActionResult WellnessProducts()
+        {
+            return Ok
+            (
+                dbContext.Set<WellnessProductModel>()
+                         .Include(w => w.WellnessProductCatatory)
+                         .Include(w => w.Images)
+                         .Select(w => new
+                         {
+                             w.Id,
+                             w.Name,
+                             w.Price,
+                             w.ImageUrls,
+                             CategoryId = w.WellnessProductCatatory.Id,
+                             CategoryName = w.WellnessProductCatatory.Name
+                         })
+            );
+        }
+
+        [HttpGet("wellnesssales")]
+        public IActionResult WellnessSales()
+        {
+            return Ok
+            (
+                dbContext.Set<WellnessSaleModel>()
+                         .Include(w => w.WellnessProduct)
+                         .Include(w => w.Guest)
+                         .Select(w => new
+                         {
+                             w.Id,
+                             w.GuestId,
+                             GuestName = w.Guest.Name,
+                             w.WellnessProductId,
+                             WellnessProductName = w.WellnessProduct.Name,
+                             w.Price,
+                             w.DateOfSales,
+                             w.DateOfPayment
+                         })
+            );
+        }
+
     }
 }

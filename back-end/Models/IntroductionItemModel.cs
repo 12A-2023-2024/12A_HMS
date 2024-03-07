@@ -9,5 +9,7 @@ namespace HMS_WebAPI.Models
         public required PictureModel Picture { get; set; }
         public required string Text { get; set; }
         public required string Section { get; set; }
+
+        public int PictureId { get; set; }
     }
 }

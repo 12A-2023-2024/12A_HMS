@@ -110,8 +110,8 @@ namespace HMS_WebAPI.Migrations
                 columns: new[] { "Id", "OriginalFileName", "Path" },
                 values: new object[,]
                 {
-                    { 7, "szauna-1.jpg", "./files\\E9\\67\\E9671451232EDAB06D17512CB5273FF298619688.jpg" },
-                    { 8, "szauna-2.jpg", "./files\\ED\\14\\ED14694497590D9202A9EF5CCE98E4F035F721C8.jpg" }
+                    { 7, "szauna-1.jpg", "/app/storage/files/E9/67/E9671451232EDAB06D17512CB5273FF298619688.jpg" },
+                    { 8, "szauna-2.jpg", "/app/storage/files/ED/14/ED14694497590D9202A9EF5CCE98E4F035F721C8.jpg" }
                 });
 
             migrationBuilder.InsertData(

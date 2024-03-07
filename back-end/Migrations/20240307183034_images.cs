@@ -31,11 +31,11 @@ namespace HMS_WebAPI.Migrations
                 columns: new[] { "Id", "OriginalFileName", "Path" },
                 values: new object[,]
                 {
-                    { 1, "facebook.png", "/app/storage/F3/EC/F3EC45E63FFF1BA1A6E0F721C0A8B269CCA5C099.png" },
-                    { 2, "instagram.png", "/app/storage/CA/B9/CAB97BBDC04925AA77ABAE6335ACA31DB3024FA4.png" },
-                    { 3, "linkedin.png", "/app/storage/EF/A7/EFA7A2C2D2B7A716F793A3B251108E7439342963.png" },
-                    { 4, "twitter.png", "/app/storage/2C/9D/2C9D210692C0321B19E99AA7C9FC63CF7A96541B.png" },
-                    { 5, "youtube.png", "/app/storage/24/87/2487459838DBD7705DDD0F4C1913E506058E8C78.png" }
+                    { 1, "facebook.png", "/app/storage/files/F3/EC/F3EC45E63FFF1BA1A6E0F721C0A8B269CCA5C099.png" },
+                    { 2, "instagram.png", "/app/storage/files/CA/B9/CAB97BBDC04925AA77ABAE6335ACA31DB3024FA4.png" },
+                    { 3, "linkedin.png", "/app/storage/files/EF/A7/EFA7A2C2D2B7A716F793A3B251108E7439342963.png" },
+                    { 4, "twitter.png", "/app/storage/files/2C/9D/2C9D210692C0321B19E99AA7C9FC63CF7A96541B.png" },
+                    { 5, "youtube.png", "/app/storage/files/24/87/2487459838DBD7705DDD0F4C1913E506058E8C78.png" }
                 });
         }
 

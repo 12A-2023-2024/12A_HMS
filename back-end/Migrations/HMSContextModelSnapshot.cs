@@ -49,7 +49,7 @@ namespace HMS_WebAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("contact");
+                    b.ToTable("contact", (string)null);
 
                     b.HasData(
                         new
@@ -85,7 +85,7 @@ namespace HMS_WebAPI.Migrations
 
                     b.HasIndex("IconId");
 
-                    b.ToTable("contactSocialmediaItems");
+                    b.ToTable("contactSocialmediaItems", (string)null);
 
                     b.HasData(
                         new
@@ -146,7 +146,7 @@ namespace HMS_WebAPI.Migrations
                     b.HasIndex("PassportNumber")
                         .IsUnique();
 
-                    b.ToTable("guests");
+                    b.ToTable("guests", (string)null);
 
                     b.HasData(
                         new
@@ -179,7 +179,7 @@ namespace HMS_WebAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("images");
+                    b.ToTable("images", (string)null);
 
                     b.HasData(
                         new
@@ -253,7 +253,7 @@ namespace HMS_WebAPI.Migrations
 
                     b.HasIndex("PictureId");
 
-                    b.ToTable("introductionItems");
+                    b.ToTable("introductionItems", (string)null);
 
                     b.HasData(
                         new
@@ -289,7 +289,7 @@ namespace HMS_WebAPI.Migrations
 
                     b.HasIndex("PictureId");
 
-                    b.ToTable("newsItems");
+                    b.ToTable("newsItems", (string)null);
 
                     b.HasData(
                         new
@@ -323,7 +323,7 @@ namespace HMS_WebAPI.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("pictures");
+                    b.ToTable("pictures", (string)null);
 
                     b.HasData(
                         new
@@ -347,7 +347,7 @@ namespace HMS_WebAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("roles");
+                    b.ToTable("roles", (string)null);
 
                     b.HasData(
                         new
@@ -397,7 +397,7 @@ namespace HMS_WebAPI.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("roomParameters");
+                    b.ToTable("roomParameters", (string)null);
 
                     b.HasData(
                         new
@@ -437,7 +437,7 @@ namespace HMS_WebAPI.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("roomTypes");
+                    b.ToTable("roomTypes", (string)null);
 
                     b.HasData(
                         new
@@ -468,7 +468,7 @@ namespace HMS_WebAPI.Migrations
 
                     b.HasIndex("RoomTypeId");
 
-                    b.ToTable("roomTypeParameters");
+                    b.ToTable("roomTypeParameters", (string)null);
 
                     b.HasData(
                         new
@@ -508,7 +508,7 @@ namespace HMS_WebAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("sessions");
+                    b.ToTable("sessions", (string)null);
                 });
 
             modelBuilder.Entity("HMS_WebAPI.Models.UserModel", b =>
@@ -538,7 +538,7 @@ namespace HMS_WebAPI.Migrations
                     b.HasIndex("LoginName")
                         .IsUnique();
 
-                    b.ToTable("users");
+                    b.ToTable("users", (string)null);
 
                     b.HasData(
                         new
@@ -601,7 +601,7 @@ namespace HMS_WebAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("userroles");
+                    b.ToTable("userroles", (string)null);
 
                     b.HasData(
                         new
@@ -648,7 +648,7 @@ namespace HMS_WebAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("wellnessproductcatatories");
+                    b.ToTable("wellnessproductcatatories", (string)null);
 
                     b.HasData(
                         new
@@ -691,7 +691,7 @@ namespace HMS_WebAPI.Migrations
 
                     b.HasIndex("WellnessProductId");
 
-                    b.ToTable("wellnessproductimages");
+                    b.ToTable("wellnessproductimages", (string)null);
 
                     b.HasData(
                         new
@@ -728,7 +728,7 @@ namespace HMS_WebAPI.Migrations
 
                     b.HasIndex("WellnessProductCatatoryId");
 
-                    b.ToTable("wellnessproducts");
+                    b.ToTable("wellnessproducts", (string)null);
 
                     b.HasData(
                         new
@@ -767,7 +767,7 @@ namespace HMS_WebAPI.Migrations
 
                     b.HasIndex("WellnessProductId");
 
-                    b.ToTable("wellnesssales");
+                    b.ToTable("wellnesssales", (string)null);
 
                     b.HasData(
                         new

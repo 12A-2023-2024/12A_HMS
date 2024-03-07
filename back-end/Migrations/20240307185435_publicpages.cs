@@ -152,7 +152,7 @@ namespace HMS_WebAPI.Migrations
             migrationBuilder.InsertData(
                 table: "images",
                 columns: new[] { "Id", "OriginalFileName", "Path" },
-                values: new object[] { 6, "gyor-latkep.jpg", "/app/storage/BF/33/BF33F8E14361B2A8E2FD12B41EB24AF317833D08.jpg" });
+                values: new object[] { 6, "gyor-latkep.jpg", "/app/storage/files/BF/33/BF33F8E14361B2A8E2FD12B41EB24AF317833D08.jpg" });
 
             migrationBuilder.InsertData(
                 table: "pictures",

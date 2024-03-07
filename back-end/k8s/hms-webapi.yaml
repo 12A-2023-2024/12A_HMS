@@ -46,11 +46,11 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ghcr.io/jedlik-gyor/hmswebapi:1.0.4
+          image: ghcr.io/jedlik-gyor/hmswebapi:1.0.7
           imagePullPolicy: Always
           env:
           - name: BaseURL
-            value: "https://hms.jedlik.cloud/"
+            value: "https://hms.jedlik.cloud/api/"
           - name: ConnectionStrings__HMSDatabase
             value: "Data Source=/app/storage/database/hms.db"
           - name: security__salt

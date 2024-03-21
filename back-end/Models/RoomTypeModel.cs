@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace HMS_WebAPI.Models
 {
@@ -10,7 +11,11 @@ namespace HMS_WebAPI.Models
         public required string Description { get; set; }
         public decimal PricePerNigthPerPerson { get; set; }
         public int Capacity { get; set; }
+        public bool Active { get; set; } = true;
 
+        [JsonIgnore]
         public List<RoomTypeParameterModel> Parameters { get; set; } = [];
+        [JsonIgnore]
+        public List<RoomTypeImageModel> Images { get; set; } = [];
     }
 }

@@ -1,6 +1,6 @@
 export interface GalleryItemModel
 {
-    id: Number;
+    id: number;
     pictureUrl: string;
     href: string;
     alt: string;

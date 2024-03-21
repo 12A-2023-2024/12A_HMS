@@ -7,7 +7,7 @@
 namespace HMS_WebAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class images : Migration
+    public partial class Images : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

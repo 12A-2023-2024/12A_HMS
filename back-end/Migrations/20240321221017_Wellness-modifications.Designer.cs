@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HMS_WebAPI.Migrations
 {
     [DbContext(typeof(HMSContext))]
-    [Migration("20240307203513_Wellness")]
-    partial class Wellness
+    [Migration("20240321221017_Wellness-modifications")]
+    partial class Wellnessmodifications
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -232,6 +232,12 @@ namespace HMS_WebAPI.Migrations
                             Id = 8,
                             OriginalFileName = "szauna-2.jpg",
                             Path = "./files\\ED\\14\\ED14694497590D9202A9EF5CCE98E4F035F721C8.jpg"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            OriginalFileName = "szoba-1.jpg",
+                            Path = "./files\\43\\5B\\435B7CC2C23C7B07DB18CFAE2E1F01C51A5E1C2F.jpg"
                         });
                 });
 
@@ -298,7 +304,7 @@ namespace HMS_WebAPI.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2024, 3, 7, 0, 0, 0, 0, DateTimeKind.Local),
+                            Date = new DateTime(2024, 3, 21, 0, 0, 0, 0, DateTimeKind.Local),
                             PictureId = 1,
                             Text = "Proin finibus eget enim sed sodales. Duis iaculis sagittis mauris ac tincidunt. Mauris pellentesque gravida feugiat. Vestibulum vulputate, tellus eget volutpat viverra, dolor tellus accumsan dolor, ac semper sapien lacus a risus. Suspendisse potenti. Vestibulum maximus aliquet erat ac interdum. Mauris tempor mi ac mauris finibus, a egestas purus gravida. Duis pellentesque, purus sit amet porttitor lobortis, eros eros fringilla tellus, ut congue augue sem sed massa. Donec consequat aliquet est vitae tempus. Praesent mollis diam eu eros bibendum mollis. Integer feugiat metus sit amet tellus feugiat, sit amet rutrum libero facilisis. Morbi non neque ex. Sed sit amet tempus tellus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
                             Title = "Lorem Ipsum"
@@ -415,10 +421,42 @@ namespace HMS_WebAPI.Migrations
                         });
                 });
 
+            modelBuilder.Entity("HMS_WebAPI.Models.RoomTypeImageModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ImageId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RoomTypeId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("RoomTypeId");
+
+                    b.ToTable("roomimages");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ImageId = 9,
+                            RoomTypeId = 1
+                        });
+                });
+
             modelBuilder.Entity("HMS_WebAPI.Models.RoomTypeModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Active")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Capacity")
@@ -446,6 +484,7 @@ namespace HMS_WebAPI.Migrations
                         new
                         {
                             Id = 1,
+                            Active = true,
                             Capacity = 4,
                             Description = "Kétlégterű négyfős családi szoba",
                             Name = "4 fős családi szoba",
@@ -645,6 +684,9 @@ namespace HMS_WebAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -657,21 +699,25 @@ namespace HMS_WebAPI.Migrations
                         new
                         {
                             Id = 1,
+                            Active = true,
                             Name = "Szépségápolás"
                         },
                         new
                         {
                             Id = 2,
+                            Active = true,
                             Name = "Masszázs"
                         },
                         new
                         {
                             Id = 3,
+                            Active = true,
                             Name = "Fürdő"
                         },
                         new
                         {
                             Id = 4,
+                            Active = true,
                             Name = "Szauna"
                         });
                 });
@@ -717,6 +763,13 @@ namespace HMS_WebAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -737,6 +790,8 @@ namespace HMS_WebAPI.Migrations
                         new
                         {
                             Id = 1,
+                            Active = true,
+                            Description = "1 alkalmas finn szauna igénybevétel",
                             Name = "Finn aroma szauna - 1 alkalom",
                             Price = 7900m,
                             WellnessProductCatatoryId = 4
@@ -776,8 +831,8 @@ namespace HMS_WebAPI.Migrations
                         new
                         {
                             Id = 1,
-                            DateOfPayment = new DateTime(2024, 3, 6, 0, 0, 0, 0, DateTimeKind.Local),
-                            DateOfSales = new DateTime(2024, 3, 5, 0, 0, 0, 0, DateTimeKind.Local),
+                            DateOfPayment = new DateTime(2024, 3, 20, 0, 0, 0, 0, DateTimeKind.Local),
+                            DateOfSales = new DateTime(2024, 3, 19, 0, 0, 0, 0, DateTimeKind.Local),
                             GuestId = 1,
                             Price = 7900m,
                             WellnessProductId = 1
@@ -785,7 +840,7 @@ namespace HMS_WebAPI.Migrations
                         new
                         {
                             Id = 2,
-                            DateOfSales = new DateTime(2024, 3, 6, 0, 0, 0, 0, DateTimeKind.Local),
+                            DateOfSales = new DateTime(2024, 3, 20, 0, 0, 0, 0, DateTimeKind.Local),
                             GuestId = 1,
                             Price = 7900m,
                             WellnessProductId = 1
@@ -834,6 +889,25 @@ namespace HMS_WebAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Image");
+                });
+
+            modelBuilder.Entity("HMS_WebAPI.Models.RoomTypeImageModel", b =>
+                {
+                    b.HasOne("HMS_WebAPI.Models.ImageModel", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HMS_WebAPI.Models.RoomTypeModel", "RoomType")
+                        .WithMany("Images")
+                        .HasForeignKey("RoomTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Image");
+
+                    b.Navigation("RoomType");
                 });
 
             modelBuilder.Entity("HMS_WebAPI.Models.RoomTypeParameterModel", b =>
@@ -941,6 +1015,8 @@ namespace HMS_WebAPI.Migrations
 
             modelBuilder.Entity("HMS_WebAPI.Models.RoomTypeModel", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("Parameters");
                 });
 

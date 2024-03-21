@@ -10,7 +10,7 @@ using System.Text.Json.Nodes;
 namespace HMS_WebAPI.Controllers
 {
     [Route("rooms")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "admin")]
     [ApiController]
     public class RoomsController : ControllerBase
     {
@@ -40,7 +40,7 @@ namespace HMS_WebAPI.Controllers
         [HttpGet("parameters/{id}")]
         public IActionResult GetSingleRoomParameter([FromRoute] int id)
         {
-            return Ok(dbContext.Set<RoomParameterModel>());
+            return Ok(dbContext.Set<RoomParameterModel>().SingleOrDefault(p => p.Id == id));
         }
 
         [HttpPost("parameters")]
@@ -53,6 +53,10 @@ namespace HMS_WebAPI.Controllers
                     return BadRequest(new { message = "Missing body" });
                 if (string.IsNullOrWhiteSpace(model.Name))
                     return BadRequest(new { message = "A megnevezés megadása kötelező" });
+
+                if (dbContext.Set<RoomParameterModel>().Any(w => w.Name.ToLower() == model.Name.ToLower()))
+                    return BadRequest(new { message = "A megadott névvel már van paraméter rögzítve" });
+
                 dbContext.Set<RoomParameterModel>().Add(model);
                 dbContext.SaveChanges();
                 return Ok(model);
@@ -73,7 +77,17 @@ namespace HMS_WebAPI.Controllers
                     return BadRequest(new { message = "Missing body" });
                 if (string.IsNullOrWhiteSpace(model.Name))
                     return BadRequest(new { message = "A megnevezés megadása kötelező" });
-                dbContext.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+
+                if (dbContext.Set<RoomParameterModel>().Any(w => w.Name.ToLower() == model.Name.ToLower() && w.Id != model.Id))
+                    return BadRequest(new { message = "A megadott névvel már van paraméter rögzítve" });
+
+                var modelToModify = dbContext.Set<RoomParameterModel>().SingleOrDefault(p => p.Id == model.Id);
+
+                if (modelToModify == null)
+                    return BadRequest(new { message = "A paraméter nem létezik, vagy már törölték" });
+                modelToModify.Name = model.Name;
+
+                dbContext.Entry(modelToModify).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 dbContext.SaveChanges();
                 return Ok(model);
             }
@@ -121,7 +135,7 @@ namespace HMS_WebAPI.Controllers
                                                      {
                                                          i.Image.Id,
                                                          i.Image.ImageUrl
-                                                     }),
+                                                     }).ToArray(),
                                    Parameters = dbContext.Set<RoomTypeParameterModel>()
                                                          .Include(p => p.RoomParameter)
                                                          .Where(p => p.RoomTypeId == r.Id)
@@ -130,6 +144,7 @@ namespace HMS_WebAPI.Controllers
                                                              p.RoomParameter.Id,
                                                              p.RoomParameter.Name
                                                          })
+                                                         .ToArray()
                                })
                      );
         }
@@ -138,7 +153,7 @@ namespace HMS_WebAPI.Controllers
         public IActionResult GetRoomType([FromRoute] int id, [FromQuery] bool onlyActives = true)
         {
             return Ok(dbContext.Set<RoomTypeModel>()
-                               .Where(r => onlyActives ? r.Active : true && r.Id == id)
+                               .Where(r => r.Id == id && (onlyActives ? r.Active : true) )
                                .Select(r => new
                                {
                                    r.Id,
@@ -154,7 +169,7 @@ namespace HMS_WebAPI.Controllers
                                                      {
                                                          i.Image.Id,
                                                          i.Image.ImageUrl
-                                                     }),
+                                                     }).ToArray(),
                                    Parameters = dbContext.Set<RoomTypeParameterModel>()
                                                          .Include(p => p.RoomParameter)
                                                          .Where(p => p.RoomTypeId == r.Id)
@@ -162,7 +177,7 @@ namespace HMS_WebAPI.Controllers
                                                          {
                                                              p.RoomParameter.Id,
                                                              p.RoomParameter.Name
-                                                         })
+                                                         }).ToArray()
                                })
                                .SingleOrDefault()
                      );
@@ -185,7 +200,9 @@ namespace HMS_WebAPI.Controllers
                 if (model.Capacity == 0)
                     return BadRequest(new { message = "Az elhelyezhető vendégek számának megadása kötelező" });
 
-                
+                if (dbContext.Set<RoomTypeModel>().Any(r => r.Name.ToLower() == model.Name.ToLower()))
+                    return BadRequest(new { message = "A megadott névvel már van szobatípus rögzítve" });
+
                 dbContext.Set<RoomTypeModel>().Add(model);
                 var roomTypeParameters = new List<RoomTypeParameterModel>();
                 var node = requestBody.Serialize<JsonNode>();
@@ -243,19 +260,17 @@ namespace HMS_WebAPI.Controllers
                     dbContext.Set<RoomTypeImageModel>().AddRange(roomTypeImages);
                 }
                 dbContext.SaveChanges();
-                model.Images = roomTypeImages;
-                model.Parameters = roomTypeParameters;
-                return Ok(model);
+                return GetRoomType(model.Id);
             }
             catch
             {
-                return BadRequest(new { message = "Hibás adat", debugMessage = "Conversion error" });
+                return BadRequest(new { message = "Váratlan hiba" });
             }
         }
 
         
         [HttpPut("types")]
-        public IActionResult modifyRoomType([FromBody] object requestBody)
+        public IActionResult ModifyRoomType([FromBody] object requestBody)
         {
             try
             {
@@ -271,7 +286,7 @@ namespace HMS_WebAPI.Controllers
                 if (model.Capacity == 0)
                     return BadRequest(new { message = "Az elhelyezhető vendégek számának megadása kötelező" });
 
-                var modelToModify = dbContext.Set<RoomTypeModel>().SingleOrDefault(r => r.Id == model.Id && r.Active);
+                var modelToModify = dbContext.Set<RoomTypeModel>().SingleOrDefault(r => r.Id == model.Id && (r.Active));
                 if (modelToModify == null)
                     return BadRequest(new { message = "Nem található a módosítandó szobatípus" });
 
@@ -285,7 +300,6 @@ namespace HMS_WebAPI.Controllers
                 dbContext.Set<RoomTypeParameterModel>().RemoveRange(dbContext.Set<RoomTypeParameterModel>().Where(r => r.RoomTypeId == model.Id));
                 dbContext.Set<RoomTypeImageModel>().RemoveRange(dbContext.Set<RoomTypeImageModel>().Where(r => r.RoomTypeId == model.Id));
 
-                dbContext.Set<RoomTypeModel>().Add(model);
                 var roomTypeParameters = new List<RoomTypeParameterModel>();
                 var node = requestBody.Serialize<JsonNode>();
                 JsonNode? parametersNode = node?["Parameters"];
@@ -305,7 +319,7 @@ namespace HMS_WebAPI.Controllers
                                 roomTypeParameters.Add(new RoomTypeParameterModel()
                                 {
                                     RoomParameter = roomParameter,
-                                    RoomType = model
+                                    RoomType = modelToModify
                                 });
                         }
 
@@ -334,7 +348,7 @@ namespace HMS_WebAPI.Controllers
                             roomTypeImages.Add(new RoomTypeImageModel()
                             {
                                 Image = image,
-                                RoomType = model
+                                RoomType = modelToModify
                             });
                         }
 
@@ -342,18 +356,16 @@ namespace HMS_WebAPI.Controllers
                     dbContext.Set<RoomTypeImageModel>().AddRange(roomTypeImages);
                 }
                 dbContext.SaveChanges();
-                model.Images = roomTypeImages;
-                model.Parameters = roomTypeParameters;
-                return Ok(model);
+                return GetRoomType(modelToModify.Id);
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest(new { message = "Hibás adat", debugMessage = "Conversion error" });
+                return BadRequest(new { message = "Váratlan hiba", debug = ex.Message});
             }
         }
 
         [HttpDelete("types/{id}")]
-        public IActionResult deleteRoomType([FromRoute] int id)
+        public IActionResult DeleteRoomType([FromRoute] int id)
         {
             try
             {

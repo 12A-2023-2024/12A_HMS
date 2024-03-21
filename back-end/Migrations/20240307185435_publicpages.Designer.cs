@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HMS_WebAPI.Migrations
 {
     [DbContext(typeof(HMSContext))]
-    [Migration("20240307185435_publicpages")]
-    partial class publicpages
+    [Migration("20240307185435_Publicpages")]
+    partial class Publicpages
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

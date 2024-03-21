@@ -180,6 +180,7 @@ namespace HMS_WebAPI.Controllers
                              w.Id,
                              w.Name,
                              w.Price,
+                             w.Active,
                              ImageUrls = w.Images.Select(x => x.Image.ImageUrl),
                              CategoryId = w.WellnessProductCatatory.Id,
                              CategoryName = w.WellnessProductCatatory.Name

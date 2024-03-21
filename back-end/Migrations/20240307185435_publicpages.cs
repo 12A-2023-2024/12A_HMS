@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HMS_WebAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class publicpages : Migration
+    public partial class Publicpages : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

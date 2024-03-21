@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HMS_WebAPI.Migrations
 {
     [DbContext(typeof(HMSContext))]
-    [Migration("20240307183034_images")]
-    partial class images
+    [Migration("20240307183034_Images")]
+    partial class Images
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

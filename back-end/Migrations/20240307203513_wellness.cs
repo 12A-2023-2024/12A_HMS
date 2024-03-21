@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HMS_WebAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class wellness : Migration
+    public partial class Wellness : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

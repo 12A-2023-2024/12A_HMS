@@ -13,7 +13,7 @@ namespace HMS_WebAPI.Controllers
 
         public CommonController(IConfiguration configuration, HMSContext dbContext)
         {
-            filePath = configuration.GetValue<string>("filepath") ?? "/app/storage/files";
+            filePath = configuration.GetValue<string>("filespath") ?? "/app/storage/files";
             this.dbContext = dbContext;
         }
 

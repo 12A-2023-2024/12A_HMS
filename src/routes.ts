@@ -2,7 +2,8 @@ import { ContactPage } from "./pages/contact/contact.js";
 import { HomePage } from "./pages/home/home.js";
 import { IntroductionPage } from "./pages/introduction/introduction.js";
 import { RestaurantStaffPage } from "./pages/restaurant/restaurantStaff.js";
-import { RestaurantPage } from "./pages/restaurant/restaurant.js";
+import { RestaurantPublicPage } from "./pages/restaurant/restaurantPublic.js";
+import { RestaurantAdminPage } from "./pages/restaurant/restaurantAdmin.js";
 
 export const routes: {[key: string]: {page: any}} = {
     '': {
@@ -15,7 +16,7 @@ export const routes: {[key: string]: {page: any}} = {
         page: ContactPage
     },
     'restaurant': {
-        page: RestaurantPage
+        page: RestaurantPublicPage
     },
     'restaurantStaff': {
         page: RestaurantStaffPage

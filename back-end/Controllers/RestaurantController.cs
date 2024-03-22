@@ -9,26 +9,26 @@ using System.Xml.Linq;
 
 namespace HMS_WebAPI.Controllers
 {
-    [Route("wellness")]
+    [Route("restaurant")]
     [ApiController]
     [Authorize(Roles="admin")]
-    public class WellnessController : ControllerBase
+    public class RestaurantController : ControllerBase
     {
         private readonly HMSContext dbContext;
         private readonly string filesPath;
 
-        public WellnessController(HMSContext dbContext, IConfiguration configuration)
+        public RestaurantController(HMSContext dbContext, IConfiguration configuration)
         {
             this.dbContext = dbContext;
             filesPath = configuration.GetValue<string>("filespath") ?? "/app/storage/files";
         }
 
-        #region WellnessCategories
+        #region MenuCategories
 
         [HttpGet("categories")]
-        public IActionResult GetWellnessCategories()
+        public IActionResult GetMenuCategories()
         {
-            return Ok(dbContext.Set<WellnessProductCatatoryModel>()
+            return Ok(dbContext.Set<MenuCategoryModel>()
                                .Where(w => w.Active)
                                .Select(p => new
                                {
@@ -39,26 +39,26 @@ namespace HMS_WebAPI.Controllers
         }
 
         [HttpGet("categories/{id}")]
-        public IActionResult GetWellnessCategory([FromRoute] int id)
+        public IActionResult GetMenuCategory([FromRoute] int id)
         {
-            return Ok(dbContext.Set<WellnessProductCatatoryModel>().SingleOrDefault(w => w.Active && w.Id == id));
+            return Ok(dbContext.Set<MenuCategoryModel>().SingleOrDefault(w => w.Active && w.Id == id));
         }
 
         [HttpPost("categories")]
-        public IActionResult NewWellnessCategory([FromBody] object requestBody)
+        public IActionResult NewMenuCategory([FromBody] object requestBody)
         {
             try
             {
-                var model = requestBody.Serialize<WellnessProductCatatoryModel>();
+                var model = requestBody.Serialize<MenuCategoryModel>();
                 if (model == null)
                     return BadRequest(new { message = "Missing body" });
                 if (string.IsNullOrWhiteSpace(model.Name))
                     return BadRequest(new { message = "A megnevezés megadása kötelező" });
 
-                if (dbContext.Set<WellnessProductCatatoryModel>().Any(w => w.Name.ToLower() == model.Name.ToLower()))
+                if (dbContext.Set<MenuCategoryModel>().Any(w => w.Name.ToLower() == model.Name.ToLower()))
                     return BadRequest(new { message = "A megadott névvel már van kategória rögzítve" });
 
-                dbContext.Set<WellnessProductCatatoryModel>().Add(model);
+                dbContext.Set<MenuCategoryModel>().Add(model);
                 dbContext.SaveChanges();
                 return Ok(model);
             }
@@ -69,20 +69,20 @@ namespace HMS_WebAPI.Controllers
         }
 
         [HttpPut("categories")]
-        public IActionResult ModifyWellnessCategory([FromBody] object requestBody)
+        public IActionResult ModifyMenuCategory([FromBody] object requestBody)
         {
             try
             {
-                var model = requestBody.Serialize<WellnessProductCatatoryModel>();
+                var model = requestBody.Serialize<MenuCategoryModel>();
                 if (model == null)
                     return BadRequest(new { message = "Missing body" });
                 if (string.IsNullOrWhiteSpace(model.Name))
                     return BadRequest(new { message = "A megnevezés megadása kötelező" });
 
-                if (dbContext.Set<WellnessProductCatatoryModel>().Any(w => w.Name.ToLower() == model.Name.ToLower() && w.Id != model.Id))
+                if (dbContext.Set<MenuCategoryModel>().Any(w => w.Name.ToLower() == model.Name.ToLower() && w.Id != model.Id))
                     return BadRequest(new { message = "A megadott névvel már van kategória rögzítve" });
 
-                var modelToModify = dbContext.Set<WellnessProductCatatoryModel>().SingleOrDefault(w => w.Id == model.Id && w.Active);
+                var modelToModify = dbContext.Set<MenuCategoryModel>().SingleOrDefault(w => w.Id == model.Id && w.Active);
 
                 if (modelToModify == null)
                     return BadRequest(new { message = "A kategoria nem létezik, vagy már törölték" });
@@ -99,14 +99,14 @@ namespace HMS_WebAPI.Controllers
         }
 
         [HttpDelete("categories/{id}")]
-        public IActionResult DeleteWellnessCategory([FromRoute] int id)
+        public IActionResult DeleteMenuCategory([FromRoute] int id)
         {
-            var model = dbContext.Set<WellnessProductCatatoryModel>().SingleOrDefault(p => p.Id == id);
+            var model = dbContext.Set<MenuCategoryModel>().SingleOrDefault(p => p.Id == id);
             if (model == null)
                 return BadRequest(new { message = "A kategoria nem létezik, vagy már törölték" });
 
-            if (dbContext.Set<WellnessProductModel>().Any(p => p.WellnessProductCatatoryId == id && p.Active))
-                return BadRequest(new { message = "A kategóriában már van termék rögzítve" });
+            if (dbContext.Set<MenuItemModel>().Any(p => p.MenuCategoryId == id && p.Active))
+                return BadRequest(new { message = "A megadott kategórával van már étel rögzítve" });
 
             model.Active = false;
             dbContext.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
@@ -115,61 +115,61 @@ namespace HMS_WebAPI.Controllers
             return Ok(new { success = true });
         }
 
-        #endregion WellnessCategories
+        #endregion MenuCategories
 
-        #region WellnessProducts
+        #region MenuItems
 
-        [HttpGet("products")]
-        public IActionResult GetWellnessProducts()
+        [HttpGet("menuitems")]
+        public IActionResult GetMenuItems()
         {
             return Ok
             (
-                dbContext.Set<WellnessProductModel>()
-                         .Include(w => w.WellnessProductCatatory)
-                         .Include(w => w.Images)
-                         .Where(w => w.Active)
-                         .Select(w => new
+                dbContext.Set<MenuItemModel>()
+                         .Include(m => m.MenuCategory)
+                         .Include(m => m.Images)
+                         .Where(m => m.Active)
+                         .Select(m => new
                          {
-                             w.Id,
-                             w.Name,
-                             w.Price,
-                             w.Description,
-                             ImageUrls = w.Images.Select(x => x.Image.ImageUrl),
-                             CategoryId = w.WellnessProductCatatory.Id,
-                             CategoryName = w.WellnessProductCatatory.Name
+                             m.Id,
+                             m.Name,
+                             m.Price,
+                             m.Description,
+                             ImageUrls = m.Images.Select(x => x.Image.ImageUrl),
+                             CategoryId = m.MenuCategory.Id,
+                             CategoryName = m.MenuCategory.Name
                          })
             );
         }
 
-        [HttpGet("products/{id}")]
-        public IActionResult GetWellnessProduct([FromRoute] int id)
+        [HttpGet("menuitems/{id}")]
+        public IActionResult GetMenuItem([FromRoute] int id)
         {
             return Ok
             (
-                dbContext.Set<WellnessProductModel>()
-                         .Include(w => w.WellnessProductCatatory)
-                         .Include(w => w.Images)
-                         .Where(w => w.Active && w.Id == id)
-                         .Select(w => new
+                dbContext.Set<MenuItemModel>()
+                         .Include(m => m.MenuCategory)
+                         .Include(m => m.Images)
+                         .Where(m => m.Active && m.Id == id)
+                         .Select(m => new
                          {
-                             w.Id,
-                             w.Name,
-                             w.Price,
-                             w.Description,
-                             ImageUrls = w.Images.Select(x => x.Image.ImageUrl),
-                             CategoryId = w.WellnessProductCatatory.Id,
-                             CategoryName = w.WellnessProductCatatory.Name
+                             m.Id,
+                             m.Name,
+                             m.Price,
+                             m.Description,
+                             ImageUrls = m.Images.Select(x => x.Image.ImageUrl),
+                             CategoryId = m.MenuCategory.Id,
+                             CategoryName = m.MenuCategory.Name
                          })
                          .SingleOrDefault()
             );
         }
 
-        [HttpPost("products")]
-        public IActionResult NewWellnessProduct([FromBody] object requestBody)
+        [HttpPost("menuitems")]
+        public IActionResult NewMenuItem([FromBody] object requestBody)
         {
             try
             {
-                var model = requestBody.Serialize<WellnessProductModel>();
+                var model = requestBody.Serialize<MenuItemModel>();
                 if (model == null)
                     return BadRequest(new { message = "Missing body" });
                 if (string.IsNullOrWhiteSpace(model.Name))
@@ -178,14 +178,14 @@ namespace HMS_WebAPI.Controllers
                     return BadRequest(new { message = "A leírás megadása kötelező" });
                 if (model.Price == 0)
                     return BadRequest(new { message = "Az ár megadása kötelező" });
-                if (model.WellnessProductCatatoryId == 0)
+                if (model.MenuCategoryId == 0)
                     return BadRequest(new { message = "A kategória megadása kötelező" });
 
 
-                dbContext.Set<WellnessProductModel>().Add(model);
+                dbContext.Set<MenuItemModel>().Add(model);
                 var node = requestBody.Serialize<JsonNode>();
 
-                var wellnessProductsImages = new List<WellnessProductImageModel>();
+                var menuItemImages = new List<MenuImageModel>();
                 JsonNode? imageNode = node?["Images"];
                 if (imageNode == null)
                     imageNode = node?["images"];
@@ -203,19 +203,19 @@ namespace HMS_WebAPI.Controllers
 
                             ImageModel image = FileHandling.SaveFile(Convert.FromBase64String(base64), fileName, filesPath);
                             dbContext.Set<ImageModel>().Add(image);
-                            wellnessProductsImages.Add(new WellnessProductImageModel()
+                            menuItemImages.Add(new MenuImageModel()
                             {
                                 Image = image,
-                                WellnessProduct = model
+                                MenuItem = model
                             });
                         }
 
                     }
-                    dbContext.Set<WellnessProductImageModel>().AddRange(wellnessProductsImages);
+                    dbContext.Set<MenuImageModel>().AddRange(menuItemImages);
                 }
                 dbContext.SaveChanges();
 
-                return GetWellnessProduct(model.Id);
+                return GetMenuItem(model.Id);
             }
             catch (Exception ex)
             {
@@ -223,12 +223,12 @@ namespace HMS_WebAPI.Controllers
             }
         }
 
-        [HttpPut("products")]
-        public IActionResult ModifyWellnessProduct([FromBody] object requestBody)
+        [HttpPut("menuitems")]
+        public IActionResult ModifyMenuItem([FromBody] object requestBody)
         {
             try
             {
-                var model = requestBody.Serialize<WellnessProductModel>();
+                var model = requestBody.Serialize<MenuItemModel>();
                 if (model == null)
                     return BadRequest(new { message = "Missing body" });
                 if (string.IsNullOrWhiteSpace(model.Name))
@@ -237,25 +237,25 @@ namespace HMS_WebAPI.Controllers
                     return BadRequest(new { message = "A leírás megadása kötelező" });
                 if (model.Price == 0)
                     return BadRequest(new { message = "Az ár megadása kötelező" });
-                if (model.WellnessProductCatatoryId == 0)
+                if (model.MenuCategoryId == 0)
                     return BadRequest(new { message = "A kategória megadása kötelező" });
 
-                var modelToModify = dbContext.Set<WellnessProductModel>().SingleOrDefault(r => r.Id == model.Id && r.Active);
+                var modelToModify = dbContext.Set<MenuItemModel>().SingleOrDefault(r => r.Id == model.Id && r.Active);
                 if (modelToModify == null)
-                    return BadRequest(new { message = "Nem található a módosítandó wellness termék." });
+                    return BadRequest(new { message = "Nem található a módosítandó étel." });
 
                 modelToModify.Name = model.Name;
                 modelToModify.Description = model.Description;
                 modelToModify.Price = model.Price;
-                modelToModify.WellnessProductCatatoryId = model.WellnessProductCatatoryId;
+                modelToModify.MenuCategoryId = model.MenuCategoryId;
                 modelToModify.Active = model.Active;
                 dbContext.Entry(modelToModify).State = EntityState.Modified;
 
-                dbContext.Set<WellnessProductImageModel>().RemoveRange(dbContext.Set<WellnessProductImageModel>().Where(r => r.WellnessProductId == model.Id));
+                dbContext.Set<MenuImageModel>().RemoveRange(dbContext.Set<MenuImageModel>().Where(r => r.MenuItemId == model.Id));
                 
                 var node = requestBody.Serialize<JsonNode>();
 
-                var wellnessProductsImages = new List<WellnessProductImageModel>();
+                var menuItemImages = new List<MenuImageModel>();
                 JsonNode? imageNode = node?["Images"];
                 if (imageNode == null)
                     imageNode = node?["images"];
@@ -273,19 +273,19 @@ namespace HMS_WebAPI.Controllers
 
                             ImageModel image = FileHandling.SaveFile(Convert.FromBase64String(base64), fileName, filesPath);
                             dbContext.Set<ImageModel>().Add(image);
-                            wellnessProductsImages.Add(new WellnessProductImageModel()
+                            menuItemImages.Add(new MenuImageModel()
                             {
                                 Image = image,
-                                WellnessProduct = modelToModify
+                                MenuItem = modelToModify
                             });
                         }
 
                     }
-                    dbContext.Set<WellnessProductImageModel>().AddRange(wellnessProductsImages);
+                    dbContext.Set<MenuImageModel>().AddRange(menuItemImages);
                 }
                 dbContext.SaveChanges();
 
-                return GetWellnessProduct(model.Id);
+                return GetMenuItem(model.Id);
             }
             catch (Exception ex)
             {
@@ -293,14 +293,14 @@ namespace HMS_WebAPI.Controllers
             }
         }
 
-        [HttpDelete("products/{id}")]
+        [HttpDelete("menuitems/{id}")]
         public IActionResult DeleteWellnessProduct([FromRoute] int id)
         {
             try
             {
-                var modelToDelete = dbContext.Set<WellnessProductModel>().SingleOrDefault(r => r.Id == id && r.Active);
+                var modelToDelete = dbContext.Set<MenuItemModel>().SingleOrDefault(r => r.Id == id && r.Active);
                 if (modelToDelete == null)
-                    return BadRequest(new { message = "Nem található a törlendő termék" });
+                    return BadRequest(new { message = "Nem található a törlendő étel" });
 
                 modelToDelete.Active = false;
                 dbContext.Entry(modelToDelete).State = EntityState.Modified;
@@ -314,15 +314,15 @@ namespace HMS_WebAPI.Controllers
             }
         }
 
-        #endregion WellnessProducts
+        #endregion MenuItems
 
-        #region WellnessSales
+        #region RestaurantSales
 
         //TODO
 
         /*
         [HttpPost("sale")]
-        public IActionResult SellWellnessProduct([FromBody] object requestBody)
+        public IActionResult SellMenuItem([FromBody] object requestBody)
         {
             try
             {
@@ -355,7 +355,7 @@ namespace HMS_WebAPI.Controllers
         }
         */
 
-        #endregion
+        #endregion RestaurantSales
 
     }
 }

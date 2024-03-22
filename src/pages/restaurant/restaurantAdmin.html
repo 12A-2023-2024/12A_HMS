@@ -1,18 +1,37 @@
-<!-- <h1 class="text-center text-2xl">Étlap szerkesztő</h1>
-
-<div id="menu">
-    <div class=""></div>
-</div> -->
 <!DOCTYPE html>
 <html lang="hu">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../../..//css/output.css">
 </head>
-<body>
-<h1 class="text-center text-2xl">Étlap szerkesztő</h1>
 
+<body>
+    <div class="content">
+        <h1 class="text-center text-3xl">Étlap szerkesztő</h1>
+        <!-- <div class="block mx-8 w-full h-40">
+            <button class="px-8 my-12 mx-10 float-right py-2 font-semibold text-sm bg-green-500 text-white rounded-full shadow-sm" id="newMeal">Új étel</button>
+            <button class="px-8 my-12 mx-4 float-right py-2 font-semibold text-sm bg-green-500 text-white rounded-full shadow-sm" id="newCategory">Új kategória</button>
+        </div> -->
+        <div class="font-semibold text-lg bg-cyan-500 h-40 w-full">
+            <input type="text" name="name" placeholder="Étel neve" class="rounded-md text-black align-middle">
+            <textarea name="description" placeholder="Leírás" class="rounded-md text-black align-middle"></textarea>
+            <select name="category" placeholder="Étel kategóriája" class="rounded-md text-black align-middle">
+                <option value="Leves">Leves</option>
+            </select>
+            <input type="number" name="price" placeholder="Étel ára" class="rounded-md text-black my-12 mx-4 align-middle">
+            <button class="px-8 mx-4 py-2 font-semibold text-sm bg-orange-500 text-white rounded-full shadow-sm align-middle" id="modifyMeal">Étel módosítása</button>
+            <button class="px-8 mx-4 py-2 font-semibold text-sm bg-red-500 text-white rounded-full shadow-sm align-middle" id="deleteMeal">Étel törlése</button>
+            <div class="h-40">
+            </div>
+
+
+        </div>
+    </div>
+
+    <script src="../../../js/pages/restaurant/restaurantAdmin.js" type="module"></script>
 </body>
+
 </html>

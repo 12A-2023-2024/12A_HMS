@@ -1,9 +1,9 @@
-body{
+body {
     background-color: #fefae0;
 }
 
-.container{
-    width: 67vw; 
+.container {
+    width: 67vw;
     height: 53vh;
     background-color: #d4a373;
     position: absolute;
@@ -14,14 +14,14 @@ body{
     border-radius: 3vh;
 }
 
-.title{
+.title {
     font-size: 70pt;
     text-align: center;
     color: #ccd5ae;
     text-shadow: 2px 2px 4px #000000;
 }
 
-.input_div{
+.input_div {
     position: absolute;
     font-size: 50pt;
     left: 50%;
@@ -29,15 +29,15 @@ body{
     margin-left: -20vw;
 }
 
-#room_number_field{
+#room_number_field {
     top: 30%;
 }
 
-#room_type_field{
+#room_type_field {
     top: 50%;
 }
 
-.input_field{
+.input_field {
     width: 10vw;
     height: 4vh;
     position: relative;
@@ -46,13 +46,13 @@ body{
     background-color: #e9edc9;
 }
 
-#room_type{
+#room_type {
     width: 15vw;
     height: 5vh;
     font-size: 30pt;
 }
 
-.submit{
+.submit {
     position: absolute;
     top: 80%;
     left: 50%;
@@ -60,4 +60,19 @@ body{
     width: 10vw;
     height: 5vh;
     font-size: 30pt;
+}
+
+#redirect_to_roomtype {
+    position: absolute;
+    top: 50%;
+    left: 97%;
+    font-size: 40pt;
+    background-color: #00000038;
+    height: 5vh;
+}
+
+
+#redirect_to_roomtype p {
+    height: 4vh;
+    margin: 0;
 }

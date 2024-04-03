@@ -108,7 +108,7 @@ namespace HMS_WebAPI.Migrations
             migrationBuilder.InsertData(
                 table: "images",
                 columns: new[] { "Id", "OriginalFileName", "Path" },
-                values: new object[] { 10, "husleves.jpg", "./files\\CE\\A2\\CEA2806130AA51D7746A8C0CF3D5536F7812F4FF.jpg" });
+                values: new object[] { 10, "husleves.jpg", "/app/storage/files/CE/A2/CEA2806130AA51D7746A8C0CF3D5536F7812F4FF.jpg" });
 
             migrationBuilder.InsertData(
                 table: "menucategories",

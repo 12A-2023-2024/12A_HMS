@@ -51,6 +51,13 @@ namespace HMS_WebAPI
             modelBuilder.Entity<RoomTypeModel>().HasIndex(r => r.Name).IsUnique();
             modelBuilder.Entity<RoomParameterModel>().HasIndex(r => r.Name).IsUnique();
             modelBuilder.Entity<MenuCategoryModel>().HasIndex(r => r.Name).IsUnique();
+            modelBuilder.Entity<MenuItemModel>().HasIndex(r => r.Name).IsUnique();
+            modelBuilder.Entity<CoctailCategoryModel>().HasIndex(r => r.Name).IsUnique();
+            modelBuilder.Entity<CoctailModel>().HasIndex(r => r.Name).IsUnique();
+            modelBuilder.Entity<WellnessProductCatatoryModel>().HasIndex(r => r.Name).IsUnique();
+            modelBuilder.Entity<WellnessProductModel>().HasIndex(r => r.Name).IsUnique();
+            modelBuilder.Entity<RoomModel>().HasIndex(r => r.RoomNumber).IsUnique();
+
 
             modelBuilder.Entity<UserModel>().HasData([
                 new UserModel() { Id = 1, Name = "administrator", JobTitle = "rendszergazda", LoginName = "admin", PasswordHash = LoginRequestModel.HashPassword("admin", salt) },
@@ -115,6 +122,20 @@ namespace HMS_WebAPI
 
             modelBuilder.Entity<RoomTypeImageModel>().HasData([
                 new {Id = 1, RoomTypeId = 1, ImageId = 9}
+            ]);
+
+            modelBuilder.Entity<RoomModel>().HasData([
+                new {Id = 1, RoomNumber = "103", RoomTypeId = 1, Active = true }
+            ]);
+
+            modelBuilder.Entity<ReservationModel>().HasData([
+                new {Id = 1, FromDate = DateTime.Today, ToDate = DateTime.Today.AddDays(2), CheckInTime = DateTime.Now, RoomId = 1, PIN = "123456", Price = 12999m},
+                new {Id = 2, FromDate = DateTime.Today.AddDays(10), ToDate = DateTime.Today.AddDays(14), RoomId = 1, PIN = "112233", Price = 12999m}
+            ]);
+
+            modelBuilder.Entity<GuestReservationModel>().HasData([
+                new { Id = 1, GuestId = 1, ReservationId = 1 },
+                new { Id = 2, GuestId = 1, ReservationId = 2 }
             ]);
 
             modelBuilder.Entity<ContactModel>().HasData([

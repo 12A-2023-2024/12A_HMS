@@ -26,4 +26,7 @@ export class Page {
                 throw new Error(error);
             })
     }
+    querySelector<T>(selector: string):T{
+        return document.querySelector(selector) as T;
+    }
 }

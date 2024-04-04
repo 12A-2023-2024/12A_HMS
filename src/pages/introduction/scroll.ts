@@ -45,7 +45,6 @@ export class Scroll {
         if (this.container) {
             this.container.addEventListener('mouseleave', () => {
                 if (this.intervalId === undefined) {
-                    // Ensure this.intervalId is initialized before using it
                     this.intervalId = setInterval(this.scrollRight.bind(this), 1000);
                 }
             });

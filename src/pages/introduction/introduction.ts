@@ -5,11 +5,11 @@ export class IntroductionPage extends Page {
 
     constructor() {
         super('/src/pages/introduction/introduction.html');
-        // Időzített függvény a container lekérése után
+
         setTimeout(() => {
-            const container = document.querySelector<HTMLElement>('.overflow-x-scroll');
+            const container = document.querySelector<HTMLElement>('.scroll-container');
             if (container){
-                new Scroll(container, 3500)
+                new Scroll(container, 1000)
             }
         }, 1000);
     }

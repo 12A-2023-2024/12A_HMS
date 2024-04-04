@@ -12,5 +12,5 @@ export const routes: {[key: string]: {page: any}} = {
     'contact': {
         page: ContactPage
     }
-
+    'r'
 }

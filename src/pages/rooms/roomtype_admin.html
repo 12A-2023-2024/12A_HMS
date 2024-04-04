@@ -1,0 +1,31 @@
+<h1 class="title">Szobatípus felvétele</h1>
+<div class="form-container">
+    <form>
+        <div>
+            <label for="roomtype_name">Szobatípus elnevezése:</label>
+            <input type="text" id="roomtype_name" name="roomtype_name" required>
+        </div>
+
+        <div>
+            <label for="description">Leírás:</label>
+            <textarea id="description" name="description" required></textarea>
+        </div>
+
+        <div>
+            <label for="beds">Vendégek száma:</label>
+            <input type="number" id="guests" name="guests" required>
+        </div>
+
+        <div>
+            <label for="price">Ár:</label>
+            <input type="number" id="price" name="price" required>
+        </div>
+
+        <div id="extras_container"></div>
+        <button>Extrák</button>
+
+        <input type="image" name="image" alt="image">
+
+        <button type="submit">Felvétel</button>
+    </form>
+</div>

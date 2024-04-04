@@ -3,12 +3,12 @@ export class Scroll {
     private intervalId: number | undefined;
     private maxStep: number | undefined;
     private step: number = 0;
-    private width: number | undefined = 400;
+    private width: number | undefined;
 
 
     constructor(container: HTMLElement, ms: number){
         this.container = container
-        this.maxStep = this.container.children.length
+        this.maxStep = this.container.children.length - 1
         this.intervalId = setInterval(this.scrollRight.bind(this), ms);
         this.addEvents()
     }
@@ -17,7 +17,8 @@ export class Scroll {
 
     private scrollRight(): void {
         if (this.container) {
-            if (this.width && this.maxStep){
+            this.width = this.container.clientWidth;
+            if (this.maxStep){
                 const result = this.step*this.width
                 this.container.scroll({
                     top: 0,

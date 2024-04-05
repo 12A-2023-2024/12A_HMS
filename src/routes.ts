@@ -15,7 +15,7 @@ export const routes: {[key: string]: {page: any}} = {
     'contact': {
         page: ContactPage
     },
-    'restaurant': {
+    'restaurantPublic': {
         page: RestaurantPublicPage
     },
     'restaurantStaff': {

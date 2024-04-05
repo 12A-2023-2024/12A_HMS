@@ -1,3 +1,4 @@
+import { CocktailBar } from "./pages/cocktailbar/cocktailBar.js";
 import { ContactPage } from "./pages/contact/contact.js";
 import { HomePage } from "./pages/home/home.js";
 import { IntroductionPage } from "./pages/introduction/introduction.js";
@@ -11,6 +12,9 @@ export const routes: {[key: string]: {page: any}} = {
     },
     'contact': {
         page: ContactPage
+    },
+    'cocktailbar':{
+        page: CocktailBar
     }
 
 }

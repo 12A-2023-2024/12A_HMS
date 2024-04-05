@@ -1,0 +1,25 @@
+<h1 class="title">Szoba felvétele</h1>
+<div class="form-container">
+    <form>
+        <div id="room_number_field" class="input_div">
+            <label for="room_number">Szoba száma:</label>
+            <input class="input_field" type="text" id="room_number" name="room_number" required><br>
+        </div>
+
+        <div id="room_type_field" class="input_div">
+            <label for="room_type">Szoba típusa:</label>
+            <select class="input_field" id="room_type" name="room_type" required>
+                <option value="1">Egyágyas</option>
+                <option value="2">Kétágyas</option>
+                <option value="3">Háromágyas</option>
+                <option value="4">Négyágyas</option>
+            </select><br>
+        </div>
+
+        <input type="submit" value="Felvétel" class="submit">
+    </form>
+</div>
+
+<div id="redirect_to_roomtype">
+    <p data-route="roomtype_admin.html">></p>
+</div>

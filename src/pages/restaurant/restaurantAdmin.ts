@@ -6,77 +6,135 @@ export class RestaurantAdminPage extends Page {
     this.addEventListeners();
   }
 
-  addModalEventListeners() {
-    let closeButton = this.querySelector<HTMLElement>('.close');
-    let newMealBtn = this.querySelector<HTMLElement>('#newMealBtn');
 
-
-
-
-    closeButton.addEventListener('click', () => {
+  closeModalEventListener(querySelector: string): void {
+    this.querySelector<HTMLElement>(querySelector).addEventListener('click', () => {
       this.querySelector<HTMLElement>('.content').classList.remove('hidden')
       this.querySelector<HTMLElement>('#restaurant-modal').innerHTML = '';
-    });
-    if (closeButton && newMealBtn) {
-      let mealName = this.querySelector<HTMLInputElement>('#mealName');
-      let mealCategory = this.querySelector<HTMLInputElement>('#mealCategory');
-      let mealDescription = this.querySelector<HTMLInputElement>('#mealDescription');
-      let mealPrice = this.querySelector<HTMLInputElement>('#mealPrice');
-      let mealImage = this.querySelector<HTMLInputElement>('#mealImage')
 
-      const inputs = ['mealName','mealCategory', 'mealDescription', 'mealPrice','mealImage'];
-      inputs.forEach(element => {
-          this.querySelector<HTMLElement>(`#${element}`).addEventListener('focus', (event) => {
-              if (event.target) {
-                  (<HTMLElement>event.target).classList.remove('border-rose-600');
-              }
-          })
+    })
+  }
+  addNewMealModalEventListeners(): void {
+    let newMealBtn = this.querySelector<HTMLElement>('#newMealBtn');
+
+    let mealName = this.querySelector<HTMLInputElement>('#mealName');
+    let mealCategory = this.querySelector<HTMLInputElement>('#mealCategory');
+    let mealDescription = this.querySelector<HTMLInputElement>('#mealDescription');
+    let mealPrice = this.querySelector<HTMLInputElement>('#mealPrice');
+    let mealImage = this.querySelector<HTMLInputElement>('#mealImage')
+
+    const inputs = ['mealName', 'mealCategory', 'mealDescription', 'mealPrice', 'mealImage'];
+    inputs.forEach(element => {
+      this.querySelector<HTMLElement>(`#${element}`).addEventListener('focus', (event) => {
+        if (event.target) {
+          (<HTMLElement>event.target).classList.remove('border-rose-600');
+        }
       })
+    })
+    this.closeModalEventListener('.close')
+    newMealBtn.addEventListener('click', () => {
+      let hasError = false;
+      if (!mealName.value) {
+        mealName.classList.add('border-rose-600')
+        hasError = true;
+      }
+      if (!mealCategory.value) {
+        mealCategory.classList.add('border-rose-600')
+        hasError = true;
+      }
+      if (!mealDescription.value) {
+        mealDescription.classList.add('border-rose-600')
+        hasError = true;
+      }
+      if (!mealPrice.value) {
+        mealPrice.classList.add('border-rose-600')
+        hasError = true;
+      }
+      if (!mealImage.value) {
+        mealImage.classList.add('border-rose-600')
+        hasError = true;
+      }
+    });
+    //To do
 
-      newMealBtn.addEventListener('click', () => {
-        alert('sa')
-        let hasError = false;
-        if (!mealName.value) {
-          mealName.classList.add('border-rose-600')
-          hasError = true;
-        }
-        if (!mealCategory.value) {
-          mealCategory.classList.add('border-rose-600')
-          hasError = true;
-        }
-        if (!mealDescription.value) {
-          mealDescription.classList.add('border-rose-600')
-          hasError = true;
-        }
-        if (!mealPrice.value) {
-          mealPrice.classList.add('border-rose-600')
-          hasError = true;
-        }
-        if (!mealImage.value) {
-          mealImage.classList.add('border-rose-600')
-          hasError = true;
-        }
-      });
-    }
+  }
+
+  addModifyCategoryModalEventListeners():void {
+    let categorySelect = this.querySelector<any>('#categorySelect');
+    let categoryInput = this.querySelector<HTMLInputElement>('#categoryInput');
+    let saveBtn = this.querySelector<HTMLInputElement>('#saveBtn');
+    let previousText = '';
+
+
+    this.closeModalEventListener('#closeBtn')
+
+
+    categorySelect.addEventListener('change', () => {
+      categoryInput.value = categorySelect.options[categorySelect.selectedIndex].text;
+      previousText = categorySelect.options[categorySelect.selectedIndex].text;
+    })
+
+    
+    categoryInput.addEventListener('change',()=>{
+      if (previousText != categoryInput.value && categoryInput.value!='') {
+        saveBtn.disabled=false;
+        saveBtn.classList.add('bg-green-500');
+        saveBtn.classList.add('hover:bg-green-700');
+        saveBtn.classList.remove('bg-green-300');
+        
+      } else{
+        saveBtn.disabled=true;
+        saveBtn.classList.add('bg-green-300');
+        saveBtn.classList.remove('bg-green-500');
+        saveBtn.classList.remove('hover:bg-green-700');
+      }
+    })
+
+    
+    saveBtn.addEventListener('click', () => {
+      alert('Megy a változtatás')
+      //To do
+    })
+  }
+
+  addNewCategoryModalEventListeners():void{
+
   }
   addEventListeners() {
     this.querySelector<HTMLElement>('#newMeal')?.addEventListener('click', () => {
-      this.querySelector<HTMLElement>('.content').classList.add('hidden')
+      this.querySelector<HTMLElement>('.content').classList.add('hidden');
       let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
-      this.getHtml('./new-meal.html').then((html) => {
+      this.getHtml('./modals/new-meal.html').then((html) => {
         modalDiv.innerHTML = html;
-        this.addModalEventListeners();
+        this.addNewMealModalEventListeners();
       });
     });
-    document.getElementById('newCategory')?.addEventListener('click', () => {
+
+
+    this.querySelector<HTMLElement>('#modifyCategory').addEventListener('click', () => {
+      this.querySelector<HTMLElement>('.content').classList.add('hidden');
+      let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
+      this.getHtml('./modals/modify-category.html').then((html) => {
+        modalDiv.innerHTML = html;
+        this.addModifyCategoryModalEventListeners();
+      });
+    });
+
+    this.querySelector<HTMLElement>('#newCategory').addEventListener('click', () => {
       alert('Sajt')
     });
-    document.getElementById('deleteMeal')?.addEventListener('click', (id) => {
+
+
+    this.querySelector<HTMLElement>('#deleteMeal').addEventListener('click', (id) => {
       alert('Sajt')
     });
-    document.getElementById('modifyMeal')?.addEventListener('click', () => {
+
+
+    this.querySelector<HTMLElement>('#modifyMeal').addEventListener('click', () => {
       alert('Sajt')
     });
+
+
   }
 }
 new RestaurantAdminPage();

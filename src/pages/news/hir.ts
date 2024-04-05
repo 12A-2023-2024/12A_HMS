@@ -1,12 +1,13 @@
 export class Hir {
-    constructor(title: string, text: string, source: string, alt: string){
+    constructor(title: string, text: string, source: string, alt: string, reverse:boolean){
         
-        let newsContainer = document.querySelector("#news-container");
+        let newsContainer = document.querySelector("#news-container")?.querySelector("section");
         let element = document.createElement("div");
 
         ["mt-12","mb-16","flex","flex-wrap"].forEach(classelement => {
             element.classList.add(classelement);
         });
+        if(reverse) element.classList.add("lg:flex-row-reverse")
 
         element.innerHTML = 
         `

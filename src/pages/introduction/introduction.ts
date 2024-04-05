@@ -8,6 +8,7 @@ export class IntroductionPage extends Page {
     }
 
     override getHtmlCallback(){
+        console.log("eeeh2")
         this.getScrollImgs()
         this.createScroll()
     }
@@ -16,6 +17,7 @@ export class IntroductionPage extends Page {
         const container = document.querySelector<HTMLElement>('.scroll-container');
         if (container){
             new Scroll(container, 1000)
+            console.log("heeee")
         }
     }
 

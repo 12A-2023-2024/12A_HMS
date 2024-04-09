@@ -7,13 +7,11 @@ export class RestaurantAdminPage extends Page {
   }
 
 
-  closeModalEventListener(querySelector: string): void {
-    this.querySelector<HTMLElement>(querySelector).addEventListener('click', () => {
-      this.querySelector<HTMLElement>('.content').classList.remove('hidden')
-      this.querySelector<HTMLElement>('#restaurant-modal').innerHTML = '';
-
-    })
+  closeModal(): void {
+    this.querySelector<HTMLElement>('.content').classList.remove('hidden')
+    this.querySelector<HTMLElement>('#restaurant-modal').innerHTML = '';
   }
+
   addNewMealModalEventListeners(): void {
     let newMealBtn = this.querySelector<HTMLElement>('#newMealBtn');
 
@@ -31,7 +29,13 @@ export class RestaurantAdminPage extends Page {
         }
       })
     })
-    this.closeModalEventListener('.close')
+
+
+    this.querySelector<HTMLElement>('#closeBtn').addEventListener('click', () => {
+      this.closeModal();
+    })
+
+
     newMealBtn.addEventListener('click', () => {
       let hasError = false;
       if (!mealName.value) {
@@ -59,14 +63,16 @@ export class RestaurantAdminPage extends Page {
 
   }
 
-  addModifyCategoryModalEventListeners():void {
+  addModifyCategoryModalEventListeners(): void {
     let categorySelect = this.querySelector<any>('#categorySelect');
     let categoryInput = this.querySelector<HTMLInputElement>('#categoryInput');
     let saveBtn = this.querySelector<HTMLInputElement>('#saveBtn');
     let previousText = '';
 
 
-    this.closeModalEventListener('#closeBtn')
+    this.querySelector<HTMLElement>('#closeBtn').addEventListener('click', () => {
+      this.closeModal();
+    })
 
 
     categorySelect.addEventListener('change', () => {
@@ -74,31 +80,86 @@ export class RestaurantAdminPage extends Page {
       previousText = categorySelect.options[categorySelect.selectedIndex].text;
     })
 
-    
-    categoryInput.addEventListener('change',()=>{
-      if (previousText != categoryInput.value && categoryInput.value!='') {
-        saveBtn.disabled=false;
+
+    categoryInput.addEventListener('change', () => {
+      if (previousText != categoryInput.value && categoryInput.value != '') {
+        saveBtn.disabled = false;
         saveBtn.classList.add('bg-green-500');
         saveBtn.classList.add('hover:bg-green-700');
         saveBtn.classList.remove('bg-green-300');
-        
-      } else{
-        saveBtn.disabled=true;
+
+      } else {
+        saveBtn.disabled = true;
         saveBtn.classList.add('bg-green-300');
         saveBtn.classList.remove('bg-green-500');
         saveBtn.classList.remove('hover:bg-green-700');
       }
     })
 
-    
+
     saveBtn.addEventListener('click', () => {
-      alert('Megy a változtatás')
+      alert('Megy a változtatás');
+      this.closeModal();
       //To do
     })
   }
 
-  addNewCategoryModalEventListeners():void{
+  addDeleteCategoryModalEventListeners(): void {
+    let categorySelect = this.querySelector<any>('#categorySelect');
+    let saveBtn = this.querySelector<any>('#saveBtn');
 
+
+    categorySelect.addEventListener('change', () => {
+      console.log(categorySelect.options[categorySelect.selectedIndex].text)
+      if (categorySelect.options[categorySelect.selectedIndex].text!='') {
+        saveBtn.disabled = false;
+        saveBtn.classList.add('bg-green-500');
+        saveBtn.classList.add('hover:bg-green-700');
+        saveBtn.classList.remove('bg-green-300');
+      
+      }else{
+        saveBtn.disabled = true;
+        saveBtn.classList.add('bg-green-300');
+        saveBtn.classList.remove('bg-green-500');
+        saveBtn.classList.remove('hover:bg-green-700');
+      }
+    })
+
+    saveBtn.addEventListener('click',()=>{
+      alert('sajt')
+    })
+
+    this.querySelector<HTMLElement>('#closeBtn').addEventListener('click', () => {
+      this.closeModal();
+    })
+  }
+  addNewCategoryModalEventListeners(): void {
+    let newCategoryInput = this.querySelector<HTMLInputElement>('#newCategoryInput');
+    let saveBtn = this.querySelector<HTMLInputElement>('#saveBtn');
+
+    newCategoryInput.addEventListener('change', () => {
+      if (newCategoryInput.value != '') {
+        saveBtn.disabled = false;
+        saveBtn.classList.add('bg-green-500');
+        saveBtn.classList.add('hover:bg-green-700');
+        saveBtn.classList.remove('bg-green-300');
+
+      } else {
+        saveBtn.disabled = true;
+        saveBtn.classList.add('bg-green-300');
+        saveBtn.classList.remove('bg-green-500');
+        saveBtn.classList.remove('hover:bg-green-700');
+      }
+    })
+
+    this.querySelector<HTMLElement>('#closeBtn').addEventListener('click', () => {
+      this.closeModal();
+    })
+
+
+    saveBtn.addEventListener('click', () => {
+      alert("")
+    })
   }
   addEventListeners() {
     this.querySelector<HTMLElement>('#newMeal')?.addEventListener('click', () => {
@@ -120,8 +181,24 @@ export class RestaurantAdminPage extends Page {
       });
     });
 
+
     this.querySelector<HTMLElement>('#newCategory').addEventListener('click', () => {
-      alert('Sajt')
+      this.querySelector<HTMLElement>('.content').classList.add('hidden');
+      let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
+      this.getHtml('./modals/new-category.html').then((html) => {
+        modalDiv.innerHTML = html;
+        this.addNewCategoryModalEventListeners();
+      });
+    });
+
+
+    this.querySelector<HTMLElement>('#deleteCategory').addEventListener('click', () => {
+      this.querySelector<HTMLElement>('.content').classList.add('hidden');
+      let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
+      this.getHtml('./modals/delete-category.html').then((html) => {
+        modalDiv.innerHTML = html;
+        this.addDeleteCategoryModalEventListeners();
+      });
     });
 
 

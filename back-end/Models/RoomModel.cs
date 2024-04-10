@@ -6,7 +6,7 @@ namespace HMS_WebAPI.Models
     public class RoomModel
     {
         public int Id { get; set; }
-        public required RoomTypeModel RoomType { get; set; }
+        public RoomTypeModel? RoomType { get; set; }
         public required string RoomNumber { get; set; }
         public bool Active { get; set; } = true;
 

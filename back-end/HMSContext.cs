@@ -18,6 +18,7 @@ namespace HMS_WebAPI
         public DbSet<NewsItemModel> NewsItems { get; set; }
 
         public DbSet<WellnessSaleModel> WellnessSales { get; set; }
+        public DbSet<GalleryItem> GalleryItems { get; set; }
 
         private string baseURL = "";
         private readonly byte[] salt;
@@ -152,7 +153,7 @@ namespace HMS_WebAPI
             ]);
            
             modelBuilder.Entity<IntroductionItemModel>().HasData([
-                new { Id = 1, PictureId = 1, Section = "Fejrész", Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl tellus, suscipit sit amet placerat et, varius et velit. Aliquam vel eros non nulla sagittis tempus quis convallis lorem. Duis at enim sed diam commodo iaculis. Vestibulum aliquam justo at nibh tempor, eget aliquam felis pellentesque. Suspendisse a nunc quis velit rhoncus dignissim ac a ligula. Praesent a sagittis tortor, et bibendum mi. Pellentesque eget hendrerit erat, eget eleifend arcu. Nunc eleifend mollis quam sed semper."}
+                new { Id = 1, PictureId = 1, Order = 1, Section = "Fejrész", Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nisl tellus, suscipit sit amet placerat et, varius et velit. Aliquam vel eros non nulla sagittis tempus quis convallis lorem. Duis at enim sed diam commodo iaculis. Vestibulum aliquam justo at nibh tempor, eget aliquam felis pellentesque. Suspendisse a nunc quis velit rhoncus dignissim ac a ligula. Praesent a sagittis tortor, et bibendum mi. Pellentesque eget hendrerit erat, eget eleifend arcu. Nunc eleifend mollis quam sed semper."}
             ]);
 
             modelBuilder.Entity<NewsItemModel>().HasData([

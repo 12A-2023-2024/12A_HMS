@@ -3,6 +3,7 @@ using System;
 using HMS_WebAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HMS_WebAPI.Migrations
 {
     [DbContext(typeof(HMSContext))]
-    partial class HMSContextModelSnapshot : ModelSnapshot
+    [Migration("20240405063654_Publicpages-modifications")]
+    partial class Publicpagesmodifications
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.2");
@@ -225,25 +228,6 @@ namespace HMS_WebAPI.Migrations
                             Name = "Youtube",
                             SocialUrl = "https://www.youtube.com/@jedlikanyostechnikum_9189"
                         });
-                });
-
-            modelBuilder.Entity("HMS_WebAPI.Models.GalleryItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("PictureId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PictureId");
-
-                    b.ToTable("gallery");
                 });
 
             modelBuilder.Entity("HMS_WebAPI.Models.GuestModel", b =>
@@ -694,7 +678,7 @@ namespace HMS_WebAPI.Migrations
                         new
                         {
                             Id = 1,
-                            CheckInTime = new DateTime(2024, 4, 5, 9, 28, 56, 476, DateTimeKind.Local).AddTicks(6230),
+                            CheckInTime = new DateTime(2024, 4, 5, 8, 36, 54, 456, DateTimeKind.Local).AddTicks(3507),
                             FromDate = new DateTime(2024, 4, 5, 0, 0, 0, 0, DateTimeKind.Local),
                             PIN = "123456",
                             Price = 12999m,
@@ -1344,17 +1328,6 @@ namespace HMS_WebAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Icon");
-                });
-
-            modelBuilder.Entity("HMS_WebAPI.Models.GalleryItem", b =>
-                {
-                    b.HasOne("HMS_WebAPI.Models.PictureModel", "Picture")
-                        .WithMany()
-                        .HasForeignKey("PictureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Picture");
                 });
 
             modelBuilder.Entity("HMS_WebAPI.Models.GuestReservationModel", b =>

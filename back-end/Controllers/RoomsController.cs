@@ -385,5 +385,132 @@ namespace HMS_WebAPI.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult GetRooms([FromQuery] bool onlyActives = true)
+        {
+            return Ok(dbContext.Set<RoomModel>()
+                               .Include(r => r.RoomType)
+                               .Where(r => onlyActives ? r.Active : true)
+                               .Select(r => new
+                               {
+                                   r.Id,
+                                   r.RoomNumber,
+                                   r.RoomTypeId,
+                                   RoomTypeName = r.RoomType.Name
+                               })
+                     );
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetRoom([FromRoute] int id, [FromQuery] bool onlyActives = true)
+        {
+            return Ok(dbContext.Set<RoomModel>()
+                               .Include(r => r.RoomType)
+                               .Where(r => r.Id == id && (onlyActives ? r.Active : true))
+                               .Select(r => new
+                               {
+                                   r.Id,
+                                   r.RoomNumber,
+                                   r.RoomTypeId,
+                                   RoomTypeName = r.RoomType.Name
+                               }));
+        }
+
+        [HttpPost]
+        public IActionResult NewRoom([FromBody] object requestBody)
+        {
+            try
+            {
+                var model = requestBody.Serialize<RoomModel>();
+                if (model == null)
+                    return BadRequest(new { message = "Missing body" });
+                if (string.IsNullOrWhiteSpace(model.RoomNumber))
+                    return BadRequest(new { message = "A szoba számának megadása kötelező" });
+                if (model.RoomTypeId == 0)
+                    return BadRequest(new { message = "A szoba típusának megadása kötelező" });
+
+                if (dbContext.Set<RoomModel>().Any(r => r.RoomNumber.ToLower() == model.RoomNumber.ToLower() && r.Active))
+                    return BadRequest(new { message = "A megadott számú szoba már létezik" });
+
+                var roomType = dbContext.Set<RoomTypeModel>().SingleOrDefault(t => t.Id == model.RoomTypeId && t.Active);
+                if (roomType == null)
+                    return BadRequest(new { message = "A szobatípus nem létezik vagy nem aktív" });
+
+                var room = dbContext.Set<RoomModel>().Add(new RoomModel()
+                {
+                    RoomNumber = model.RoomNumber,
+                    RoomType = roomType,
+                    Active = true
+                });
+                dbContext.SaveChanges();
+                return GetRoom(room.Entity.Id);
+            }
+            catch
+            {
+                return BadRequest(new { message = "Váratlan hiba" });
+            }
+        }
+
+
+        [HttpPut]
+        public IActionResult ModifyRoom([FromBody] object requestBody)
+        {
+            try
+            {
+                var model = requestBody.Serialize<RoomModel>();
+                if (model == null)
+                    return BadRequest(new { message = "Missing body" });
+                if (string.IsNullOrWhiteSpace(model.RoomNumber))
+                    return BadRequest(new { message = "A szoba számának megadása kötelező" });
+                if (model.RoomTypeId == 0)
+                    return BadRequest(new { message = "A szoba típusának megadása kötelező" });
+
+                if (dbContext.Set<RoomModel>().Any(r => r.RoomNumber.ToLower() == model.RoomNumber.ToLower()))
+                    return BadRequest(new { message = "A megadott számú szoba már létezik" });
+
+                var roomType = dbContext.Set<RoomTypeModel>().SingleOrDefault(t => t.Id == model.RoomTypeId && t.Active);
+                if (roomType == null)
+                    return BadRequest(new { message = "A szobatípus nem létezik vagy nem aktív" });
+
+                var modelToModify = dbContext.Set<RoomModel>().SingleOrDefault(r => r.Id == model.Id && (r.Active));
+                if (modelToModify == null)
+                    return BadRequest(new { message = "Nem található a módosítandó szoba" });
+
+                modelToModify.RoomNumber = model.RoomNumber;
+                modelToModify.RoomType = roomType;
+                modelToModify.Active = model.Active;
+                dbContext.Entry(modelToModify).State = EntityState.Modified;
+
+                dbContext.SaveChanges();
+                return GetRoom(modelToModify.Id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Váratlan hiba", debug = ex.Message });
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteRoom([FromRoute] int id)
+        {
+            try
+            {
+                var modelToDelete = dbContext.Set<RoomModel>().SingleOrDefault(r => r.Id == id && r.Active);
+                if (modelToDelete == null)
+                    return BadRequest(new { message = "Nem található a törlendő szoba" });
+
+                modelToDelete.Active = false;
+                dbContext.Entry(modelToDelete).State = EntityState.Modified;
+                dbContext.SaveChanges();
+
+                return Ok(new { success = true });
+            }
+            catch
+            {
+                return BadRequest(new { message = "Váratlan hiba" });
+            }
+        }
+
+
     }
 }

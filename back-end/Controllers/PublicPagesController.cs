@@ -32,7 +32,31 @@ namespace HMS_WebAPI.Controllers
             return new RoomsController(this.dbContext, configuration).GetRoomTypes(true);
         }
 
-        [HttpPost("gallery/uploadasform")]
+        [HttpGet("wellnessproducts")]
+        public IActionResult GetWellnessProducts()
+        {
+            return new WellnessController(this.dbContext, configuration).GetWellnessProducts();
+        }
+
+        [HttpGet("menuitems")]
+        public IActionResult GetMenuItems()
+        {
+            return new RestaurantController(this.dbContext, configuration).GetMenuItems();
+        }
+
+        [HttpGet("coctails")]
+        public IActionResult GetCoctails()
+        {
+            return new CoctailbarController(this.dbContext, configuration).GetCoctails();
+        }
+
+        [HttpGet("gallery")]
+        public IActionResult GetGallery()
+        {
+            return new AboutController(this.dbContext, configuration).GetGallery();
+        }
+
+        [HttpPost("/test/uploadasform")]
         public IActionResult UploadPictureToGalleryAsForm([FromForm] List<IFormFile> file, [FromForm] string? text)
         {
             var f = file.First();
@@ -48,7 +72,7 @@ namespace HMS_WebAPI.Controllers
             });
         }
 
-        [HttpPost("gallery/uploadasbase64")]
+        [HttpPost("/test/uploadasbase64")]
         public IActionResult UploadPictureToGalleryAsBase64([FromBody] dynamic data)
         {
             var model = System.Text.Json.JsonSerializer

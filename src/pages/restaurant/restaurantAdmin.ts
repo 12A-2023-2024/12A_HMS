@@ -1,8 +1,17 @@
 import { Page } from "../page.js";
+import { ICategory } from "./interfaces/category.js";
 
 export class RestaurantAdminPage extends Page {
   constructor() {
     super("/src/pages/restaurant/restaurantAdmin.html");
+    localStorage.setItem('user',`{
+      "name": "administrator",
+      "token": "ULTXTNU045FTTK6NLY8ORLS89TTDHL0QFWB8O09HA6EY15XXMFSPS6LUASWAB0LJO1CD5SMUK1B16B1EBPKSJ0KJAN6Y3JT6KANO1MX8TU4H9O7GICNGAQQ7",
+      "roles": [
+          "admin"
+      ],
+      "validTo": "2024-04-11T07:08:48.0728442+00:00"
+    }`)
     this.addEventListeners();
   }
 
@@ -69,6 +78,11 @@ export class RestaurantAdminPage extends Page {
     let saveBtn = this.querySelector<HTMLInputElement>('#saveBtn');
     let previousText = '';
 
+    this.fetch<ICategory[]>('https://hms.jedlik.cloud/api/restaurant/categories','GET').then((arr)=>{
+      arr.forEach(category => {
+        categorySelect.appendChild(new Option(category.name,category.id.toString()));
+      });
+    })
 
     this.querySelector<HTMLElement>('#closeBtn').addEventListener('click', () => {
       this.closeModal();
@@ -99,6 +113,13 @@ export class RestaurantAdminPage extends Page {
 
     saveBtn.addEventListener('click', () => {
       alert('Megy a változtatás');
+      let body = `
+      {
+        "id": ${categorySelect.options[categorySelect.selectedIndex].value},
+        "name": "${categoryInput.value}"
+      }
+      `
+      this.fetch('https://hms.jedlik.cloud/api/restaurant/categories','PUT',body)
       this.closeModal();
       //To do
     })
@@ -158,11 +179,17 @@ export class RestaurantAdminPage extends Page {
 
 
     saveBtn.addEventListener('click', () => {
-      alert("")
+      let body:string = `
+      {
+        "name": "${newCategoryInput.value}"
+      }`
+      this.fetch<any>('https://hms.jedlik.cloud/api/restaurant/categories','POST',body)
+      alert(newCategoryInput.value)
+
     })
   }
   addEventListeners() {
-    this.querySelector<HTMLElement>('#newMeal')?.addEventListener('click', () => {
+    this.querySelector<HTMLElement>('#newMeal').addEventListener('click', () => {
       this.querySelector<HTMLElement>('.content').classList.add('hidden');
       let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
       this.getHtml('./modals/new-meal.html').then((html) => {
@@ -202,14 +229,14 @@ export class RestaurantAdminPage extends Page {
     });
 
 
-    this.querySelector<HTMLElement>('#deleteMeal').addEventListener('click', (id) => {
-      alert('Sajt')
-    });
+    // this.querySelector<HTMLElement>('#deleteMeal').addEventListener('click', (id) => {
+    //   alert('Sajt')
+    // });
 
 
-    this.querySelector<HTMLElement>('#modifyMeal').addEventListener('click', () => {
-      alert('Sajt')
-    });
+    // this.querySelector<HTMLElement>('#modifyMeal').addEventListener('click', () => {
+    //   alert('Sajt')
+    // });
 
 
   }

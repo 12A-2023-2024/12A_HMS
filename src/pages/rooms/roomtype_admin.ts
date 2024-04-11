@@ -19,6 +19,7 @@ export class RoomtypeAdminPage extends Page{
             const parameters : Number[] = [];
         
             roomtype = new Roomtype(name, description, pricePerNightPerPerson, capacity, images, parameters);
+            fetchRoomtype(roomtype);
         });
     }
 }
@@ -42,3 +43,23 @@ const fileToBase64 = (file: File): Promise<string> => new Promise((resolve, reje
     reader.onerror = reject;
     reader.readAsDataURL(file);
 });
+
+function fetchRoomtype(roomtype : Roomtype){
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "");
+
+    const raw = JSON.stringify(roomtype);
+
+    const requestOptions : RequestInit = {
+    method: "POST",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow"
+    };
+
+    fetch("https://hms.jedlik.cloud/api/rooms/types", requestOptions)
+    .then((response) => response.text())
+    .then((result) => console.log(result))
+    .catch((error) => console.error(error));
+}

@@ -56,6 +56,12 @@ namespace HMS_WebAPI.Controllers
             return new AboutController(this.dbContext, configuration).GetGallery();
         }
 
+        [HttpGet("news")]
+        public IActionResult GetNews()
+        {
+            return new AboutController(this.dbContext, configuration).GetNews();
+        }
+
         [HttpPost("/test/uploadasform")]
         public IActionResult UploadPictureToGalleryAsForm([FromForm] List<IFormFile> file, [FromForm] string? text)
         {

@@ -18,6 +18,8 @@ namespace HMS_WebAPI
         public DbSet<NewsItemModel> NewsItems { get; set; }
 
         public DbSet<WellnessSaleModel> WellnessSales { get; set; }
+        public DbSet<CoctailbarSalesModel> CoctailbarSales { get; set; }
+        public DbSet<RestaurantSalesModel> RestaurantSales { get; set; }
         public DbSet<GalleryItem> GalleryItems { get; set; }
 
         private string baseURL = "";
@@ -73,7 +75,7 @@ namespace HMS_WebAPI
                 new RoleModel() { Id = 2, Name= "reception"},
                 new RoleModel() { Id = 3, Name= "bar"},
                 new RoleModel() { Id = 4, Name= "wellness"},
-                new RoleModel() { Id = 5, Name= "restorant"},
+                new RoleModel() { Id = 5, Name= "restaurant"},
                 new RoleModel() { Id = 6, Name= "account"}
             ]);
 

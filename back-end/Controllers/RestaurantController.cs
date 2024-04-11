@@ -11,7 +11,7 @@ namespace HMS_WebAPI.Controllers
 {
     [Route("restaurant")]
     [ApiController]
-    [Authorize(Roles="admin")]
+    [Authorize(Roles = "admin")]
     public class RestaurantController : ControllerBase
     {
         private readonly HMSContext dbContext;
@@ -252,7 +252,7 @@ namespace HMS_WebAPI.Controllers
                 dbContext.Entry(modelToModify).State = EntityState.Modified;
 
                 dbContext.Set<MenuImageModel>().RemoveRange(dbContext.Set<MenuImageModel>().Where(r => r.MenuItemId == model.Id));
-                
+
                 var node = requestBody.Serialize<JsonNode>();
 
                 var menuItemImages = new List<MenuImageModel>();
@@ -318,44 +318,67 @@ namespace HMS_WebAPI.Controllers
 
         #region RestaurantSales
 
-        //TODO
+        [HttpGet("sale/{roomNumber}")]
+        [Authorize(Roles = "restaurant,admin")]
+        public IActionResult CheckGuest([FromRoute] string roomNumber)
+        {
+            var value = dbContext.GuestsInRoom(roomNumber);
+            return StatusCode(value.Key, value.Value);
+        }
 
-        /*
+
         [HttpPost("sale")]
-        public IActionResult SellMenuItem([FromBody] object requestBody)
+        [Authorize(Roles = "restaurant,admin")]
+        public IActionResult SellItem([FromBody] object requestBody)
         {
             try
             {
                 var node = requestBody.Serialize<JsonNode>();
                 if (node == null)
                     return BadRequest(new { message = "Missing body" });
-                JsonNode? roomNode = node["RoomNumber"];
-                if (roomNode == null)
-                    roomNode = node["roomNumber"];
 
-                if (roomNode == null)
-                    return BadRequest(new { message = "A szobaszám megadása kötelező" });
+                if (node["guestId"] == null)
+                    return BadRequest(new { message = "A vendég megadása kötelező" });
+                if (node["menuItemId"] == null)
+                    return BadRequest(new { message = "Az eladott étel azonosítójának megadása kötelező" });
 
-                JsonNode? wellnessProductNode = node["WellnessProductId"];
-                if (wellnessProductNode == null)
-                    wellnessProductNode = node["wellnessProductId"];
+                var guestId = node["guestId"].GetValue<int>();
+                var reservations = dbContext.Set<ReservationModel>()
+                                            .Include(r => r.Room)
+                                            .Include(r => r.Guests).ThenInclude(g => g.Guest)
+                                            .Where(r => r.Guests.Any(g => g.GuestId == guestId) &&
+                                                        r.CheckInTime != null &&
+                                                        r.CheckOutTime == null);
+                if (!reservations.Any())
+                    return BadRequest(new { message = "A vendég kódja hibás, vagy már kijelentkezett" });
 
-                if (wellnessProductNode == null)
-                    return BadRequest(new { message = "A termék azonosítójának megadása kötelező" });
+                var menuItem = dbContext.Set<MenuItemModel>().SingleOrDefault(c => c.Id == node["menuItemId"].GetValue<int>() && c.Active);
+                if (menuItem == null)
+                    return BadRequest(new { message = "A megodott étel nem létezik, vagy törölték" });
+                var guest = dbContext.Set<GuestModel>().SingleOrDefault(g => g.Id == guestId);
+                if (guest == null)
+                    return BadRequest(new { message = "A vendég kódja hibás, vagy már kijelentkezett" });
 
-                var roomNumber = roomNode.GetValue<string>();
-                var wellnessProductId = wellnessProductNode.GetValue<int>();
-
-                
+                dbContext.Set<RestaurantSalesModel>().Add(new RestaurantSalesModel()
+                {
+                    MenuItem = menuItem,
+                    DateOfSales = DateTime.Now,
+                    Guest = guest,
+                    Price = menuItem.Price
+                });
+                dbContext.SaveChanges();
+                return Ok(new
+                {
+                    Price = menuItem.Price
+                });
             }
             catch
             {
                 return BadRequest(new { message = "Váratlan hiba" });
             }
+
+            #endregion RestaurantSales
+
         }
-        */
-
-        #endregion RestaurantSales
-
     }
 }

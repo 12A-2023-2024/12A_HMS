@@ -3,6 +3,7 @@ using System;
 using HMS_WebAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HMS_WebAPI.Migrations
 {
     [DbContext(typeof(HMSContext))]
-    partial class HMSContextModelSnapshot : ModelSnapshot
+    [Migration("20240411055412_Corrections")]
+    partial class Corrections
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.2");
@@ -138,36 +141,6 @@ namespace HMS_WebAPI.Migrations
                             Name = "Boody Mary",
                             Price = 1499m
                         });
-                });
-
-            modelBuilder.Entity("HMS_WebAPI.Models.CoctailbarSalesModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CoctailId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("DateOfPayment")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DateOfSales")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("GuestId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CoctailId");
-
-                    b.HasIndex("GuestId");
-
-                    b.ToTable("coctailbarsales");
                 });
 
             modelBuilder.Entity("HMS_WebAPI.Models.ContactModel", b =>
@@ -724,7 +697,7 @@ namespace HMS_WebAPI.Migrations
                         new
                         {
                             Id = 1,
-                            CheckInTime = new DateTime(2024, 4, 11, 8, 30, 31, 32, DateTimeKind.Local).AddTicks(6827),
+                            CheckInTime = new DateTime(2024, 4, 11, 7, 54, 11, 809, DateTimeKind.Local).AddTicks(8422),
                             FromDate = new DateTime(2024, 4, 11, 0, 0, 0, 0, DateTimeKind.Local),
                             PIN = "123456",
                             Price = 12999m,
@@ -1363,25 +1336,6 @@ namespace HMS_WebAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("CoctailCategory");
-                });
-
-            modelBuilder.Entity("HMS_WebAPI.Models.CoctailbarSalesModel", b =>
-                {
-                    b.HasOne("HMS_WebAPI.Models.CoctailModel", "Coctail")
-                        .WithMany()
-                        .HasForeignKey("CoctailId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HMS_WebAPI.Models.GuestModel", "Guest")
-                        .WithMany()
-                        .HasForeignKey("GuestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Coctail");
-
-                    b.Navigation("Guest");
                 });
 
             modelBuilder.Entity("HMS_WebAPI.Models.ContactSocialmediaItemModel", b =>

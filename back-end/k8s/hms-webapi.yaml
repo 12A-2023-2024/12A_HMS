@@ -46,7 +46,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ghcr.io/jedlik-gyor/hmswebapi:1.0.15
+          image: ghcr.io/jedlik-gyor/hmswebapi:1.0.17
           imagePullPolicy: Always
           env:
           - name: BaseURL

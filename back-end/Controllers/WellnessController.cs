@@ -11,7 +11,7 @@ namespace HMS_WebAPI.Controllers
 {
     [Route("wellness")]
     [ApiController]
-    [Authorize(Roles="admin")]
+    [Authorize(Roles = "admin")]
     public class WellnessController : ControllerBase
     {
         private readonly HMSContext dbContext;
@@ -252,7 +252,7 @@ namespace HMS_WebAPI.Controllers
                 dbContext.Entry(modelToModify).State = EntityState.Modified;
 
                 dbContext.Set<WellnessProductImageModel>().RemoveRange(dbContext.Set<WellnessProductImageModel>().Where(r => r.WellnessProductId == model.Id));
-                
+
                 var node = requestBody.Serialize<JsonNode>();
 
                 var wellnessProductsImages = new List<WellnessProductImageModel>();
@@ -318,44 +318,67 @@ namespace HMS_WebAPI.Controllers
 
         #region WellnessSales
 
-        //TODO
+        [HttpGet("sale/{roomNumber}")]
+        [Authorize(Roles = "wellness,admin")]
+        public IActionResult CheckGuest([FromRoute] string roomNumber)
+        {
+            var value = dbContext.GuestsInRoom(roomNumber);
+            return StatusCode(value.Key, value.Value);
+        }
 
-        /*
+
         [HttpPost("sale")]
-        public IActionResult SellWellnessProduct([FromBody] object requestBody)
+        [Authorize(Roles = "wellness,admin")]
+        public IActionResult SellItem([FromBody] object requestBody)
         {
             try
             {
                 var node = requestBody.Serialize<JsonNode>();
                 if (node == null)
                     return BadRequest(new { message = "Missing body" });
-                JsonNode? roomNode = node["RoomNumber"];
-                if (roomNode == null)
-                    roomNode = node["roomNumber"];
 
-                if (roomNode == null)
-                    return BadRequest(new { message = "A szobaszám megadása kötelező" });
+                if (node["guestId"] == null)
+                    return BadRequest(new { message = "A vendég megadása kötelező" });
+                if (node["wellnessProductId"] == null)
+                    return BadRequest(new { message = "A szolgáltatás azonosítójának megadása kötelező" });
 
-                JsonNode? wellnessProductNode = node["WellnessProductId"];
-                if (wellnessProductNode == null)
-                    wellnessProductNode = node["wellnessProductId"];
+                var guestId = node["guestId"].GetValue<int>();
+                var reservations = dbContext.Set<ReservationModel>()
+                                            .Include(r => r.Room)
+                                            .Include(r => r.Guests).ThenInclude(g => g.Guest)
+                                            .Where(r => r.Guests.Any(g => g.GuestId == guestId) &&
+                                                        r.CheckInTime != null &&
+                                                        r.CheckOutTime == null);
+                if (!reservations.Any())
+                    return BadRequest(new { message = "A vendég kódja hibás, vagy már kijelentkezett" });
 
-                if (wellnessProductNode == null)
-                    return BadRequest(new { message = "A termék azonosítójának megadása kötelező" });
+                var wellnessProduct = dbContext.Set<WellnessProductModel>().SingleOrDefault(c => c.Id == node["wellnessProductId"].GetValue<int>() && c.Active);
+                if (wellnessProduct == null)
+                    return BadRequest(new { message = "A megodott szolgáltatás nem létezik, vagy törölték" });
+                var guest = dbContext.Set<GuestModel>().SingleOrDefault(g => g.Id == guestId);
+                if (guest == null)
+                    return BadRequest(new { message = "A vendég kódja hibás, vagy már kijelentkezett" });
 
-                var roomNumber = roomNode.GetValue<string>();
-                var wellnessProductId = wellnessProductNode.GetValue<int>();
-
-                
+                dbContext.Set<WellnessSaleModel>().Add(new WellnessSaleModel()
+                {
+                    WellnessProduct = wellnessProduct,
+                    DateOfSales = DateTime.Now,
+                    Guest = guest,
+                    Price = wellnessProduct.Price
+                });
+                dbContext.SaveChanges();
+                return Ok(new
+                {
+                    Price = wellnessProduct.Price
+                });
             }
             catch
             {
                 return BadRequest(new { message = "Váratlan hiba" });
             }
+
+            #endregion
+
         }
-        */
-
-        #endregion
-
     }
 }

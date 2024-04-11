@@ -318,42 +318,65 @@ namespace HMS_WebAPI.Controllers
 
         #region BarSales
 
-        //TODO
+        [HttpGet("sale/{roomNumber}")]
+        [Authorize(Roles = "bar,admin")]
+        public IActionResult CheckGuest([FromRoute] string roomNumber)
+        {
+            var value = dbContext.GuestsInRoom(roomNumber);
+            return StatusCode(value.Key, value.Value);
+        }
 
-        /*
+
         [HttpPost("sale")]
-        public IActionResult SellMenuItem([FromBody] object requestBody)
+        [Authorize(Roles = "bar,admin")]
+        public IActionResult SellCoctail([FromBody] object requestBody)
         {
             try
             {
                 var node = requestBody.Serialize<JsonNode>();
                 if (node == null)
                     return BadRequest(new { message = "Missing body" });
-                JsonNode? roomNode = node["RoomNumber"];
-                if (roomNode == null)
-                    roomNode = node["roomNumber"];
 
-                if (roomNode == null)
-                    return BadRequest(new { message = "A szobaszám megadása kötelező" });
+                if (node["guestId"] == null)
+                    return BadRequest(new { message = "A vendég megadása kötelező" });
+                if (node["coctailId"] == null)
+                    return BadRequest(new { message = "A koktél azonosítójának megadása kötelező" });
 
-                JsonNode? wellnessProductNode = node["WellnessProductId"];
-                if (wellnessProductNode == null)
-                    wellnessProductNode = node["wellnessProductId"];
+                var guestId = node["guestId"].GetValue<int>();
+                var reservations = dbContext.Set<ReservationModel>()
+                                            .Include(r => r.Room)
+                                            .Include(r => r.Guests).ThenInclude(g => g.Guest)
+                                            .Where(r => r.Guests.Any(g => g.GuestId == guestId) && 
+                                                        r.CheckInTime != null &&
+                                                        r.CheckOutTime == null);
+                if (!reservations.Any())
+                    return BadRequest(new { message = "A vendég kódja hibás, vagy már kijelentkezett" });
 
-                if (wellnessProductNode == null)
-                    return BadRequest(new { message = "A termék azonosítójának megadása kötelező" });
+                var coctail = dbContext.Set<CoctailModel>().SingleOrDefault(c => c.Id == node["coctailId"].GetValue<int>() && c.Active);
+                if (coctail == null)
+                    return BadRequest(new { message = "A megodott koktél nem létezik, vagy törölték" });
+                var guest = dbContext.Set<GuestModel>().SingleOrDefault(g => g.Id == guestId);
+                if (guest == null)
+                    return BadRequest(new { message = "A vendég kódja hibás, vagy már kijelentkezett" });
 
-                var roomNumber = roomNode.GetValue<string>();
-                var wellnessProductId = wellnessProductNode.GetValue<int>();
-
-                
+                dbContext.Set<CoctailbarSalesModel>().Add(new CoctailbarSalesModel()
+                {
+                    Coctail = coctail,
+                    DateOfSales = DateTime.Now,
+                    Guest = guest,
+                    Price = coctail.Price                    
+                });
+                dbContext.SaveChanges();
+                return Ok(new
+                {
+                    Price = coctail.Price
+                });
             }
             catch
             {
                 return BadRequest(new { message = "Váratlan hiba" });
             }
         }
-        */
 
         #endregion BarSales
 

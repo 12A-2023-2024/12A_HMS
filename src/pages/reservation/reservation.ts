@@ -9,10 +9,9 @@ export class ReservationPage extends Page {
     override getHtmlCallback() {
         const startDateField = document.getElementById('startDate');
         startDateField?.setAttribute('min', todayString());
-        startDateField?.setAttribute('value', tomorrowString())
+        startDateField?.setAttribute('value', tomorrowString());
         const endDateField = document.getElementById('endDate');
         const startDate = startDateField?.getAttribute('value');
-        addOneDayToString('2005-12-11')
     }
 }
 
@@ -26,13 +25,15 @@ function dateToString(date: Date): string {
 
     dateString += '-';
     if (mm < 10) {
-        dateString += '0' + mm;
+        dateString += '0';
     }
+    dateString += mm;
     dateString += '-';
     if (dd < 10) {
-        dateString += '0' + dd;
+        dateString += '0';
     }
-
+    dateString += dd;
+    console.log(dateString)
     return dateString
 }
 function todayString(): string {
@@ -47,6 +48,5 @@ function tomorrowString(): string {
 function addOneDayToString(date: string): string {
     const day = parseInt(date.slice(8))
     const newDay = (day + 1) % 31
-    console.log(day)
     return date
 }

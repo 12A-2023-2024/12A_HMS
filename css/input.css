@@ -56,3 +56,35 @@ a[data-route] {
 a[data-route].active {
   font-weight: bold;
 }
+
+
+
+/* Cocktail card css */
+
+.ctCard{
+  padding-inline: .5rem;
+  padding-block: 1rem;
+  display: flex;
+    width: 10rem;
+  flex-direction: column;
+  position: relative;
+}
+.ctCardImg{
+  height: 10rem;
+  object-fit: contain;
+}
+.ctName{
+  text-align: center;
+  
+
+}
+.ctBackgroundBox{
+  border-radius: 1rem;
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  top: 6rem;
+  bottom: 0;
+  background-color: #999;
+}

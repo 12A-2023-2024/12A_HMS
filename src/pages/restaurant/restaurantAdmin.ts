@@ -2,6 +2,7 @@ import { Page } from "../page.js";
 import { ICategory } from "./interfaces/category.js";
 
 export class RestaurantAdminPage extends Page {
+  categories:ICategory[]=[];
   constructor() {
     super("/src/pages/restaurant/restaurantAdmin.html");
     localStorage.setItem('user',`{
@@ -15,6 +16,27 @@ export class RestaurantAdminPage extends Page {
     this.addEventListeners();
   }
 
+  // openAndAddModalEventListeners(selector:string,path:string,callback:void){
+  //   this.querySelector<HTMLElement>(selector).addEventListener('click', () => {
+  //     this.querySelector<HTMLElement>('.content').classList.add('hidden');
+  //     let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
+  //     this.getHtml(path).then((html) => {
+  //       modalDiv.innerHTML = html;
+  //       callback;
+  //     });
+  //   });
+  // }
+  loadCategories(errorDivSelector:string,errorMessageSelector:string){
+    this.fetch<ICategory[]>('https://hms.jedlik.cloud/api/restaurant/categories','GET')
+    .then((arr:ICategory[])=>{
+      this.categories= arr;
+    })
+    .catch((error:Error)=>{
+      this.querySelector<HTMLElement>(errorDivSelector).classList.remove('hidden');
+      this.querySelector<HTMLElement>(errorMessageSelector).innerText=error.message;
+
+    })
+  }
 
   closeModal(): void {
     this.querySelector<HTMLElement>('.content').classList.remove('hidden')
@@ -78,11 +100,12 @@ export class RestaurantAdminPage extends Page {
     let saveBtn = this.querySelector<HTMLInputElement>('#saveBtn');
     let previousText = '';
 
-    this.fetch<ICategory[]>('https://hms.jedlik.cloud/api/restaurant/categories','GET').then((arr)=>{
-      arr.forEach(category => {
-        categorySelect.appendChild(new Option(category.name,category.id.toString()));
-      });
-    })
+    this.loadCategories('.error-box','#errorMessage');
+
+
+    this.categories.forEach(category => {
+      categorySelect.appendChild(new Option(category.name,category.id.toString()));
+    });
 
     this.querySelector<HTMLElement>('#closeBtn').addEventListener('click', () => {
       this.closeModal();
@@ -112,7 +135,6 @@ export class RestaurantAdminPage extends Page {
 
 
     saveBtn.addEventListener('click', () => {
-      alert('Megy a változtatás');
       let body = `
       {
         "id": ${categorySelect.options[categorySelect.selectedIndex].value},
@@ -120,18 +142,23 @@ export class RestaurantAdminPage extends Page {
       }
       `
       this.fetch('https://hms.jedlik.cloud/api/restaurant/categories','PUT',body)
+        .catch((error:Error)=>{
+          this.querySelector<HTMLElement>('#errorMessage').innerText=error.message;
+        })
       this.closeModal();
-      //To do
+    })
+    this.querySelector<HTMLElement>('#closeErrorDiv').addEventListener('click',()=>{
+      this.querySelector<HTMLElement>('.error-box').classList.add('hidden');
     })
   }
 
   addDeleteCategoryModalEventListeners(): void {
-    let categorySelect = this.querySelector<any>('#categorySelect');
+    let categorySelect = this.querySelector<HTMLSelectElement>('#categorySelect');
     let saveBtn = this.querySelector<any>('#saveBtn');
 
 
     categorySelect.addEventListener('change', () => {
-      console.log(categorySelect.options[categorySelect.selectedIndex].text)
+      console.log(categorySelect.options[categorySelect.selectedIndex].value)
       if (categorySelect.options[categorySelect.selectedIndex].text!='') {
         saveBtn.disabled = false;
         saveBtn.classList.add('bg-green-500');
@@ -144,6 +171,9 @@ export class RestaurantAdminPage extends Page {
         saveBtn.classList.remove('bg-green-500');
         saveBtn.classList.remove('hover:bg-green-700');
       }
+      // if (categorySelect.value!='') {
+      //   this.fetch(`https://hms.jedlik.cloud/api/restaurant/categories/${categorySelect.sele}`)
+      // }
     })
 
     saveBtn.addEventListener('click',()=>{
@@ -158,7 +188,7 @@ export class RestaurantAdminPage extends Page {
     let newCategoryInput = this.querySelector<HTMLInputElement>('#newCategoryInput');
     let saveBtn = this.querySelector<HTMLInputElement>('#saveBtn');
 
-    newCategoryInput.addEventListener('change', () => {
+    newCategoryInput.addEventListener('input', () => {
       if (newCategoryInput.value != '') {
         saveBtn.disabled = false;
         saveBtn.classList.add('bg-green-500');
@@ -184,8 +214,16 @@ export class RestaurantAdminPage extends Page {
         "name": "${newCategoryInput.value}"
       }`
       this.fetch<any>('https://hms.jedlik.cloud/api/restaurant/categories','POST',body)
-      alert(newCategoryInput.value)
+      .catch((err:Error)=>{
+        this.querySelector<HTMLElement>('.error-box').classList.remove('hidden');
+        this.querySelector<HTMLElement>('#errorMessage').innerText=err.message;
+      })
 
+      
+
+    })
+    this.querySelector<HTMLElement>('#closeErrorDiv').addEventListener('click',()=>{
+      this.querySelector<HTMLElement>('.error-box').classList.add('hidden');
     })
   }
   addEventListeners() {
@@ -198,6 +236,8 @@ export class RestaurantAdminPage extends Page {
       });
     });
 
+
+    // this.openAndAddModalEventListeners('#newMeal','./modals/new-meal.html',this.addNewMealModalEventListeners)
 
     this.querySelector<HTMLElement>('#modifyCategory').addEventListener('click', () => {
       this.querySelector<HTMLElement>('.content').classList.add('hidden');

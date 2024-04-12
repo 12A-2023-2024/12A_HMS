@@ -8,25 +8,25 @@ export class WellnessStaffPage extends Page {
     }
 
     login(){
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        const raw = JSON.stringify({
-        "loginName": "admin", // kicserélni staff bejelentkezésre a bevitt adattal
-        "password": "admin" // kicserélni staff bejelentkezésre a bevitt adattal
-        });
-    
-        const requestOptions : RequestInit = {
-          method: "POST",
-          headers: myHeaders,
-          body: raw,
-          redirect: "follow"
-        };
-    
-        fetch("https://hms.jedlik.cloud/api/login", requestOptions)
-          .then((response) => response.text())
-          .then((result) => console.log(result))
-          .catch((error) => console.error(error));
-    }
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      const raw = JSON.stringify({
+      "loginName": document.getElementById("user")?.innerText, 
+      "password": document.getElementById("pass")?.innerText
+      });
+  
+      const requestOptions : RequestInit = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+      };
+  
+      fetch("https://hms.jedlik.cloud/api/login", requestOptions)
+        .then((response) => response.text())
+        .then((result) => console.log(result))
+        .catch((error) => console.error(error));
+  }
 
     addEventListeners(){
 

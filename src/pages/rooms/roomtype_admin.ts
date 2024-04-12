@@ -1,6 +1,6 @@
-import { Page } from "../page";
-import { RoomImage } from "./resources/image";
-import { Roomtype } from "./resources/roomtype";
+import { Page } from "../page.js";
+import { RoomImage } from "./resources/image.js";
+import { Roomtype } from "./resources/roomtype.js";
 
 export class RoomtypeAdminPage extends Page{
     constructor(){

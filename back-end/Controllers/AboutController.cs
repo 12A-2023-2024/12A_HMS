@@ -309,5 +309,157 @@ namespace HMS_WebAPI.Controllers
             return Ok(new { success = true });
         }
         #endregion News
+
+        #region Introduction
+        [HttpGet("introduction")]
+        public IActionResult GetIntroductions()
+        {
+            return Ok(dbContext.Set<IntroductionItemModel>()
+                               .Include(g => g.Picture).ThenInclude(p => p.Image)
+                               .Select(g => new
+                               {
+                                   g.Id,
+                                   g.Order,
+                                   g.Section,
+                                   g.Text,
+                                   g.Picture.PictureUrl,
+                                   g.Picture.Href,
+                                   g.Picture.Alt
+                               })
+                               .OrderBy(g => g.Order).ThenBy(g => g.Id));
+        }
+
+        [HttpGet("introduction/{id}")]
+        public IActionResult GetIntroductionItem([FromRoute] int id)
+        {
+            return Ok(dbContext.Set<IntroductionItemModel>()
+                               .Include(g => g.Picture).ThenInclude(p => p.Image)
+                               .Where(g => g.Id == id)
+                               .Select(g => new
+                               {
+                                   g.Id,
+                                   g.Order,
+                                   g.Section,
+                                   g.Text,
+                                   g.Picture.PictureUrl,
+                                   g.Picture.Href,
+                                   g.Picture.Alt
+                               })
+                               .FirstOrDefault());
+        }
+
+        [HttpPost("introduction")]
+        public IActionResult NewIntroductionItem([FromBody] object requestBody)
+        {
+            try
+            {
+                var node = requestBody.Serialize<JsonNode>();
+                if (node == null)
+                    return BadRequest("Missing body");
+                if (node["order"] == null || !int.TryParse(node["order"].ToString(), out int order))
+                    return BadRequest("Sorrend megadása kötelező");
+                if (node["section"] == null || string.IsNullOrEmpty(node["section"].ToString()))
+                    return BadRequest("A szekció megadása kötelező");
+                if (node["text"] == null || string.IsNullOrEmpty(node["text"].ToString()))
+                    return BadRequest("A szöveg megadása kötelező");
+                var fileModel = node["image"];
+                if (fileModel == null)
+                    return BadRequest("Nem töltött fel képet");
+
+                var fileName = fileModel["fileName"]?.GetValue<string>();
+                var base64 = fileModel["file"]?.GetValue<string>();
+                if (fileName == null || base64 == null)
+                    return BadRequest(new { message = $"Hibás paraméterezés a feltöltött képben" });
+
+                ImageModel image = FileHandling.SaveFile(Convert.FromBase64String(base64), fileName, filesPath);
+                dbContext.Set<ImageModel>().Add(image);
+
+                var item = dbContext.Set<IntroductionItemModel>().Add(new IntroductionItemModel()
+                {
+                    Section = node["section"].GetValue<string>(),
+                    Text = node["text"].GetValue<string>(),
+                    Order = order,
+                    Picture = new PictureModel()
+                    {
+                        Alt = node["alt"]?.GetValue<string>() ?? "",
+                        Href = node["href"]?.GetValue<string>() ?? "",
+                        Image = image
+                    }
+                }); ;
+                dbContext.SaveChanges();
+                return GetIntroductionItem(item.Entity.Id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Hibás adat", debugMessage = ex.Message });
+            }
+        }
+
+        [HttpPut("introduction")]
+        public IActionResult ModifyIntroductionItem([FromBody] object requestBody)
+        {
+            try
+            {
+                var node = requestBody.Serialize<JsonNode>();
+                if (node == null)
+                    return BadRequest("Missing body");
+                if (node["order"] == null || !int.TryParse(node["order"].ToString(), out int order))
+                    return BadRequest("Sorrend megadása kötelező");
+                if (node["section"] == null || string.IsNullOrEmpty(node["section"].ToString()))
+                    return BadRequest("A szekció megadása kötelező");
+                if (node["text"] == null || string.IsNullOrEmpty(node["text"].ToString()))
+                    return BadRequest("A szöveg megadása kötelező");
+                if (node["id"] == null)
+                    return BadRequest("Nem adta meg a módosítandó hír azonosítóját");
+                var fileModel = node["image"];
+                if (fileModel == null)
+                    return BadRequest("Nem töltött fel képet");
+
+                var fileName = fileModel["fileName"]?.GetValue<string>();
+                var base64 = fileModel["file"]?.GetValue<string>();
+                if (fileName == null || base64 == null)
+                    return BadRequest(new { message = $"Hibás paraméterezés a feltöltött képben" });
+
+                var modelToModify = dbContext.Set<IntroductionItemModel>().Include(g => g.Picture).ThenInclude(p => p.Image).SingleOrDefault(g => g.Id == node["id"].GetValue<int>());
+                if (modelToModify == null)
+                    return BadRequest("Nem található a módosítandó elem");
+
+                ImageModel imageToDelete = modelToModify.Picture.Image;
+                ImageModel image = FileHandling.SaveFile(Convert.FromBase64String(base64), fileName, filesPath);
+                dbContext.Set<ImageModel>().Add(image);
+
+                modelToModify.Picture.Image = image;
+                modelToModify.Picture.Alt = node["alt"]?.GetValue<string>() ?? "";
+                modelToModify.Picture.Href = node["href"]?.GetValue<string>() ?? "";
+                dbContext.Entry(modelToModify.Picture).State = EntityState.Modified;
+                dbContext.Set<ImageModel>().Remove(imageToDelete);
+
+                modelToModify.Order = order;
+                modelToModify.Text = node["text"].GetValue<string>();
+                modelToModify.Section = node["section"].GetValue<string>();
+                dbContext.Entry(modelToModify).State = EntityState.Modified;
+
+                dbContext.SaveChanges();
+                return GetIntroductionItem(modelToModify.Id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Hibás adat", debugMessage = ex.Message });
+            }
+        }
+
+        [HttpDelete("introduction/{id}")]
+        public IActionResult DeleteGetIntroductionItem([FromRoute] int id)
+        {
+            var model = dbContext.Set<IntroductionItemModel>().SingleOrDefault(p => p.Id == id);
+            if (model == null)
+                return BadRequest(new { message = "Az elem nem létezik" });
+
+            dbContext.Set<IntroductionItemModel>().Remove(model);
+            dbContext.SaveChanges();
+
+            return Ok(new { success = true });
+        }
+        #endregion Introduction
     }
 }

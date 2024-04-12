@@ -3,10 +3,13 @@ import { RoomImage } from "./resources/image.js";
 import { Roomtype } from "./resources/roomtype.js";
 
 export class RoomtypeAdminPage extends Page{
+    token : string;
     constructor(){
         super('/src/pages/rooms/roomtype_admin.html');
 
-        let roomtype;
+        let roomtype : Roomtype;
+        this.token = "";
+
         document.querySelector("form")?.addEventListener("submit", (e) => {
             e.preventDefault();
             const formData = new FormData(e.target as HTMLFormElement);
@@ -19,11 +22,16 @@ export class RoomtypeAdminPage extends Page{
             const parameters : Number[] = [];
         
             roomtype = new Roomtype(name, description, pricePerNightPerPerson, capacity, images, parameters);
-            fetchRoomtype(roomtype);
+        
+            login().then(() => {
+                console.log(page.token);
+                fetchRoomtype(roomtype);
+            });
         });
     }
 }
 
+const page = new RoomtypeAdminPage();    //Requred until routing is finished 
 
 function convertImagesToBase64(formImages : File[]){
     const images : RoomImage[] = [];
@@ -47,7 +55,7 @@ const fileToBase64 = (file: File): Promise<string> => new Promise((resolve, reje
 function fetchRoomtype(roomtype : Roomtype){
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "");
+    myHeaders.append("Authorization", page.token);
 
     const raw = JSON.stringify(roomtype);
 
@@ -62,4 +70,26 @@ function fetchRoomtype(roomtype : Roomtype){
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.error(error));
+}
+
+async function login(){
+
+    const raw = JSON.stringify({
+    "loginName": "admin",
+    "password": "admin"
+    });
+
+    const requestOptions : RequestInit = {
+    method: "POST",
+    headers: {"Content-Type" : "application/json"},
+    body: raw,
+    redirect: "follow"
+    };
+
+    fetch("https://hms.jedlik.cloud/api/login", requestOptions)
+    .then((response) => response.json().then((data) => {
+        page.token = data.token;
+    }))
+    .then((result) => result)
+    .catch((error) => console.error(error))
 }

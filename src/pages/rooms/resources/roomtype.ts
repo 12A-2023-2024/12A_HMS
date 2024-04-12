@@ -6,7 +6,7 @@ export class Roomtype {
     description: string;
     pricePerNightPerPerson: Number;
     capacity: Number;
-    active?: boolean;
+    active?: boolean = true;
     images: RoomImage[];
     parameters: Number[];
 

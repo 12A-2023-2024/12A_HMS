@@ -1,4 +1,5 @@
 import { Page } from "../page.js";
+import { Login } from "./login.js";
 import { Scroll } from "./scroll.js";
 
 export class IntroductionPage extends Page {
@@ -8,7 +9,7 @@ export class IntroductionPage extends Page {
     }
 
     override getHtmlCallback(){
-        console.log("eeeh2")
+        this.login()
         this.getScrollImgs()
         this.createScroll()
     }
@@ -17,11 +18,22 @@ export class IntroductionPage extends Page {
         const container = document.querySelector<HTMLElement>('.scroll-container');
         if (container){
             new Scroll(container, 1000)
-            console.log("heeee")
         }
     }
 
     getScrollImgs(){
+        
+    }
+
+    login(){
+        const url: string = "https://hms.jedlik.cloud/api/login"
+        const method: string = "POST"
+        const body: any= {
+            "loginName": "admin",
+            "password": "admin"
+         }
+        const data = this.fetch<Login>(url, method, body)
+        console.log(data)
         
     }
 }

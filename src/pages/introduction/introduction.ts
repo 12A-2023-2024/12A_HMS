@@ -34,6 +34,8 @@ export class IntroductionPage extends Page {
          }
         const data = this.fetch<Login>(url, method, body)
         console.log(data)
-        
+        data.then( (result) => {
+            localStorage.setItem('user', JSON.stringify(result));
+        })
     }
 }

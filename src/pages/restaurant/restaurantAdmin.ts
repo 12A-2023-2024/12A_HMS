@@ -1,8 +1,10 @@
 import { Page } from "../page.js";
 import { ICategory } from "./interfaces/category.js";
+import { IMeal } from "./interfaces/meal.js";
 
 export class RestaurantAdminPage extends Page {
   categories:ICategory[]=[];
+  meals:IMeal[]=[];
   constructor() {
     super("/src/pages/restaurant/restaurantAdmin.html");
     localStorage.setItem('user',`{
@@ -15,19 +17,44 @@ export class RestaurantAdminPage extends Page {
     }`)
     this.addEventListeners();
     this.loadCategories('#mainMessageBoxDiv','#mainMessage');
+    this.loadMeals()
+  }
+  loadMessageBox(message:string,isError:boolean){
+    const div = this.querySelector<HTMLElement>('#mainMessageBoxDiv');
+    let messageSpan = this.querySelector<HTMLElement>('#mainMessage');
+
+    div.classList.remove('hidden')
+    this.querySelector<HTMLElement>('#closeMainMessageBox').addEventListener('click',()=>{
+      this.querySelector<HTMLElement>('#mainMessageBoxDiv').classList.add('hidden');
+      if (isError) {
+        div.classList.remove('bg-red-100 border border-red-400 text-red-700')
+        
+      }
+    })
+    if (isError) {
+      div.classList.add('bg-red-100');
+      div.classList.add('border');
+      div.classList.add('border-red-400');
+      div.classList.add('text-red-700');
+    }else{
+      div.classList.add('bg-green-100')
+      div.classList.add('border')
+      div.classList.add('border-green-400')
+      div.classList.add('text-green-700')
+    }
+    messageSpan.innerText=message;
   }
 
-  // openAndAddModalEventListeners(selector:string,path:string,callback:void){
-  //   this.querySelector<HTMLElement>(selector).addEventListener('click', () => {
-  //     this.querySelector<HTMLElement>('.content').classList.add('hidden');
-  //     let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
-  //     this.getHtml(path).then((html) => {
-  //       modalDiv.innerHTML = html;
-  //       callback;
-  //     });
-  //   });
-  // }
-
+  loadMeals(){
+    this.fetch<IMeal[]>('https://hms.jedlik.cloud/api/restaurant/menuitems','GET')
+    .then((arr)=>{
+      this.meals=arr;
+      console.log(this.meals)
+    })
+    .catch((err:Error)=>{
+      this.loadMessageBox(err.message,true);
+    })
+  }
   loadCategories(errorDivSelector:string,errorMessageSelector:string){
     this.fetch<ICategory[]>('https://hms.jedlik.cloud/api/restaurant/categories','GET')
     .then((arr:ICategory[])=>{
@@ -36,7 +63,7 @@ export class RestaurantAdminPage extends Page {
     .catch((error:Error)=>{
       this.querySelector<HTMLElement>(errorDivSelector).classList.remove('hidden');
       this.querySelector<HTMLElement>(errorMessageSelector).innerText=`${error.message}: kategóriák betöltése sikertelen`;
-
+      this.loadMessageBox(error.message,true);
     })
   }
 
@@ -135,7 +162,6 @@ export class RestaurantAdminPage extends Page {
       }
     })
 
-
     saveBtn.addEventListener('click', () => {
       let body = `
       {
@@ -145,8 +171,9 @@ export class RestaurantAdminPage extends Page {
       `
       this.fetch('https://hms.jedlik.cloud/api/restaurant/categories','PUT',body)
         .then(()=>{
-          this.closeModal();
+          this.loadMessageBox('Sikeres kategória módosítás!',false);
           this.loadCategories('#mainMessageBoxDiv','#mainMessage');
+          this.closeModal();
 
         })
         .catch((error:Error)=>{
@@ -230,6 +257,11 @@ export class RestaurantAdminPage extends Page {
         "name": "${newCategoryInput.value}"
       }`
       this.fetch<any>('https://hms.jedlik.cloud/api/restaurant/categories','POST',body)
+      .then(()=>{
+        this.loadMessageBox('Kategória sikeresen létrehozva!',false);
+        this.closeModal();
+        this.loadCategories('#mainMessageBoxDiv','#mainMessage');
+      })
       .catch((err:Error)=>{
         this.querySelector<HTMLElement>('#errorDiv').classList.remove('hidden');
         this.querySelector<HTMLElement>('#errorMessage').innerText=err.message;
@@ -283,10 +315,8 @@ export class RestaurantAdminPage extends Page {
         this.addDeleteCategoryModalEventListeners();
       });
     });
-    this.querySelector<HTMLElement>('#closeMainMessageBox').addEventListener('click',()=>{
-      this.querySelector<HTMLElement>('#mainMessageBoxDiv').classList.add('hidden');
-    })
 
+    // this.loadMessageBox('SASA',false)
     // this.querySelector<HTMLElement>('#deleteMeal').addEventListener('click', (id) => {
     //   alert('Sajt')
     // });

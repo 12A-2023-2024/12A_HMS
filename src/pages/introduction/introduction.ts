@@ -36,6 +36,6 @@ export class IntroductionPage extends Page {
         console.log(data)
         data.then( (result) => {
             localStorage.setItem('user', JSON.stringify(result));
-        })
+        })        
     }
 }

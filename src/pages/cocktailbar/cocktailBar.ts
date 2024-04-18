@@ -17,10 +17,15 @@ export class CocktailBar extends Page {
         }
         this.query = new ctQueries();
         const navItems = [];
+        this.query.getCategories().then((result)=>{
+            console.log(result)
+            result.forEach(({id, name})=>{
+                navItems.push(new CocktailNav(id, name, ".ctLocalNavigation"))
+            })
+
+            
+        })
         
-            navItems.push(new CocktailNav("", ".ctLocalNavigation"))
-            navItems.push(new CocktailNav("Borok & pezsgők", ".ctLocalNavigation"))
-            navItems.push(new CocktailNav("még alkoholosabb", ".ctLocalNavigation"))
             
         }
 

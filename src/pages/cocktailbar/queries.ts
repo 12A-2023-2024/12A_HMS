@@ -1,9 +1,9 @@
 export class ctQueries{
-    token: string = "";
-    
+    token: string = "57GG3SW5EUVT4EBAGIAVXTJNA96OY8WGJBVUVQCCZX2XRR5VBDUUQUC6C227OESTPFTJBBTFL0N2JHENQUAIQ1WR5V2369TARK4X3U9RPFHTVF242UITLDO9";
+    baseUrl: string = "https://hms.jedlik.cloud/api/coctailbar/"
     constructor()
     {
-        this.doLogin();
+        this.getCategories();
     }
 
     async doLogin(){
@@ -18,6 +18,19 @@ export class ctQueries{
             })
     }
 
+    async getCategories(){
+        let result:{
+            id: number;
+            name: string;
+        }[] = [];
+        return this.fetch<{
+            id: number;
+            name: string;
+        }[]>(this.baseUrl + "categories", 'GET')
+            
+    }
+
+
     fetch<T>(url: string, method: string, body: any = null): Promise<T> {
         const userInfo = localStorage.getItem('user');   
         let token = this.token;
@@ -28,6 +41,7 @@ export class ctQueries{
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": token
+
             },
             body: body ? JSON.stringify(body) : null
         };

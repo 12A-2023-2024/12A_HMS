@@ -3,7 +3,7 @@ export class CocktailNav{
     html: HTMLElement | null = null;
     name: string = "";
 
-    constructor(name: string, place: string) {
+    constructor(id: number, name: string, place: string) {
         
         this.name = name;
         
@@ -22,7 +22,6 @@ export class CocktailNav{
             this.html = wrapperDiv.firstElementChild as HTMLElement
             const wrap = document.querySelector(place)
             
-
             wrap?.appendChild(this.html)
         })
         

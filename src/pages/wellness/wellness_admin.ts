@@ -5,14 +5,15 @@ export class WellnessAdminPage extends Page {
 
     constructor() {
         super('/src/pages/wellness/wellness_admin.html')
+        this.getHtmlCallback();
     }
 
     login(){
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         const raw = JSON.stringify({
-        "loginName": document.getElementById("user")?.innerText, 
-        "password": document.getElementById("pass")?.innerText
+        "loginName": document.getElementById("user")?.innerText.toString(), 
+        "password": document.getElementById("pass")?.innerText.toString()
         });
     
         const requestOptions : RequestInit = {
@@ -28,8 +29,15 @@ export class WellnessAdminPage extends Page {
           .catch((error) => console.error(error));
     }
 
-    addEventListeners(){
+    override getHtmlCallback(){
+      this.addEventListeners();
+    }
 
+    addEventListeners(){
+      document.getElementById("btnconfirm")?.addEventListener("click", ()=>{
+          this.login();
+      });
+      console.log("asd");
     }
     getProductsData(){
 

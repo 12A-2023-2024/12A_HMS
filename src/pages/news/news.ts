@@ -8,7 +8,10 @@ export class NewsPage extends Page {
     }
 
     override getHtmlCallback(): void {
-        this.generateNews()
+        this.generateNews();
+        this.querySelector<HTMLInputElement>("#imgUpload").addEventListener("change",()=>{
+          this.encodeImageFileAsURL(this.querySelector<HTMLInputElement>("#imgUpload"));
+        });
     }
 
     generateNews(){
@@ -61,5 +64,20 @@ export class NewsPage extends Page {
         </div>
       ` ;
         newsContainer?.appendChild(element);
+    }
+
+    encodeImageFileAsURL(element: HTMLInputElement) {
+      var filelist = element.files as FileList;
+      var file = filelist[0];
+      var reader = new FileReader();
+      reader.onloadend = function() {
+        NewsPage.parseResult(reader.result as string)
+      }
+      reader.readAsDataURL(file);
+    }
+
+
+    static parseResult(result:string){
+      return result = result.slice(result.indexOf("base64")+7)
     }
 }

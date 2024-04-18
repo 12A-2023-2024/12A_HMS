@@ -34,7 +34,7 @@ export class WellnessAdminPage extends Page {
     }
 
     addEventListeners(){
-      document.getElementById("")?.addEventListener("click", ()=>{
+      document.getElementById("btnconfirm")?.addEventListener("click", ()=>{
           this.login();
       });
       console.log("asd");

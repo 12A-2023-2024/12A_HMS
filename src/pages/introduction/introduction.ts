@@ -12,7 +12,7 @@ export class IntroductionPage extends Page {
 
     override getHtmlCallback(){
         this.login()
-        this.getScrollImgs()
+        this.getDatas()
     }
 
     createScroll(){
@@ -22,12 +22,12 @@ export class IntroductionPage extends Page {
                 if (model.section === "Fejrész"){
                     container.innerHTML += `<div
                     class="snap-center w-full flex-shrink-0 flex items-center justify-center text-8xl">
-                    <img class="object-cover w-full max-h-80" src="${model.pictureUrl}" alt="${model.alt}">
+                        <img class="object-cover w-full max-h-80 cursor-pointer" src="${model.pictureUrl}" alt="${model.alt}" href="${model.href}" onclick="window.open('${model.href}')">
                     </div>`
                 }
             });
         }else{
-            console.log("Hülye vagy 2x-esen")
+            console.log("null")
         }
 
         if (container){
@@ -35,13 +35,54 @@ export class IntroductionPage extends Page {
         }
     }
 
-    getScrollImgs(){
+    createBanner(){
+        const container = document.querySelector<HTMLElement>('.banner-main');
+        if (this.data && container){
+            this.data.forEach(model =>{
+                if (model.section === "Fejrész"){
+                    model.text = "Ez a test cím<li>1.sor</li><li>2.sor</li>"
+                    const title: string[] | undefined = model.text?.split("<li>")
+                    let listElement: string | undefined = ""
+                    if (title){
+                        const kezdetIndex = model.text?.indexOf(title[0]);
+    
+                        // Ha található a "kezdet" a szövegben
+                        if (kezdetIndex !== -1) {
+                            listElement = model.text?.substring(kezdetIndex + title[0].length);
+                            console.log(listElement);
+                        } else {
+                            console.log("A 'li' nem található a szövegben.");
+                        }
+                    }
+
+                    const li: string | undefined = model.text
+                    container.innerHTML += `
+                    <div class="box-border lg:w-2/7 md:w-5/12 p-4 border-4 mt-11">
+                    <h2 class="text-lg font-bold text-center xl:mb-6 sm:mb-3">${title[0]}</h2>
+                    <div class="flex md:flex-col xl:flex-row">
+                        <img  class="mx-auto lg:order-last box-border h-1/2 w-1/2" src="${model.pictureUrl}" alt="${model.alt} href="${model.href}" onclick="window.open('${model.href}')">
+                        <ul class="banner-list list-disc mx-10">
+                            ${listElement}
+                        </ul>
+                    </div>
+                </div>
+                    `
+                }
+            })
+        }else{
+            console.log("null")
+        }
+    }
+
+
+    getDatas(){
         const url: string = "https://hms.jedlik.cloud/api/about/introduction";
         const method: string = "GET";
         this.fetch<introductionModel[]>(url, method).then(
             result => {
                 this.data = result;
                 this.createScroll();
+                this.createBanner();
             }
         );
     }
@@ -59,4 +100,6 @@ export class IntroductionPage extends Page {
             localStorage.setItem('user', JSON.stringify(result));
         })
     }
+
+
 }

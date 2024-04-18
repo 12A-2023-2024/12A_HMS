@@ -4,11 +4,19 @@ import { Roomtype } from "./resources/roomtype.js";
 
 export class RoomtypeAdminPage extends Page{
     token : string;
+    images : RoomImage[] = []
+
     constructor(){
         super('/src/pages/rooms/roomtype_admin.html');
 
         let roomtype : Roomtype;
         this.token = "";
+
+        document.querySelector("input[type='file']")?.addEventListener("change", (e) => {
+            const formData = new FormData(document.querySelector("form") as HTMLFormElement);
+            const formImages = formData.getAll("images");
+            this.images = convertImagesArrayToBase64(formImages as File[]);
+        });
 
         document.querySelector("form")?.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -18,14 +26,14 @@ export class RoomtypeAdminPage extends Page{
             const pricePerNightPerPerson = Number(formData.get("price"));
             const capacity = Number(formData.get("capacity"));
             const formImages = formData.getAll("images");
-            const images = convertImagesToBase64(formImages as File[]);
+            // const images = convertImagesArrayToBase64(formImages as File[]);
+            const images = this.images;
             const parameters : Number[] = [];
         
             roomtype = new Roomtype(name, description, pricePerNightPerPerson, capacity, images, parameters);
         
             login().then(() => {
-                console.log(page.token);
-                fetchRoomtype(roomtype);
+                 fetchRoomtype(roomtype);
             });
         });
     }
@@ -33,7 +41,7 @@ export class RoomtypeAdminPage extends Page{
 
 const page = new RoomtypeAdminPage();    //Requred until routing is finished 
 
-function convertImagesToBase64(formImages : File[]){
+function convertImagesArrayToBase64(formImages : File[]){
     const images : RoomImage[] = [];
     formImages.forEach((image) => {
         if (image instanceof File) {
@@ -45,9 +53,9 @@ function convertImagesToBase64(formImages : File[]){
     return images;
 }
 
-const fileToBase64 = (file: File): Promise<string> => new Promise((resolve, reject) => {
+const fileToBase64 = (file: File) : Promise<string> => new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
+    reader.onload = () => resolve((reader.result as string).replace('data:', '').replace(/^.+,/, ''));
     reader.onerror = reject;
     reader.readAsDataURL(file);
 });
@@ -57,8 +65,15 @@ function fetchRoomtype(roomtype : Roomtype){
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", page.token);
 
-    const raw = JSON.stringify(roomtype);
+    console.log(roomtype.images);
+    roomtype.images.forEach((image) => console.log(image));
+    console.log(typeof roomtype.images);
+    console.log(roomtype.images.length);
+    console.log(roomtype.images[0]);
+    console.log(JSON.stringify(roomtype.images[0]));
 
+    const raw = JSON.stringify(roomtype);
+return;
     const requestOptions : RequestInit = {
     method: "POST",
     headers: myHeaders,
@@ -72,7 +87,7 @@ function fetchRoomtype(roomtype : Roomtype){
     .catch((error) => console.error(error));
 }
 
-async function login(){
+async function login() : Promise<void>{
 
     const raw = JSON.stringify({
     "loginName": "admin",

@@ -7,13 +7,14 @@ export class RestaurantAdminPage extends Page {
     super("/src/pages/restaurant/restaurantAdmin.html");
     localStorage.setItem('user',`{
       "name": "administrator",
-      "token": "ULTXTNU045FTTK6NLY8ORLS89TTDHL0QFWB8O09HA6EY15XXMFSPS6LUASWAB0LJO1CD5SMUK1B16B1EBPKSJ0KJAN6Y3JT6KANO1MX8TU4H9O7GICNGAQQ7",
+      "token": "38I4MX8QBX7KGYS8YNB2T0Y73UK0RDFY10HX9QYBYAUW9UQHDSRCBWGAS2HS49HG5BCWSGO72NYODTUPYPYJLAPRJL40TYO1GHE96AD4WTSIRVW8PCZVPZYR",
       "roles": [
           "admin"
       ],
-      "validTo": "2024-04-11T07:08:48.0728442+00:00"
+      "validTo": "2024-04-18T07:24:35.6010611+00:00"
     }`)
     this.addEventListeners();
+    this.loadCategories('#mainMessageBoxDiv','#mainMessage');
   }
 
   // openAndAddModalEventListeners(selector:string,path:string,callback:void){
@@ -26,6 +27,7 @@ export class RestaurantAdminPage extends Page {
   //     });
   //   });
   // }
+
   loadCategories(errorDivSelector:string,errorMessageSelector:string){
     this.fetch<ICategory[]>('https://hms.jedlik.cloud/api/restaurant/categories','GET')
     .then((arr:ICategory[])=>{
@@ -33,7 +35,7 @@ export class RestaurantAdminPage extends Page {
     })
     .catch((error:Error)=>{
       this.querySelector<HTMLElement>(errorDivSelector).classList.remove('hidden');
-      this.querySelector<HTMLElement>(errorMessageSelector).innerText=error.message;
+      this.querySelector<HTMLElement>(errorMessageSelector).innerText=`${error.message}: kategóriák betöltése sikertelen`;
 
     })
   }
@@ -142,10 +144,14 @@ export class RestaurantAdminPage extends Page {
       }
       `
       this.fetch('https://hms.jedlik.cloud/api/restaurant/categories','PUT',body)
+        .then(()=>{
+          this.closeModal();
+          this.loadCategories('#mainMessageBoxDiv','#mainMessage');
+
+        })
         .catch((error:Error)=>{
           this.querySelector<HTMLElement>('#errorMessage').innerText=error.message;
         })
-      this.closeModal();
     })
     this.querySelector<HTMLElement>('#closeErrorDiv').addEventListener('click',()=>{
       this.querySelector<HTMLElement>('.error-box').classList.add('hidden');
@@ -154,30 +160,40 @@ export class RestaurantAdminPage extends Page {
 
   addDeleteCategoryModalEventListeners(): void {
     let categorySelect = this.querySelector<HTMLSelectElement>('#categorySelect');
-    let saveBtn = this.querySelector<any>('#saveBtn');
+    let deleteBtn = this.querySelector<any>('#deleteBtn');
 
+    this.categories.forEach(category => {
+      categorySelect.appendChild(new Option(category.name,category.id.toString()));
+    });
 
     categorySelect.addEventListener('change', () => {
       console.log(categorySelect.options[categorySelect.selectedIndex].value)
       if (categorySelect.options[categorySelect.selectedIndex].text!='') {
-        saveBtn.disabled = false;
-        saveBtn.classList.add('bg-green-500');
-        saveBtn.classList.add('hover:bg-green-700');
-        saveBtn.classList.remove('bg-green-300');
+        deleteBtn.disabled = false;
+        deleteBtn.classList.add('bg-green-500');
+        deleteBtn.classList.add('hover:bg-green-700');
+        deleteBtn.classList.remove('bg-green-300');
       
       }else{
-        saveBtn.disabled = true;
-        saveBtn.classList.add('bg-green-300');
-        saveBtn.classList.remove('bg-green-500');
-        saveBtn.classList.remove('hover:bg-green-700');
+        deleteBtn.disabled = true;
+        deleteBtn.classList.add('bg-green-300');
+        deleteBtn.classList.remove('bg-green-500');
+        deleteBtn.classList.remove('hover:bg-green-700');
       }
-      // if (categorySelect.value!='') {
-      //   this.fetch(`https://hms.jedlik.cloud/api/restaurant/categories/${categorySelect.sele}`)
-      // }
     })
+    
+    deleteBtn.addEventListener('click',()=>{
+      if (categorySelect.value!='') {
+        this.fetch(`https://hms.jedlik.cloud/api/restaurant/categories/${categorySelect.options[categorySelect.selectedIndex].value}`,'DELETE')
+        .then(()=>{
+          this.closeModal();
+          this.loadCategories('#mainMessageBoxDiv','#mainMessage');
 
-    saveBtn.addEventListener('click',()=>{
-      alert('sajt')
+        })
+        .catch((err:Error)=>{
+          //TODO
+        })
+      }
     })
 
     this.querySelector<HTMLElement>('#closeBtn').addEventListener('click', () => {
@@ -215,7 +231,7 @@ export class RestaurantAdminPage extends Page {
       }`
       this.fetch<any>('https://hms.jedlik.cloud/api/restaurant/categories','POST',body)
       .catch((err:Error)=>{
-        this.querySelector<HTMLElement>('.error-box').classList.remove('hidden');
+        this.querySelector<HTMLElement>('#errorDiv').classList.remove('hidden');
         this.querySelector<HTMLElement>('#errorMessage').innerText=err.message;
       })
 
@@ -223,7 +239,7 @@ export class RestaurantAdminPage extends Page {
 
     })
     this.querySelector<HTMLElement>('#closeErrorDiv').addEventListener('click',()=>{
-      this.querySelector<HTMLElement>('.error-box').classList.add('hidden');
+      this.querySelector<HTMLElement>('#errorDiv').classList.add('hidden');
     })
   }
   addEventListeners() {
@@ -267,7 +283,9 @@ export class RestaurantAdminPage extends Page {
         this.addDeleteCategoryModalEventListeners();
       });
     });
-
+    this.querySelector<HTMLElement>('#closeMainMessageBox').addEventListener('click',()=>{
+      this.querySelector<HTMLElement>('#mainMessageBoxDiv').classList.add('hidden');
+    })
 
     // this.querySelector<HTMLElement>('#deleteMeal').addEventListener('click', (id) => {
     //   alert('Sajt')

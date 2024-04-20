@@ -5,19 +5,38 @@ import { IMeal } from "./interfaces/meal.js";
 export class RestaurantAdminPage extends Page {
   categories:ICategory[]=[];
   meals:IMeal[]=[];
+  mealPerPage:number=20;
+  currentPage:number=1;
   constructor() {
     super("/src/pages/restaurant/restaurantAdmin.html");
     localStorage.setItem('user',`{
       "name": "administrator",
-      "token": "38I4MX8QBX7KGYS8YNB2T0Y73UK0RDFY10HX9QYBYAUW9UQHDSRCBWGAS2HS49HG5BCWSGO72NYODTUPYPYJLAPRJL40TYO1GHE96AD4WTSIRVW8PCZVPZYR",
+      "token": "VC6M06UYSL8S5I0VGJT04XGSDQ3O01OJ5MZ07Q5ILC1SUYXVVV18N85I62AQOMSI38OLKR2ZY19HPJQ9GNSMKQN87R22LV9PCV1DBFHQM5VY6AXQDQWI8V8K",
       "roles": [
           "admin"
       ],
-      "validTo": "2024-04-18T07:24:35.6010611+00:00"
+      "validTo": "2024-04-20T12:58:45.2640386+00:00"
     }`)
     this.addEventListeners();
     this.loadCategories('#mainMessageBoxDiv','#mainMessage');
-    this.loadMeals()
+  }
+  
+  fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+  
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        const base64Data = base64String.split(',')[1];
+        resolve(base64Data);
+      };
+  
+      reader.onerror = () => {
+        reject(new Error('Error reading file.'));
+      };
+  
+      reader.readAsDataURL(file);
+    });
   }
   loadMessageBox(message:string,isError:boolean){
     const div = this.querySelector<HTMLElement>('#mainMessageBoxDiv');
@@ -45,7 +64,7 @@ export class RestaurantAdminPage extends Page {
     messageSpan.innerText=message;
   }
 
-  loadMeals(){
+  getMeals(){
     this.fetch<IMeal[]>('https://hms.jedlik.cloud/api/restaurant/menuitems','GET')
     .then((arr)=>{
       this.meals=arr;
@@ -54,6 +73,60 @@ export class RestaurantAdminPage extends Page {
     .catch((err:Error)=>{
       this.loadMessageBox(err.message,true);
     })
+  }
+  loadMeals(){
+    const tbody =this.querySelector<HTMLElement>('tbody');
+      tbody.innerHTML=''; 
+      this.fetch<IMeal[]>('https://hms.jedlik.cloud/api/restaurant/menuitems','GET')
+        .then((arr)=>{
+          console.log(arr)
+          //Az item per page counttal és sima forral jó lesz a különböző számú item megjelenítése
+          arr.forEach(meal => {
+            let images:string = `Nem található kép az ételhez.`
+            if (meal.imageUrls.length!=0) {
+              images='';
+              meal.imageUrls.forEach(imgSource => {
+                images+=`<img src="${imgSource}" width="40" height="40">\n`
+              });
+            }
+            this.querySelector<HTMLElement>('tbody').innerHTML+=`
+            <tr>
+              <td class="border px-4 py-2 text-center">${meal.id}</td>
+              <td class="border px-4 py-2 text-center">${meal.name}</td>
+              <td class="border px-4 py-2 text-center">${meal.categoryName}</td>
+              <td class="border px-4 py-2 text-center">${meal.price} Ft</td>
+              <td class="border px-4 py-2 text-center">${meal.description}</td>
+              <td class="border px-4 py-2 text-center">
+                <div class="images">
+                  ${images}
+                </div>
+              </td>
+              <td class="border px-4 py-2 text-center">
+                <div class="float-right">
+                    <button class="px-8 mx-4 py-2 font-semibold text-sm bg-orange-500 text-white rounded-full shadow-sm align-middle float-right">Étel módosítása</button>
+                    <button class="deleteButton px-8 mx-4 py-2 font-semibold text-sm bg-red-500 text-white rounded-full shadow-sm align-middle float-right"id="${meal.id}">Étel törlése</button>
+                </div>
+              </td>
+            </tr>
+            
+            `
+          });
+          let buttons = document.querySelectorAll('.deleteButton');
+          buttons.forEach((e)=>{
+            e.addEventListener('click',()=>{
+              let id = Number(e.getAttribute('id'))
+              this.fetch(`https://hms.jedlik.cloud/api/restaurant/menuitems/${id}`,'DELETE')
+              .then(()=>{
+                alert('Sikeres törlés')
+                this.loadMeals()
+              })
+              .catch((err:Error)=>{
+                this.loadMessageBox(err.message,true)
+              })
+            })
+
+          })
+        })
   }
   loadCategories(errorDivSelector:string,errorMessageSelector:string){
     this.fetch<ICategory[]>('https://hms.jedlik.cloud/api/restaurant/categories','GET')
@@ -76,11 +149,13 @@ export class RestaurantAdminPage extends Page {
     let newMealBtn = this.querySelector<HTMLElement>('#newMealBtn');
 
     let mealName = this.querySelector<HTMLInputElement>('#mealName');
-    let mealCategory = this.querySelector<HTMLInputElement>('#mealCategory');
+    let mealCategory = this.querySelector<HTMLSelectElement>('#mealCategory');
     let mealDescription = this.querySelector<HTMLInputElement>('#mealDescription');
     let mealPrice = this.querySelector<HTMLInputElement>('#mealPrice');
     let mealImage = this.querySelector<HTMLInputElement>('#mealImage')
-
+    this.categories.forEach(cat => {
+      mealCategory.appendChild(new Option(cat.name,cat.id.toString()));
+    });
     const inputs = ['mealName', 'mealCategory', 'mealDescription', 'mealPrice', 'mealImage'];
     inputs.forEach(element => {
       this.querySelector<HTMLElement>(`#${element}`).addEventListener('focus', (event) => {
@@ -110,16 +185,58 @@ export class RestaurantAdminPage extends Page {
         mealDescription.classList.add('border-rose-600')
         hasError = true;
       }
-      if (!mealPrice.value) {
+      if (Number(mealPrice.value)<=0) {
         mealPrice.classList.add('border-rose-600')
         hasError = true;
       }
-      if (!mealImage.value) {
-        mealImage.classList.add('border-rose-600')
-        hasError = true;
+      // if (!mealImage.value) {
+      //   mealImage.classList.add('border-rose-600')
+      //   hasError = true;
+      // }
+      if (!hasError) {
+        //TODO: képfeltöltés
+        let imagesString =`{"filename":"","file":""}`
+        // if (mealImage.files?.length==1) {
+        //   this.fileToBase64(mealImage.files[0])
+        //   .then((text:string)=>{
+        //     console.log(text)
+        //     imagesString=`   
+        //       {
+        //       "filename":${mealImage.files[0].name},
+        //       "file":${text}
+        //       }
+              
+        //     `
+        //   })
+
+          
+        // }
+        
+        let body = `
+        {
+          "name": "${mealName.value}",
+          "price": ${Number(mealPrice.value)},
+          "description": "${mealDescription.value}",
+          "categoryId": ${Number(mealCategory.options[mealCategory.selectedIndex].value)},
+          "images": [${imagesString}]
+        }
+        
+        `
+        
+        console.log(body)
+        this.fetch<any>('https://hms.jedlik.cloud/api/restaurant/menuitems','POST',body)
+        .then(()=>{
+          this.loadMeals();
+          this.closeModal();
+        })
+        .catch((err:Error)=>{
+          alert(err.message)
+        })
+            
       }
+
     });
-    //To do
+    
 
   }
 
@@ -305,7 +422,9 @@ export class RestaurantAdminPage extends Page {
         this.addNewCategoryModalEventListeners();
       });
     });
-
+    this.querySelector<HTMLElement>('#itemPerPage').addEventListener('change',()=>{
+      this.mealPerPage=this.querySelector<any>('#itemPerPage').value;
+    })
 
     this.querySelector<HTMLElement>('#deleteCategory').addEventListener('click', () => {
       this.querySelector<HTMLElement>('.content').classList.add('hidden');
@@ -316,17 +435,12 @@ export class RestaurantAdminPage extends Page {
       });
     });
 
-    // this.loadMessageBox('SASA',false)
-    // this.querySelector<HTMLElement>('#deleteMeal').addEventListener('click', (id) => {
-    //   alert('Sajt')
-    // });
 
-
-    // this.querySelector<HTMLElement>('#modifyMeal').addEventListener('click', () => {
-    //   alert('Sajt')
-    // });
-
+    this.querySelector<HTMLElement>('#searchMealBtn').addEventListener('click',()=>{           
+      this.loadMeals();
+    })
 
   }
+
 }
 new RestaurantAdminPage();

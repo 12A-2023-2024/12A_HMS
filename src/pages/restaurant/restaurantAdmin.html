@@ -36,7 +36,30 @@
 
 
         </div>
--->
+-->    
+        <div class="flex">
+          <div class="w-2/3">
+            <div class="flex">
+              <label for="searchMeal" class="block mb-2 font-bold mx-4">Étel neve:</label>
+              <label for="itemPerPage" class="block mb-2 font-bold mx-4">Étel oldalanként:</label>
+
+            </div>
+            <input id="searchMeal" type="text" placeholder="Kérem az étel nevét!" class="border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:border-blue-500">         
+            <select id="itemPerPage" class="  rounded mx-4">
+              <option value="20" selected>20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+            <button id="searchMealBtn" class="bg-green-500 text-white font-bold py-2 px-4 rounded">Keresés</button>
+          </div>
+        </div>
+        <div class="text-center">
+          <span class="me-3 cursor-pointer" id="pager-first">&lt;&lt;</span>
+          <span class="me-3 cursor-pointer" id="pager-previous">&lt;</span>
+          <span class="me-3 fw-bold" id="pager-current">1</span>
+          <span class="me-3 cursor-pointer" id="pager-next">&gt;</span>
+          <span class="me-3 cursor-pointer" id="pager-last">&gt;&gt;</span>
+        </div>
         <div class="overflow-x-auto">
             <table class="table-auto min-w-full">
               <thead>
@@ -59,7 +82,11 @@
                   <td class="border px-4 py-2 text-center">Sajtods cuss</td>
                   <td class="border px-4 py-2 text-center">
                     <div class="images">
-                        <img src="" alt="">
+                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVIEiuIdPw7LD5zpPzbsJZbUbdZ2L_0otccXzN06Etww&s" width="40" height="40" alt="Girl in a jacket">
+                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVIEiuIdPw7LD5zpPzbsJZbUbdZ2L_0otccXzN06Etww&s" width="40" height="40" alt="Girl in a jacket">
+                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVIEiuIdPw7LD5zpPzbsJZbUbdZ2L_0otccXzN06Etww&s" width="40" height="40" alt="Girl in a jacket">
+                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVIEiuIdPw7LD5zpPzbsJZbUbdZ2L_0otccXzN06Etww&s" width="40" height="40" alt="Girl in a jacket">
+
                     </div>
                   </td>
                   <td class="border px-4 py-2 text-center">

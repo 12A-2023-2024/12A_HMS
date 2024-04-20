@@ -1,4 +1,5 @@
 import { RoomImage } from "./image.js";
+import { Parameter } from "./parameter.js";
 
 export class Roomtype {
     id?: Number;

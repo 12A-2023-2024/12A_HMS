@@ -1,7 +1,6 @@
 import { RoomtypeAdminPage } from "./roomtype_admin_page.js";
 import { Roomtype } from "./resources/roomtype.js";
 import { RoomImage } from "./resources/image.js";
-import { Parameter } from "./resources/parameter.js";
 
 const page = new RoomtypeAdminPage();    //Requred until routing is finished 
 addEventListeners();

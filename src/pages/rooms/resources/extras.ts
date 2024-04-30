@@ -1,5 +1,5 @@
-import { Parameter } from "./resources/parameter.js";
-import { RoomtypeAdminPage } from "./roomtype_admin_page.js";
+import { Parameter } from "./parameter";
+import { RoomtypeAdminPage } from "../roomtype_admin_page";
 
 export class Extras {
     parentPage: RoomtypeAdminPage;

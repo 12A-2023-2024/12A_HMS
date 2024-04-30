@@ -1,5 +1,4 @@
 import { RoomImage } from "./image.js";
-import { Parameter } from "./parameter.js";
 
 export class Roomtype {
     id?: Number;
@@ -11,7 +10,7 @@ export class Roomtype {
     images: RoomImage[];
     parameters: Number[];
 
-    constructor(name : string, description : string, pricePerNigthPerPerson : Number, capacity : Number, images : RoomImage[], parameters : Number[], id? : Number, active? : boolean) {
+    constructor(name: string, description: string, pricePerNigthPerPerson: Number, capacity: Number, images: RoomImage[], parameters: Number[], id?: Number, active?: boolean) {
         if (id && active) {
             this.id = id;
             this.active = active;

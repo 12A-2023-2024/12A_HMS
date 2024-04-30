@@ -86,7 +86,6 @@ function addEventListeners(){
         page.extrasPopup?.parameters.forEach((parameter) => {
             if (extras.includes(parameter.id as Number)) {
                 page.extrasPopup?.selectedParameters.push(parameter.id as Number);
-                console.log(page.extrasPopup?.selectedParameters);
             }
         });
         page.extrasPopup?.hide();

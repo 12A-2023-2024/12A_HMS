@@ -11,7 +11,12 @@ export class RestaurantAdminPage extends Page {
   constructor() {
     super("/src/pages/restaurant/restaurantAdmin.html");
     localStorage.setItem('user', `{
-
+      "name": "administrator",
+      "token": "S7HLF9QUJJTFMMWLO2WXMYVJ0FB5M0DP22B07LDIVY0W0I9QKTSFJ5TLAD969VO61XRQT3F0N8YDHWN58CDX7RWF24TZQNO62PKB4KT6WNY4H566AIDQ5R78",
+      "roles": [
+          "admin"
+      ],
+      "validTo": "2024-04-24T13:58:18.1289776+00:00"
     }`)
     this.addEventListeners();
     this.loadCategories('#mainMessageBoxDiv', '#mainMessage');
@@ -23,26 +28,67 @@ export class RestaurantAdminPage extends Page {
       this.meals.push(_meal);
     }
   }
+
+  addModifyMealEventListeners() {
+    this.querySelector<HTMLElement>('#closeBtn').addEventListener('click',()=>this.closeModal());
+    this.querySelector<HTMLElement>('#modifyMealButton').addEventListener('click',(()=>{
+      
+    }))
+  }
+  mealButtonsEventListeners():void{
+    let deleteButtons = document.querySelectorAll('.deleteButton');
+    let modifyButtons = document.querySelectorAll('.modifyButton');
+
+    deleteButtons.forEach((e) => {
+      //TODO
+      e.addEventListener('click', () => {
+        let id = Number(e.getAttribute('id'))
+        this.fetch<IMeal>(`https://hms.jedlik.cloud/api/restaurant/menuitems/${id}`, 'DELETE')
+        .then(() => {
+          this.loadMessageBox('Étel sikeresen törölve!', false)
+          this.loadMeals()
+          })
+        .catch((err: Error) => {
+          this.loadMessageBox(err.message, true)
+        })
+      })
+    })
+    modifyButtons.forEach((e)=>{
+      e.addEventListener('click',()=>{
+        let id = Number(e.getAttribute('id'));
+        this.querySelector<HTMLElement>('.content').classList.add('hidden');
+        let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
+        this.fetch<IMeal>(`https://hms.jedlik.cloud/api/restaurant/menuitems/${id}`,'GET')
+          .then((meal:IMeal)=>{
+            this.getHtml('./modals/modify-meal.html').then((html) => {
+              modalDiv.innerHTML = html;
+              this.addModifyMealEventListeners();
+              this.querySelector<HTMLInputElement>('#mealName').value=meal.name;
+              this.querySelector<HTMLInputElement>('#mealDescription').value=meal.description;
+              for (let i = 0; i < this.categories.length; i++) {
+                const category = this.categories[i];
+                this.querySelector<HTMLSelectElement>('#mealCategory').options.add(new Option(category.name,category.id.toString()))
+                if (category.name==meal.categoryName) {
+                  let index = this.categories.findIndex(category=>category.name==meal.categoryName);
+                  this.querySelector<HTMLSelectElement>('#mealCategory').options.selectedIndex=index;
+                  
+                }
+              }
+              
+              this.querySelector<HTMLInputElement>('#mealPrice').value=meal.price.toString();
+
+            })
+      });
+      })
+    })
+  }
   generateTableRows(){
     const tbody = this.querySelector<HTMLElement>('tbody');
     if (this.currentPage==1) {
       tbody.innerHTML = '';
       for (let index = 0; index < this.mealPerPage; index++) {
         tbody.innerHTML += this.generateTableRow(this.meals[index]) 
-        let buttons = document.querySelectorAll('.deleteButton');
-        buttons.forEach((e) => {
-          e.addEventListener('click', () => {
-            let id = Number(e.getAttribute('id'))
-            this.fetch(`https://hms.jedlik.cloud/api/restaurant/menuitems/${id}`, 'DELETE')
-            .then(() => {
-              this.loadMessageBox('Étel sikeresen törölve!', false)
-              this.loadMeals()
-              })
-            .catch((err: Error) => {
-              this.loadMessageBox(err.message, true)
-            })
-          })
-        })
+        this.mealButtonsEventListeners();
       }
     } else if(this.mealPerPage!=1&&this.mealPerPage!=this.maxPage){
       tbody.innerHTML = '';
@@ -102,13 +148,13 @@ export class RestaurantAdminPage extends Page {
     <td class="border px-4 py-2 text-center">${meal.description}</td>
     <td class="border px-4 py-2 text-center">
     <div class="images">
-    ${images}
+      ${images}
     </div>
     </td>
     <td class="border px-4 py-2 text-center">
     <div class="float-right">
-    <button class="px-8 mx-4 py-2 font-semibold text-sm bg-orange-500 text-white rounded-full shadow-sm align-middle float-right">Étel módosítása</button>
-    <button class="deleteButton px-8 mx-4 py-2 font-semibold text-sm bg-red-500 text-white rounded-full shadow-sm align-middle float-right"id="${meal.id}">Étel törlése</button>
+      <button class="deleteButton px-8 mx-4 py-2 font-semibold text-sm bg-red-500 text-white rounded-full shadow-sm align-middle float-right" id="${meal.id}">Étel törlése</button>
+      <button class="modifyButton px-8 mx-4 py-2 font-semibold text-sm bg-orange-500 text-white rounded-full shadow-sm align-middle" id="${meal.id}">Étel módosítása</button>
     </div>
     </td>
     </tr>
@@ -145,20 +191,24 @@ export class RestaurantAdminPage extends Page {
     let searchBox = this.querySelector<HTMLInputElement>('#searchMeal');
     this.querySelector<HTMLElement>('#pager-div').classList.add('hidden');      
 
-    function filteredMeals(startingString: string, mealArray:IMeal[]): IMeal[] {
-      return mealArray.filter((meal) => meal.name.startsWith(startingString));
-    }
+
     this.fetch<IMeal[]>('https://hms.jedlik.cloud/api/restaurant/menuitems', 'GET')
       .then((arr) => {
-        this.meals = arr;
         // this.mockMeal();    
+        this.meals=[];
+        if (!searchBox.value) {
+          this.meals = arr;        
+        }else if (searchBox.value) {
+          for (let index = 0; index < arr.length; index++) {
+            const meal = arr[index];
+            if (meal.name.toLowerCase().includes(searchBox.value.toLowerCase())) {
+              this.meals.push(arr[index])
+            }
+          }
+        }
         if (this.meals.length>this.mealPerPage) {
           this.querySelector<HTMLElement>('#pager-div').classList.remove('hidden');      
         }
-        if (searchBox.value) {
-          console.log(this.meals)   
-        }
-        console.log(filteredMeals(searchBox.value,this.meals))
         this.generateTableRows()
         this.maxPage= Math.ceil(this.meals.length/this.mealPerPage);
 

@@ -2,6 +2,7 @@ import { CocktailBar } from "./pages/cocktailbar/cocktailBar.js";
 import { ContactPage } from "./pages/contact/contact.js";
 import { HomePage } from "./pages/home/home.js";
 import { IntroductionPage } from "./pages/introduction/introduction.js";
+import { CocktailEdit } from "./pages/cocktailbar/cocktailEdit.js"
 
 export const routes: {[key: string]: {page: any}} = {
     '': {
@@ -15,6 +16,9 @@ export const routes: {[key: string]: {page: any}} = {
     },
     'cocktailbar':{
         page: CocktailBar
+    }, 
+    'cocktailedit':{
+        page: CocktailEdit
     }
 
 }

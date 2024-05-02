@@ -8,6 +8,7 @@ export class Page {
         this.getHtml(htmlPage).then( (html) => {
             if (this.contentDiv) {
                 this.contentDiv.innerHTML = html;
+                //Event PageLoaded event meghívása
             }
         });
     }

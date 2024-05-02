@@ -1,23 +1,35 @@
-<h1 class="title">Szoba felvétele</h1>
-<div class="form-container">
-    <form>
-        <div id="room_number_field" class="input_div">
-            <label for="room_number">Szoba száma:</label>
-            <input class="input_field" type="text" id="room_number" name="room_number" required><br>
-        </div>
-
-        <div id="room_type_field" class="input_div">
-            <label for="room_type">Szoba típusa:</label>
-            <div id="roomtype_container">
-                <form></form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <h1 class="title">Szoba felvétele</h1>
+    <div class="form-container">
+        <form>
+            <div id="room_number_field" class="input_div">
+                <label for="room_number">Szoba száma:</label>
+                <input class="input_field" type="text" id="room_number" name="room_number" required><br>
+            </div>
+    
+            <div id="room_type_field" class="input_div">
+                <label for="room_type">Szoba típusa:</label>
+                <div id="roomtype_container" style="background-color: antiquewhite;">
+                    
+                </div>
                 <button id="roomtype_submit">Kész</button>
                 <button id="roomtype_new">Új felvétele</button>
             </div>
-        </div>
+    
+            <input type="submit" value="Felvétel" class="submit">
+        </form>
+    </div>
+    
+    
+    <script type="module" src="../../../js/pages/rooms/rooms_admin.js"></script>
 
-        <input type="submit" value="Felvétel" class="submit">
-    </form>
-</div>
-
-
-<script type="module" src="../../../js/pages/rooms/rooms_admin.js"></script>
+</body>
+</html>

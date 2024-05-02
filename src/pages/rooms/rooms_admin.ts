@@ -1,19 +1,3 @@
-import { Page } from "../page.js";
-import { login } from "./resources/login";
-import { RoomtypeSelector } from "./resources/roomtypeSelector.js";
+import { RoomsAdminPage } from "./rooms_admin_page.js";
 
-
-export class RoomsAdminPage extends Page {
-    token: string = "";
-    roomTypeSelector?: RoomtypeSelector;
-
-    constructor() {
-        super('/src/pages/rooms/rooms_admin.html');
-
-        login().then((result) => {
-            this.token = result;
-            this.roomTypeSelector = new RoomtypeSelector(this);
-        });
-    }
-}
-
+const roomsAdminPage = new RoomsAdminPage(); // Required until routing is finished

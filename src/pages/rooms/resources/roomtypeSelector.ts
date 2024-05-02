@@ -1,7 +1,7 @@
 import { RoomsAdminPage } from "../rooms_admin.js";
-import { Roomtype } from "./roomtype";
+import { Roomtype } from "./roomtype.js";
 
-export class RoomtypePopup {
+export class RoomtypeSelector {
     parentPage: RoomsAdminPage;
 
     constructor(parentPage: RoomsAdminPage) {
@@ -11,20 +11,6 @@ export class RoomtypePopup {
 
     private initializeWindow() {
         getRoomTypes(this.parentPage);
-    }
-
-    show() {
-        const roomtypePopup: HTMLElement | null = document.querySelector("#roomtype_popup");
-        if (roomtypePopup) {
-            roomtypePopup.style.display = "block";
-        }
-    }
-
-    hide() {
-        const roomtypePopup: HTMLElement | null = document.querySelector("#roomtype_popup");
-        if (roomtypePopup) {
-            roomtypePopup.style.display = "none"
-        }
     }
 }
 

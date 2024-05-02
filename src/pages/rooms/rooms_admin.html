@@ -1,0 +1,25 @@
+<h1 class="title">Szoba felvétele</h1>
+<div class="form-container">
+    <form>
+        <div id="room_number_field" class="input_div">
+            <label for="room_number">Szoba száma:</label>
+            <input class="input_field" type="text" id="room_number" name="room_number" required><br>
+        </div>
+
+        <div id="room_type_field" class="input_div">
+            <label for="room_type">Szoba típusa:</label>
+            <button type="button" id="room_type"></button>
+        </div>
+
+        <input type="submit" value="Felvétel" class="submit">
+    </form>
+</div>
+
+<div id="roomtype_popup" style="display: none; position: absolute; background-color: aqua; width: 35vw; left: 32.5vw;">
+    <button id="close" style="margin-left: 92%;">X</button>
+    <form></form>
+    <button id="roomtype_submit">Kész</button>
+    <button id="roomtype_new">Új felvétele</button>
+</div>
+
+<script type="module" src="../../../js/pages/rooms/rooms_admin.js"></script>

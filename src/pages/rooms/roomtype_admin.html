@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 class="title">Szobatípus felvétele</h1>
+    <div class="form-container">
+        <form>
+            <div>
+                <label for="roomtype_name">Szobatípus elnevezése:</label>
+                <input type="text" id="roomtype_name" name="roomtype_name">
+            </div>
+    
+            <div>
+                <label for="description">Leírás:</label>
+                <textarea id="description" name="description"></textarea>
+            </div>
+    
+            <div>
+                <label for="capacity">Vendégek száma:</label>
+                <input type="number" id="capacity" name="capacity">
+            </div>
+    
+            <div>
+                <label for="price">Ár:</label>
+                <input type="number" id="price" name="price">
+            </div>
+    
+            <button type="button" id="extras">Extrák</button>
+    
+            <input type="file" name="images" alt="images" multiple>
+    
+            <button type="submit" id="submit">Felvétel</button>
+        </form>
+    </div>
+    
+    <div id="extras_popup" style="display: none; position: absolute; background-color: aqua; width: 35vw; left: 32.5vw;">
+        <button id="close" style="margin-left: 92%;">X</button>
+        <form></form>
+        <button id="extras_submit">Kész</button>
+        <button id="extras_new">Új felvétele</button>
+    </div>
+    
+    <script type="module" src="../../../js/pages/rooms/roomtype_admin.js"></script>
+    
+</body>
+</html>
+

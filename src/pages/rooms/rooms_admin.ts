@@ -2,6 +2,7 @@ import { Page } from "../page.js";
 import { login } from "./resources/login";
 import { RoomtypeSelector } from "./resources/roomtypeSelector.js";
 
+
 export class RoomsAdminPage extends Page {
     token: string = "";
     roomTypeSelector?: RoomtypeSelector;

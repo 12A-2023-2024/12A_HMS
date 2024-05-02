@@ -1,73 +1,56 @@
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../../..//css/output.css">
-</head>
-
-<body>
-    <div class="content">
-        <h1 class="text-center text-3xl">Étlap szerkesztő</h1>
-        <div id="mainMessageBoxDiv" class="error-box px-4 py-3 rounded relative text-center hidden">
-          <span class="block sm:inline" id="mainMessage"></span>
-          <span id="closeMainMessageBox" class="close text-black hover:text-gray-700 cursor-pointer absolute top-0 right-0 mt-2 mr-2">&times;</span>
-        </div>
-        <div class="block w-full h-40">
-            <button class="px-8 my-12 ml-10 float-left py-2 font-semibold text-sm bg-green-500 hover:bg-green-700 text-white rounded-full shadow-sm" id="newCategory">Új kategória</button>
-            <button class="px-8 my-12 mx-10 float-left py-2 font-semibold text-sm bg-orange-500 hover:bg-orange-700 text-white rounded-full shadow-sm" id="modifyCategory">Kategória módosítása</button>
-            <button class="px-8 my-12 float-left py-2 font-semibold text-sm bg-red-500 hover:bg-red-700 text-white rounded-full shadow-sm" id="deleteCategory">Kategória törlése</button>
-            <button class="px-8 my-12 mx-10 float-right py-2 font-semibold text-sm bg-green-500 hover:bg-green-700 text-white rounded-full shadow-sm" id="newMeal">Új étel</button>
-        </div>
-        <div class="flex">
-          <div class="w-2/3">
-            <div class="flex">
-              <label for="searchMeal" class="block mb-2 font-bold mx-4">Étel neve:</label>
-              <label for="itemPerPage" class="block mb-2 font-bold mx-4">Étel oldalanként:</label>
-
-            </div>
-            <input id="searchMeal" type="text" placeholder="Kérem az étel nevét!" class="border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:border-blue-500 ml-4">         
-            <select id="itemPerPage" class="border border-gray-300 rounded mx-4">
-              <option value="20" selected>20</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select>
-            <button id="searchMealBtn" class="bg-green-500 text-white font-bold py-2 px-4 rounded">Keresés</button>
-          </div>
-        </div>
-        <div class="text-center hidden" id="pager-div">
-          <span class="me-3 cursor-pointer hidden" id="pager-first">&lt;&lt;</span>
-          <span class="me-3 cursor-pointer hidden" id="pager-previous">&lt;</span>
-          <span class="me-3 fw-bold" id="pager-current">1</span>
-          <span class="me-3 cursor-pointer" id="pager-next">&gt;</span>
-          <span class="me-3 cursor-pointer" id="pager-last">&gt;&gt;</span>
-        </div>
-        <div class="overflow-x-auto">
-            <table class="table-auto min-w-full">
-              <thead>
-                <tr>
-                  <th class="px-4 py-2">ID</th>
-                  <th class="px-4 py-2">Étel neve</th>
-                  <th class="px-4 py-2">Kategória</th>
-                  <th class="px-4 py-2">Ár</th>
-                  <th class="px-4 py-2">Leírás</th>
-                  <th class="px-4 py-2">Képek</th>
-                  <th class="px-4 py-2"></th>
-                </tr>
-              </thead>
-              <tbody>
-
-              </tbody>
-            </table>
-          </div>
-           
-          
-    </div>
-    <div id="restaurant-modal" class="modal">
+<h1 class="text-center text-3xl">Étlap szerkesztő</h1>
+<div id="mainMessageBoxDiv" class="error-box px-4 py-3 rounded relative text-center hidden">
+  <span class="block sm:inline" id="mainMessage"></span>
+  <span id="closeMainMessageBox" class="close text-black hover:text-gray-700 cursor-pointer absolute top-0 right-0 mt-2 mr-2">&times;</span>
+</div>
+<div class="block w-full h-40">
+    <button class="px-8 my-12 ml-10 float-left py-2 font-semibold text-sm bg-green-500 hover:bg-green-700 text-white rounded-full shadow-sm" id="newCategory">Új kategória</button>
+    <button class="px-8 my-12 mx-10 float-left py-2 font-semibold text-sm bg-orange-500 hover:bg-orange-700 text-white rounded-full shadow-sm" id="modifyCategory">Kategória módosítása</button>
+    <button class="px-8 my-12 float-left py-2 font-semibold text-sm bg-red-500 hover:bg-red-700 text-white rounded-full shadow-sm" id="deleteCategory">Kategória törlése</button>
+    <button class="px-8 my-12 mx-10 float-right py-2 font-semibold text-sm bg-green-500 hover:bg-green-700 text-white rounded-full shadow-sm" id="newMeal">Új étel</button>
+</div>
+<div class="flex">
+  <div class="w-2/3">
+    <div class="flex">
+      <label for="searchMeal" class="block mb-2 font-bold mx-4">Étel neve:</label>
+      <label for="itemPerPage" class="block mb-2 font-bold mx-4">Étel oldalanként:</label>
 
     </div>
+    <input id="searchMeal" type="text" placeholder="Kérem az étel nevét!" class="border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:border-blue-500 ml-4">         
+    <select id="itemPerPage" class="border border-gray-300 rounded mx-4">
+      <option value="20" selected>20</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+    </select>
+    <button id="searchMealBtn" class="bg-green-500 text-white font-bold py-2 px-4 rounded">Keresés</button>
+  </div>
+</div>
+<div class="text-center hidden" id="pager-div">
+  <span class="me-3 cursor-pointer hidden" id="pager-first">&lt;&lt;</span>
+  <span class="me-3 cursor-pointer hidden" id="pager-previous">&lt;</span>
+  <span class="me-3 fw-bold" id="pager-current">1</span>
+  <span class="me-3 cursor-pointer" id="pager-next">&gt;</span>
+  <span class="me-3 cursor-pointer" id="pager-last">&gt;&gt;</span>
+</div>
+<div class="overflow-x-auto">
+    <table class="table-auto min-w-full">
+      <thead>
+        <tr>
+          <th class="px-4 py-2">ID</th>
+          <th class="px-4 py-2">Étel neve</th>
+          <th class="px-4 py-2">Kategória</th>
+          <th class="px-4 py-2">Ár</th>
+          <th class="px-4 py-2">Leírás</th>
+          <th class="px-4 py-2">Képek</th>
+          <th class="px-4 py-2"></th>
+        </tr>
+      </thead>
+      <tbody>
 
-    <script src="../../../js/pages/restaurant/restaurantAdmin.js" type="module"></script>
-</body>
-</html>
+      </tbody>
+    </table>
+</div>
+<div id="restaurant-modal" class="modal">
+
+</div>
+

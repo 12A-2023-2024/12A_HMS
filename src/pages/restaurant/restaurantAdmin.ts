@@ -12,14 +12,15 @@ export class RestaurantAdminPage extends Page {
     super("/src/pages/restaurant/restaurantAdmin.html");
     localStorage.setItem('user', `{
       "name": "administrator",
-      "token": "S7HLF9QUJJTFMMWLO2WXMYVJ0FB5M0DP22B07LDIVY0W0I9QKTSFJ5TLAD969VO61XRQT3F0N8YDHWN58CDX7RWF24TZQNO62PKB4KT6WNY4H566AIDQ5R78",
+      "token": "KW0H6IW7QSTCIGG2P8Q2I9XNLXD3SUMUGLDVMEYSZECX8E4T1U7J3EKMM05DY0IDJGKHCRWIIBGYJ7ZQGK7T4EICW4HDJ3E2ABRIE2VRWSCI2174NJSPSCTH",
       "roles": [
           "admin"
       ],
-      "validTo": "2024-04-24T13:58:18.1289776+00:00"
+      "validTo": "2024-05-02T06:10:07.4354572+00:00"
     }`)
+    // this.loadCategories('#mainMessageBoxDiv', '#mainMessage');
+    //PageLoaded eseménykor fut le
     this.addEventListeners();
-    this.loadCategories('#mainMessageBoxDiv', '#mainMessage');
   }
 
   mockMeal() {
@@ -194,10 +195,10 @@ export class RestaurantAdminPage extends Page {
 
     this.fetch<IMeal[]>('https://hms.jedlik.cloud/api/restaurant/menuitems', 'GET')
       .then((arr) => {
-        // this.mockMeal();    
         this.meals=[];
         if (!searchBox.value) {
           this.meals = arr;        
+          // this.mockMeal();    
         }else if (searchBox.value) {
           for (let index = 0; index < arr.length; index++) {
             const meal = arr[index];
@@ -480,6 +481,7 @@ export class RestaurantAdminPage extends Page {
     })
   }
   addEventListeners() {
+    console.log(this.querySelector<HTMLInputElement>('#newMeal'))
     this.querySelector<HTMLElement>('#newMeal').addEventListener('click', () => {
       this.querySelector<HTMLElement>('.content').classList.add('hidden');
       let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
@@ -574,6 +576,4 @@ export class RestaurantAdminPage extends Page {
 
     })
   }
-
 }
-new RestaurantAdminPage();

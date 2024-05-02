@@ -54,6 +54,7 @@ export class NavBar {
         if ( route != null && this.routes[route] && this.routes[route].page) {
             const page = new this.routes[route].page();
             if (route){
+                console.log(route)
                 window.history.pushState({}, '', `?page=${route}`);
             } else {
                 window.history.pushState({}, '', '');

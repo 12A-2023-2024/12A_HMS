@@ -20,6 +20,9 @@ export const routes: {[key: string]: {page: any}} = {
     },
     'restaurantStaff': {
         page: RestaurantStaffPage
+    },
+    'restaurantAdmin': {
+        page: RestaurantAdminPage
     }
 
 }

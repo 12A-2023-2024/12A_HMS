@@ -9,9 +9,6 @@ export class NewsPage extends Page {
 
     override getHtmlCallback(): void {
         this.generateNews();
-        this.querySelector<HTMLInputElement>("#imgUpload").addEventListener("change",()=>{
-          this.encodeImageFileAsURL(this.querySelector<HTMLInputElement>("#imgUpload"));
-        });
         this.querySelector<HTMLButtonElement>("#newsPOST").addEventListener("click",()=>{
           this.postNews();
         })
@@ -85,31 +82,44 @@ export class NewsPage extends Page {
       if(!file){
         canProceed = false
       }
-    }
-
-    async encodeImageFileAsURL(element: HTMLInputElement) {
-      var filelist = element.files as FileList;
-      var file = filelist[0];
-      var reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = function () {
-        NewsPage.parseResult(reader.result as string);
+      if(!date){
+        canProceed = false
       }
+      if(!text){
+        canProceed = false
+      }
+      if(!title){
+        canProceed = false;
+      }
+
+      if(!canProceed) return false
+
+      const body = {
+        date: date,
+        text: text,
+        title: title,
+        image: {
+            filename: filename,
+            file: file
+        },
+      }
+
+      this.fetch<null>("https://hms.jedlik.cloud/api/about/news", "POST", body)
+
     }
-
-
 
     async getBase64(element: HTMLInputElement) {
       var filelist = element.files as FileList;
       var file = filelist[0];
       var filedata;
+      if(!file) return null
       await new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => resolve(reader.result);
         reader.onerror = error => reject(error);
       }).then(
-        data => filedata = NewsPage.parseResult(data as string)
+        data => filedata = this.parseResult(data as string)
       );
       return filedata;
     }
@@ -117,11 +127,11 @@ export class NewsPage extends Page {
     getImgName(element: HTMLInputElement){
       var filelist = element.files as FileList;
       var file = filelist[0];
-      return file.name
+      if(file) return file.name
     }
 
 
-    static parseResult(result:string){
+    parseResult(result:string){
       return result = result.slice(result.indexOf("base64")+7)
     }
 

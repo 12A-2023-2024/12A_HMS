@@ -134,6 +134,9 @@ export class RestaurantStaffPage extends Page {
       else if (target.matches('.tableDiv')) {
         this.selectTable(target);
       }
+      else if (target.matches('.checkoutButton')) {
+        this.checkout();
+      }
     });
   }
 
@@ -207,6 +210,18 @@ export class RestaurantStaffPage extends Page {
     }
     inputField.value = mealCount.toString();  
     this.insertDataToLocalStorage(this.currentTable);
+  }
+
+
+  checkout(): void {
+    // TODO: check data structure, send data to backend, clear local storage
+    if (this.currentTable == null) {
+      alert('Please select a table first!');
+      return;
+    }
+
+    let meals: Array<StoredMeal> = JSON.parse(localStorage.getItem('table' + this.currentTable) || '[]');
+    
   }
 
   querySelector<T>(selector: string): T {

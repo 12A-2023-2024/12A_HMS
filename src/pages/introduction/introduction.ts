@@ -91,8 +91,8 @@ export class IntroductionPage extends Page {
         const url: string = "https://hms.jedlik.cloud/api/login"
         const method: string = "POST"
         const body: any= {
-            "loginName": "admin",
-            "password": "admin"
+            loginName: "admin",
+            password: "admin"
          }
         const data = this.fetch<Login>(url, method, body)
         console.log(data)
@@ -100,6 +100,8 @@ export class IntroductionPage extends Page {
             localStorage.setItem('user', JSON.stringify(result));
         })
     }
+
+
 
 
 }

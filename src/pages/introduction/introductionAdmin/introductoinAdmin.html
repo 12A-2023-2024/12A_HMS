@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntroductionAdmin</title>
+</head>
+<body>
+    <form action="">
+        <div class="flex flex-col">
+            <div class="space-x-10">
+                <label for="fileUpload">Kép feltöltése:</label>
+                <input name="fileUpload" id="fileUpload" type="file" multiple accept="image/*">
+            </div>
+            <div class="space-x-10">
+                <label for="title">Cím:</label>
+                <select name="section" id="section">
+                    <option value="carusel">körhinta</option>
+                    <option value="banner">zászló</option>
+                </select>
+            </div>
+            <div class="space-x-10">
+                <label for="title">Megjelenési helye:</label>
+                <input type="text" id="title" name="title" value="Cím">
+            </div>
+            <input type="button" value="Küldés!" id="sendButton" class="duration-200 bg-gray-500 text-gray-50 transition-all">
+        </div>
+      </form>
+</body>
+</html>

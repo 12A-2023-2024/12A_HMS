@@ -13,6 +13,6 @@ namespace HMS_WebAPI.Models
         public required string Address { get; set; }
         public required string TaxNumber { get; set; }
 
-
+        public List<ContactSocialmediaItemModel> Socialmedias { get; set; }
     }
 }

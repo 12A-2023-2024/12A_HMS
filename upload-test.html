@@ -59,6 +59,21 @@
                     const url = 'http://localhost:5034/publicpages/gallery/uploadasbase64';
                     //const url = 'https://hms.jedlik.cloud/api/publicpages/gallery/uploadasbase64';
                     
+                    var x = {
+                        desc: 'asdsads',
+                        ar: 23233,
+                        fo: 2,
+                        images: [
+                            {
+                                file: base64,
+                                filename: file.name,
+                            }
+                        ]
+                    }
+                    console.log(x)
+                    console.log(JSON.stringify(x));
+                    return
+
                     const fetchOptions = {
                         method: 'post',
                         headers: {

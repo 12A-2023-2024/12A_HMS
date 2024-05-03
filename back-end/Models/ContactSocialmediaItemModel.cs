@@ -12,5 +12,7 @@ namespace HMS_WebAPI.Models
 
         public int IconId { get; set; }
         public string IconURL => Icon.ImageUrl;
+
+        public int ContactModelId { get; set; }
     }
 }

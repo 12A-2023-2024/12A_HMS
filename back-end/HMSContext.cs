@@ -146,8 +146,8 @@ namespace HMS_WebAPI
             ]);
 
             modelBuilder.Entity<ContactSocialmediaItemModel>().HasData([
-                new { Id = 1, Name="Facebook", IconId = 1, SocialUrl="https://www.facebook.com/jedlikanyostechnikum"  },
-                new { Id = 2, Name="Youtube", IconId = 5, SocialUrl="https://www.youtube.com/@jedlikanyostechnikum_9189"  }
+                new { Id = 1, Name="Facebook", IconId = 1, SocialUrl="https://www.facebook.com/jedlikanyostechnikum", ContactModelId = 1},
+                new { Id = 2, Name="Youtube", IconId = 5, SocialUrl="https://www.youtube.com/@jedlikanyostechnikum_9189", ContactModelId = 1  }
             ]);
 
             modelBuilder.Entity<PictureModel>().HasData([
@@ -216,7 +216,6 @@ namespace HMS_WebAPI
                 new { Id = 1, ImageId = 11, CoctailId = 1 },
                 new { Id = 2, ImageId = 12, CoctailId = 2 }
             ]);
-
         }
 
     }

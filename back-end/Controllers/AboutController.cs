@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 using System.Text.Json.Nodes;
 
 namespace HMS_WebAPI.Controllers
@@ -63,12 +64,12 @@ namespace HMS_WebAPI.Controllers
             {
                 var node = requestBody.Serialize<JsonNode>();
                 if (node == null)
-                    return BadRequest("Missing body");
+                    return BadRequest(new { message = "Missing body" });
                 if (node["order"] == null)
-                    return BadRequest("Sorrend megadása kötelező");
+                    return BadRequest(new { message = "Sorrend megadása kötelező" });
                 var fileModel = node["image"];
                 if (fileModel == null)
-                    return BadRequest("Nem töltött fel képet");
+                    return BadRequest(new { message = "Nem töltött fel képet" });
 
                 var fileName = fileModel["fileName"]?.GetValue<string>();
                 var base64 = fileModel["file"]?.GetValue<string>();
@@ -104,14 +105,14 @@ namespace HMS_WebAPI.Controllers
             {
                 var node = requestBody.Serialize<JsonNode>();
                 if (node == null)
-                    return BadRequest("Missing body");
+                    return BadRequest(new { message = "Missing body" });
                 if (node["order"] == null)
-                    return BadRequest("Sorrend megadása kötelező");
+                    return BadRequest(new { message = "Sorrend megadása kötelező"});
                 if (node["id"] == null)
-                    return BadRequest("Nem adta meg a módosítandó galéria elemet");
+                    return BadRequest(new { message = "Nem adta meg a módosítandó galéria elemet"});
                 var fileModel = node["image"];
                 if (fileModel == null)
-                    return BadRequest("Nem töltött fel képet");
+                    return BadRequest(new { message = "Nem töltött fel képet"});
 
                 var fileName = fileModel["fileName"]?.GetValue<string>();
                 var base64 = fileModel["file"]?.GetValue<string>();
@@ -120,7 +121,7 @@ namespace HMS_WebAPI.Controllers
 
                 var modelToModify = dbContext.Set<GalleryItem>().Include(g => g.Picture).ThenInclude(p => p.Image).SingleOrDefault(g => g.Id == node["id"].GetValue<int>());
                 if (modelToModify == null)
-                    return BadRequest("Nem található a módosítandó elem");
+                    return BadRequest(new { message = "Nem található a módosítandó elem" });
 
                 ImageModel imageToDelete = modelToModify.Picture.Image;
                 ImageModel image = FileHandling.SaveFile(Convert.FromBase64String(base64), fileName, filesPath);
@@ -203,16 +204,16 @@ namespace HMS_WebAPI.Controllers
             {
                 var node = requestBody.Serialize<JsonNode>();
                 if (node == null)
-                    return BadRequest("Missing body");
+                    return BadRequest(new { message = "Missing body" });
                 if (node["date"] == null || !DateTime.TryParse(node["date"].ToString(), out DateTime date))
-                    return BadRequest("Dátum megadása kötelező");
+                    return BadRequest(new { message = "Dátum megadása kötelező"});
                 if (node["title"] == null || string.IsNullOrEmpty(node["title"].ToString()))
-                    return BadRequest("A cím megadása kötelező");
+                    return BadRequest(new { message = "A cím megadása kötelező"});
                 if (node["text"] == null || string.IsNullOrEmpty(node["text"].ToString()))
-                    return BadRequest("A szöveg megadása kötelező");
+                    return BadRequest(new { message = "A szöveg megadása kötelező"});
                 var fileModel = node["image"];
                 if (fileModel == null)
-                    return BadRequest("Nem töltött fel képet");
+                    return BadRequest(new { message = "Nem töltött fel képet"});
 
                 var fileName = fileModel["fileName"]?.GetValue<string>();
                 var base64 = fileModel["file"]?.GetValue<string>();
@@ -250,18 +251,18 @@ namespace HMS_WebAPI.Controllers
             {
                 var node = requestBody.Serialize<JsonNode>();
                 if (node == null)
-                    return BadRequest("Missing body");
+                    return BadRequest(new { message = "Missing body" });
                 if (node["date"] == null || !DateTime.TryParse(node["date"].ToString(), out DateTime date))
-                    return BadRequest("Dátum megadása kötelező");
+                    return BadRequest(new { message = "Dátum megadása kötelező"});
                 if (node["title"] == null || string.IsNullOrEmpty(node["title"].ToString()))
-                    return BadRequest("A cím megadása kötelező");
+                    return BadRequest(new { message = "A cím megadása kötelező"});
                 if (node["text"] == null || string.IsNullOrEmpty(node["text"].ToString()))
-                    return BadRequest("A szöveg megadása kötelező");
+                    return BadRequest(new { message = "A szöveg megadása kötelező"});
                 if (node["id"] == null)
-                    return BadRequest("Nem adta meg a módosítandó hír azonosítóját");
+                    return BadRequest(new { message = "Nem adta meg a módosítandó hír azonosítóját"});
                 var fileModel = node["image"];
                 if (fileModel == null)
-                    return BadRequest("Nem töltött fel képet");
+                    return BadRequest(new { message = "Nem töltött fel képet"});
 
                 var fileName = fileModel["fileName"]?.GetValue<string>();
                 var base64 = fileModel["file"]?.GetValue<string>();
@@ -270,7 +271,7 @@ namespace HMS_WebAPI.Controllers
 
                 var modelToModify = dbContext.Set<NewsItemModel>().Include(g => g.Picture).ThenInclude(p => p.Image).SingleOrDefault(g => g.Id == node["id"].GetValue<int>());
                 if (modelToModify == null)
-                    return BadRequest("Nem található a módosítandó elem");
+                    return BadRequest(new { message = "Nem található a módosítandó elem" });
 
                 ImageModel imageToDelete = modelToModify.Picture.Image;
                 ImageModel image = FileHandling.SaveFile(Convert.FromBase64String(base64), fileName, filesPath);
@@ -355,16 +356,16 @@ namespace HMS_WebAPI.Controllers
             {
                 var node = requestBody.Serialize<JsonNode>();
                 if (node == null)
-                    return BadRequest("Missing body");
+                    return BadRequest(new { message = "Missing body" });
                 if (node["order"] == null || !int.TryParse(node["order"].ToString(), out int order))
-                    return BadRequest("Sorrend megadása kötelező");
+                    return BadRequest(new { message = "Sorrend megadása kötelező"});
                 if (node["section"] == null || string.IsNullOrEmpty(node["section"].ToString()))
-                    return BadRequest("A szekció megadása kötelező");
+                    return BadRequest(new { message = "A szekció megadása kötelező"});
                 if (node["text"] == null || string.IsNullOrEmpty(node["text"].ToString()))
-                    return BadRequest("A szöveg megadása kötelező");
+                    return BadRequest(new { message = "A szöveg megadása kötelező"});
                 var fileModel = node["image"];
                 if (fileModel == null)
-                    return BadRequest("Nem töltött fel képet");
+                    return BadRequest(new { message = "Nem töltött fel képet"});
 
                 var fileName = fileModel["fileName"]?.GetValue<string>();
                 var base64 = fileModel["file"]?.GetValue<string>();
@@ -402,18 +403,18 @@ namespace HMS_WebAPI.Controllers
             {
                 var node = requestBody.Serialize<JsonNode>();
                 if (node == null)
-                    return BadRequest("Missing body");
+                    return BadRequest(new { message = "Missing body" });
                 if (node["order"] == null || !int.TryParse(node["order"].ToString(), out int order))
-                    return BadRequest("Sorrend megadása kötelező");
+                    return BadRequest(new { message = "Sorrend megadása kötelező"});
                 if (node["section"] == null || string.IsNullOrEmpty(node["section"].ToString()))
-                    return BadRequest("A szekció megadása kötelező");
+                    return BadRequest(new { message = "A szekció megadása kötelező"});
                 if (node["text"] == null || string.IsNullOrEmpty(node["text"].ToString()))
-                    return BadRequest("A szöveg megadása kötelező");
+                    return BadRequest(new { message = "A szöveg megadása kötelező"});
                 if (node["id"] == null)
-                    return BadRequest("Nem adta meg a módosítandó hír azonosítóját");
+                    return BadRequest(new { message = "Nem adta meg a módosítandó hír azonosítóját"});
                 var fileModel = node["image"];
                 if (fileModel == null)
-                    return BadRequest("Nem töltött fel képet");
+                    return BadRequest(new { message = "Nem töltött fel képet"});
 
                 var fileName = fileModel["fileName"]?.GetValue<string>();
                 var base64 = fileModel["file"]?.GetValue<string>();
@@ -422,7 +423,7 @@ namespace HMS_WebAPI.Controllers
 
                 var modelToModify = dbContext.Set<IntroductionItemModel>().Include(g => g.Picture).ThenInclude(p => p.Image).SingleOrDefault(g => g.Id == node["id"].GetValue<int>());
                 if (modelToModify == null)
-                    return BadRequest("Nem található a módosítandó elem");
+                    return BadRequest(new { message = "Nem található a módosítandó elem" });
 
                 ImageModel imageToDelete = modelToModify.Picture.Image;
                 ImageModel image = FileHandling.SaveFile(Convert.FromBase64String(base64), fileName, filesPath);
@@ -461,5 +462,178 @@ namespace HMS_WebAPI.Controllers
             return Ok(new { success = true });
         }
         #endregion Introduction
+
+        #region Contacts
+        [HttpGet("contact")]
+        public IActionResult GetContact()
+        {
+            return Ok(dbContext.Set<ContactModel>()
+                               .Include(c => c.Socialmedias).ThenInclude(s => s.Icon)
+                               .Select(c => new
+                               {                                   
+                                   c.PostalCode,
+                                   c.City,
+                                   c.Address,
+                                   c.TaxNumber,
+                                   c.Email,
+                                   c.Telephone,
+                                   Socialmedias = c.Socialmedias.Select(s => new
+                                   {
+                                       s.Id,
+                                       s.Name,
+                                       s.IconURL,
+                                       s.SocialUrl
+                                   })
+                                   
+                               })
+                               .FirstOrDefault());
+        }
+        
+        [HttpPut("contact")]
+        public IActionResult ModifyContact([FromBody] object requestBody)
+        {
+            try
+            {
+                var node = requestBody.Serialize<JsonNode>();
+                if (node == null)
+                    return BadRequest(new { message = "Missing body" });
+
+                var modelToModify = dbContext.Set<ContactModel>().FirstOrDefault();
+
+                if (modelToModify != null)
+                {
+                    modelToModify.PostalCode = node["postalcode"].GetValue<string>();
+                    modelToModify.City = node["city"].GetValue<string>();
+                    modelToModify.Address = node["address"].GetValue<string>();
+                    modelToModify.TaxNumber = node["taxnumber"].GetValue<string>();
+                    modelToModify.Email = node["email"].GetValue<string>();
+                    modelToModify.Telephone = node["telephone"].GetValue<string>();
+                    dbContext.Entry(modelToModify).State = EntityState.Modified;
+                }
+                else
+                {
+                    var newContact = new ContactModel()
+                    {
+                        PostalCode = node["postalcode"].GetValue<string>(),
+                        City = node["city"].GetValue<string>(),
+                        Address = node["address"].GetValue<string>(),
+                        TaxNumber = node["taxnumber"].GetValue<string>(),
+                        Email = node["email"].GetValue<string>(),
+                        Telephone = node["telephone"].GetValue<string>()
+                    };
+                    dbContext.Set<ContactModel>().Add(newContact);
+                }
+
+                dbContext.SaveChanges();
+                return GetContact();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Hibás adat", debugMessage = ex.Message });
+            }
+        }
+
+        [HttpPost("contact/socialmedia")]
+        public IActionResult NewSocialMedia([FromBody] object requestBody)
+        {
+            try
+            {
+                var node = requestBody.Serialize<JsonNode>();
+                if (node == null)
+                    return BadRequest(new { message = "Missing body" });
+                if (node["name"] == null)
+                    return BadRequest(new { message = "Megnevezés megadása kötelező" });
+                if (node["socialurl"] == null)
+                    return BadRequest(new { message = "A közösségi oldal linkjének megadása kötelező" });
+                var fileModel = node["icon"];
+                if (fileModel == null)
+                    return BadRequest(new { message = "Nem töltött fel képet" });
+                
+                var fileName = fileModel["fileName"]?.GetValue<string>();
+                var base64 = fileModel["file"]?.GetValue<string>();
+                if (fileName == null || base64 == null)
+                    return BadRequest(new { message = $"Hibás paraméterezés a feltöltött képben" });
+
+                ImageModel image = FileHandling.SaveFile(Convert.FromBase64String(base64), fileName, filesPath);
+                dbContext.Set<ImageModel>().Add(image);
+
+                var item = dbContext.Set<ContactSocialmediaItemModel>().Add(new ContactSocialmediaItemModel()
+                {
+                    Name = node["name"].GetValue<string>(),
+                    SocialUrl = node["socialurl"].GetValue<string>(),
+                    Icon = image,
+                    ContactModelId = dbContext.Set<ContactModel>().FirstOrDefault().Id
+                });
+                dbContext.SaveChanges();
+                return Ok(new { Success = true });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Hibás adat", debugMessage = ex.Message });
+            }
+        }
+
+        [HttpPut("contact/socialmedia")]
+        public IActionResult ModifySocialMedia([FromBody] object requestBody)
+        {
+            try
+            {
+                var node = requestBody.Serialize<JsonNode>();
+                if (node == null)
+                    return BadRequest(new { message = "Missing body" });
+                if (node["name"] == null)
+                    return BadRequest(new { message = "Megnevezés megadása kötelező" });
+                if (node["socialurl"] == null)
+                    return BadRequest(new { message = "A közösségi oldal linkjének megadása kötelező" });
+                if (node["id"] == null)
+                    return BadRequest(new { message = "Nem adta meg a módosítandó elem azonosítóját" });
+                var fileModel = node["icon"];
+                if (fileModel == null)
+                    return BadRequest(new { message = "Nem töltött fel képet" });
+
+                var fileName = fileModel["fileName"]?.GetValue<string>();
+                var base64 = fileModel["file"]?.GetValue<string>();
+                if (fileName == null || base64 == null)
+                    return BadRequest(new { message = $"Hibás paraméterezés a feltöltött képben" });
+
+                var modelToModify = dbContext.Set<ContactSocialmediaItemModel>().Include(p => p.Icon).SingleOrDefault(g => g.Id == node["id"].GetValue<int>());
+                if (modelToModify == null)
+                    return BadRequest(new { message = "Nem található a módosítandó elem" });
+
+                ImageModel imageToDelete = modelToModify.Icon;
+                ImageModel image = FileHandling.SaveFile(Convert.FromBase64String(base64), fileName, filesPath);
+                dbContext.Set<ImageModel>().Add(image);
+
+                dbContext.Set<ImageModel>().Remove(imageToDelete);
+
+                modelToModify.Icon = image;
+                modelToModify.Name = node["name"].GetValue<string>();
+                modelToModify.SocialUrl = node["socialurl"].GetValue<string>();
+                dbContext.Entry(modelToModify).State = EntityState.Modified;
+
+                dbContext.SaveChanges();
+                return Ok(new { Success = true });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Hibás adat", debugMessage = ex.Message });
+            }
+        }
+
+        [HttpDelete("contact/socialmedia/{id}")]
+        public IActionResult DeleteSocialMedia([FromRoute] int id)
+        {
+            var model = dbContext.Set<ContactSocialmediaItemModel>().SingleOrDefault(p => p.Id == id);
+            if (model == null)
+                return BadRequest(new { message = "Az elem nem létezik" });
+
+            dbContext.Set<ContactSocialmediaItemModel>().Remove(model);
+            dbContext.SaveChanges();
+
+            return Ok(new { success = true });
+        }
+
+
+        #endregion Contacts
     }
 }

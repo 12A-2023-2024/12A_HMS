@@ -103,25 +103,25 @@ namespace HMS_WebAPI.Controllers
             */
             var node = requestBody.Serialize<JsonNode>();
             if (node == null)
-                return BadRequest("Missing body");
+                return BadRequest(new { message = "Missing body" });
             if (node["roomnumber"] == null)
-                return BadRequest("Szobaszám megadása kötelező");
+                return BadRequest(new {message = "Szobaszám megadása kötelező"});
             if (node["fromdate"] == null || node["todate"] == null)
-                return BadRequest("Fogalalási időszak megadása kötelező");
+                return BadRequest(new {message = "Fogalalási időszak megadása kötelező"});
             if (!DateTime.TryParse(node["fromdate"].ToString(), out DateTime fromDate))
-                return BadRequest("Hibás dátum: foglalási időszak kezdete");
+                return BadRequest(new {message = "Hibás dátum: foglalási időszak kezdete"});
             if (!DateTime.TryParse(node["todate"].ToString(), out DateTime toDate))
-                return BadRequest("Hibás dátum: foglalási időszak vége");
+                return BadRequest(new {message = "Hibás dátum: foglalási időszak vége"});
             if (node["guests"] == null)
-                return BadRequest("Hibányzó adat: vendégek listája");
+                return BadRequest(new {message = "Hibányzó adat: vendégek listája"});
             fromDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day);
             toDate = new DateTime(toDate.Year, toDate.Month, toDate.Day);
             if (fromDate >= toDate)
-                return BadRequest("Hibás időszak.");
+                return BadRequest(new {message = "Hibás időszak."});
 
             var room = dbContext.Set<RoomModel>().Include(r => r.RoomType).SingleOrDefault(r => r.RoomNumber == node["roomnumber"].ToString() && r.Active);
             if (room == null)
-                return BadRequest("Nem létező szoba");
+                return BadRequest(new {message = "Nem létező szoba"});
             var guests = new List<GuestModel>();
 
             foreach (var guest in node["guests"].AsArray())
@@ -132,7 +132,7 @@ namespace HMS_WebAPI.Controllers
                 }
                 catch
                 {
-                    return BadRequest("Hibás adat a vendégek között");
+                    return BadRequest(new { message = "Hibás adat a vendégek között" });
                 }
             }
 
@@ -142,7 +142,7 @@ namespace HMS_WebAPI.Controllers
                                          .ToList();
             if (reservedRooms.Count != 0)
             {
-                return BadRequest("A szoba már nem szabad.");
+                return BadRequest(new { message = "A szoba már nem szabad." });
             }
 
             dbContext.Guests.AddRange(guests);
@@ -178,7 +178,7 @@ namespace HMS_WebAPI.Controllers
                                        .SingleOrDefault(r => r.PIN == pin && r.CheckInTime == null && r.FromDate <= DateTime.Today && r.ToDate > DateTime.Today);
             if (reservation == null)
             {
-                return BadRequest("Érvénytelen PIN kód");
+                return BadRequest(new { message = "Érvénytelen PIN kód" });
             }
             reservation.CheckInTime = DateTime.Now;
             dbContext.SaveChanges();

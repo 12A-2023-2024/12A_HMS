@@ -84,8 +84,6 @@ export class Page {
     }
     
     async fetch<T>(url: string, method: string, body: any = null): Promise<T> {
-        const requestOptions = this.#getRequestInit(method, body);
-
         return this.fetchAny(url, method, body)
             .then( (response) => {
                 return response.text();

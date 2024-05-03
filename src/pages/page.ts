@@ -3,17 +3,22 @@ export class Page {
     contentDiv: HTMLElement | null = null;
 
     constructor(htmlPage: string) {
-        this.contentDiv = document.getElementById('content');
+            this.contentDiv = document.getElementById('content');
+            this.getHtml(htmlPage).then( (html) => {
+                if (this.contentDiv) {
+                    this.contentDiv.innerHTML = html;
+                    this.getHtmlCallback();
+                }
+            });
+            
         
-        this.getHtml(htmlPage).then( (html) => {
-            if (this.contentDiv) {
-                this.contentDiv.innerHTML = html;
-                //Event PageLoaded event meghívása
-            }
-        });
     }
     
-    getHtml(url: string): Promise<string> {
+    getHtmlCallback(){
+        
+    }
+
+    async getHtml(url: string): Promise<string> {
         const requestOptions: RequestInit = {
             method: 'GET',
             redirect: 'follow'

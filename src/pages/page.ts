@@ -48,8 +48,8 @@ export class Page {
         });
         return l;
     }
-    
-    async fetch<T>(url: string, method: string, body: any = null): Promise<T> {
+
+    #getRequestInit(method: string, body: any = null): RequestInit {
         const userInfo = localStorage.getItem('user');   
         let token = '';
         if (userInfo) {
@@ -64,6 +64,27 @@ export class Page {
             },
             body: body ? JSON.stringify(body) : null
         };
+
+        return requestOptions;
+    }
+
+    async fetchVoid(url: string, method: string, body: any = null): Promise<Response>
+    {
+        const requestOptions = this.#getRequestInit(method, body);
+        return fetch(url, requestOptions)
+        .then( (response) => {
+            if (response.status == 200) {
+                return response;
+            } else if (response.status == 500) {                    
+                throw response;
+            } else {
+                throw new Error(`Hiba a back-end hívás során (ErrorCode: ${response.status})`)
+            }
+        });
+    }
+    
+    async fetch<T>(url: string, method: string, body: any = null): Promise<T> {
+        const requestOptions = this.#getRequestInit(method, body);
 
         return fetch(url, requestOptions)
             .then( (response) => {

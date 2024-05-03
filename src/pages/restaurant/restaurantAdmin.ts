@@ -9,20 +9,21 @@ export class RestaurantAdminPage extends Page {
   currentPage: number = 1;
   maxPage: number = 1
   constructor() {
-    super("/src/pages/restaurant/restaurantAdmin.html");
+    super('/src/pages/restaurant/restaurantAdmin.html');
     localStorage.setItem('user', `{
       "name": "administrator",
-      "token": "KW0H6IW7QSTCIGG2P8Q2I9XNLXD3SUMUGLDVMEYSZECX8E4T1U7J3EKMM05DY0IDJGKHCRWIIBGYJ7ZQGK7T4EICW4HDJ3E2ABRIE2VRWSCI2174NJSPSCTH",
+      "token": "W87E5R62OR932MEVVGW4YAK2WAG2DZMT8WSZ58B8W9KWQL6QKCAUQWPUHUEFVR7JGIT6POJP2H0ZIBO76WAD5H7QSCNDTHGG8LL0VXAPSJGFMDWADTGRV37I",
       "roles": [
           "admin"
       ],
-      "validTo": "2024-05-02T06:10:07.4354572+00:00"
+      "validTo": "2024-05-03T06:23:13.9680624+00:00"
     }`)
-    // this.loadCategories('#mainMessageBoxDiv', '#mainMessage');
-    //PageLoaded eseménykor fut le
+    this.loadCategories('#mainMessageBoxDiv', '#mainMessage');
+
+  }
+  getHtmlCallback(): void {
     this.addEventListeners();
   }
-
   mockMeal() {
     for (let index = 0; index < 60; index++) {
       let _meal:IMeal = {categoryName:"sajt",categoryId:2,description:"sasas",id:30,name:"sajt",price:200,imageUrls:[]}
@@ -57,11 +58,12 @@ export class RestaurantAdminPage extends Page {
     modifyButtons.forEach((e)=>{
       e.addEventListener('click',()=>{
         let id = Number(e.getAttribute('id'));
-        this.querySelector<HTMLElement>('.content').classList.add('hidden');
+        this.querySelector<HTMLElement>('#restaurant-content').classList.add('hidden');
+        this.querySelector<HTMLElement>('nav').classList.add('hidden');
         let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
         this.fetch<IMeal>(`https://hms.jedlik.cloud/api/restaurant/menuitems/${id}`,'GET')
           .then((meal:IMeal)=>{
-            this.getHtml('./modals/modify-meal.html').then((html) => {
+            this.getHtml('./src/pages/restaurant/modals/modify-meal.html').then((html) => {
               modalDiv.innerHTML = html;
               this.addModifyMealEventListeners();
               this.querySelector<HTMLInputElement>('#mealName').value=meal.name;
@@ -229,7 +231,9 @@ export class RestaurantAdminPage extends Page {
   }
 
   closeModal(): void {
-    this.querySelector<HTMLElement>('.content').classList.remove('hidden')
+    this.querySelector<HTMLElement>('#restaurant-content').classList.remove('hidden')
+    this.querySelector<HTMLElement>('nav').classList.remove('hidden');
+
     this.querySelector<HTMLElement>('#restaurant-modal').innerHTML = '';
   }
 
@@ -481,20 +485,21 @@ export class RestaurantAdminPage extends Page {
     })
   }
   addEventListeners() {
-    console.log(this.querySelector<HTMLInputElement>('#newMeal'))
     this.querySelector<HTMLElement>('#newMeal').addEventListener('click', () => {
-      this.querySelector<HTMLElement>('.content').classList.add('hidden');
+      this.querySelector<HTMLElement>('#restaurant-content').classList.add('hidden');
+      this.querySelector<HTMLElement>('nav').classList.add('hidden');
       let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
-      this.getHtml('./modals/new-meal.html').then((html) => {
+      this.getHtml('/src/pages/restaurant/modals/new-meal.html').then((html) => {
         modalDiv.innerHTML = html;
         this.addNewMealModalEventListeners();
       });
     });
 
     this.querySelector<HTMLElement>('#modifyCategory').addEventListener('click', () => {
-      this.querySelector<HTMLElement>('.content').classList.add('hidden');
+      this.querySelector<HTMLElement>('#restaurant-content').classList.add('hidden');
+      this.querySelector<HTMLElement>('nav').classList.add('hidden');
       let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
-      this.getHtml('./modals/modify-category.html').then((html) => {
+      this.getHtml('/src/pages/restaurant/modals/modify-category.html').then((html) => {
         modalDiv.innerHTML = html;
         this.addModifyCategoryModalEventListeners();
       });
@@ -502,9 +507,10 @@ export class RestaurantAdminPage extends Page {
 
 
     this.querySelector<HTMLElement>('#newCategory').addEventListener('click', () => {
-      this.querySelector<HTMLElement>('.content').classList.add('hidden');
+      this.querySelector<HTMLElement>('#restaurant-content').classList.add('hidden');
+      this.querySelector<HTMLElement>('nav').classList.add('hidden');
       let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
-      this.getHtml('./modals/new-category.html').then((html) => {
+      this.getHtml('/src/pages/restaurant/modals/new-category.html').then((html) => {
         modalDiv.innerHTML = html;
         this.addNewCategoryModalEventListeners();
       });
@@ -514,9 +520,11 @@ export class RestaurantAdminPage extends Page {
     })
 
     this.querySelector<HTMLElement>('#deleteCategory').addEventListener('click', () => {
-      this.querySelector<HTMLElement>('.content').classList.add('hidden');
+      this.querySelector<HTMLElement>('#restaurant-content').classList.add('hidden');
+      this.querySelector<HTMLElement>('nav').classList.add('hidden');
+
       let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
-      this.getHtml('./modals/delete-category.html').then((html) => {
+      this.getHtml('/src/pages/restaurant/modals/delete-category.html').then((html) => {
         modalDiv.innerHTML = html;
         this.addDeleteCategoryModalEventListeners();
       });

@@ -121,7 +121,7 @@ export class Extras {
 }
 
 async function getAllParameters(parentPage: RoomtypeAdminPage): Promise<Parameter[]> {
-    let parameters: Parameter[] = new Array<Parameter>;
+    let parameters: Parameter[] = new Array<Parameter>();
     const requestOptions: RequestInit = {
         method: "GET",
         headers: { "Authorization": parentPage.token },

@@ -12,6 +12,9 @@ export class NewsPage extends Page {
         this.querySelector<HTMLInputElement>("#imgUpload").addEventListener("change",()=>{
           this.encodeImageFileAsURL(this.querySelector<HTMLInputElement>("#imgUpload"));
         });
+        this.querySelector<HTMLButtonElement>("#newsPOST").addEventListener("click",()=>{
+          this.postNews();
+        })
     }
 
     generateNews(){
@@ -64,20 +67,71 @@ export class NewsPage extends Page {
         </div>
       ` ;
         newsContainer?.appendChild(element);
+
     }
 
-    encodeImageFileAsURL(element: HTMLInputElement) {
+    async postNews(){
+      var filename = this.getImgName(this.querySelector<HTMLInputElement>("#imgUpload"));
+      var file = await this.getBase64(this.querySelector<HTMLInputElement>("#imgUpload"));
+      console.log(file)
+      var date = this.getCurrentDate();
+      var text = this.querySelector<HTMLElement>("#uploadMainText").textContent;
+      var title = this.querySelector<HTMLElement>("#uploadHeaderText").textContent;
+
+      var canProceed = true;
+      if(!filename){
+        canProceed = false
+      }
+      if(!file){
+        canProceed = false
+      }
+    }
+
+    async encodeImageFileAsURL(element: HTMLInputElement) {
       var filelist = element.files as FileList;
       var file = filelist[0];
       var reader = new FileReader();
-      reader.onloadend = function() {
-        NewsPage.parseResult(reader.result as string)
-      }
       reader.readAsDataURL(file);
+      reader.onloadend = function () {
+        NewsPage.parseResult(reader.result as string);
+      }
+    }
+
+
+
+    async getBase64(element: HTMLInputElement) {
+      var filelist = element.files as FileList;
+      var file = filelist[0];
+      var filedata;
+      await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      }).then(
+        data => filedata = NewsPage.parseResult(data as string)
+      );
+      return filedata;
+    }
+
+    getImgName(element: HTMLInputElement){
+      var filelist = element.files as FileList;
+      var file = filelist[0];
+      return file.name
     }
 
 
     static parseResult(result:string){
       return result = result.slice(result.indexOf("base64")+7)
+    }
+
+    getCurrentDate(): string{
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0');
+      var yyyy = today.getFullYear();
+
+      var date: string = yyyy + '-' + mm + '-' + dd;
+      return date;
     }
 }

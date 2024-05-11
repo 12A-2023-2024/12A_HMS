@@ -31,7 +31,7 @@ export class RoomtypeSelector {
             .then(() => this.initializeWindow())
     }
 
-    private modifyRoomtype(roomtypeId: string) {
+    private modifyRoomtype(roomtypeId: Number) {
         var selectedRoomtype : Roomtype;
 
         var requestOptions: RequestInit = {
@@ -61,6 +61,8 @@ export class RoomtypeSelector {
                     }),
                     redirect: "follow" as RequestRedirect | undefined
                 }
+                console.log(requestOptions.body);
+                console.log(selectedRoomtype.images);   //url has to be converted to base64
                 fetch(`https://hms.jedlik.cloud/api/rooms/types`, requestOptions)
                     .then((response) => response.text())
                     .then((result) => console.log(result))
@@ -77,7 +79,7 @@ export class RoomtypeSelector {
 
         [...document.getElementsByClassName("modify")].forEach(button => {
             button.addEventListener("click", () => {
-                const roomtypeId = button.id.split("_")[1];
+                const roomtypeId = button.id.split("_")[1] as unknown as Number;
                 const roomtypeName = document.querySelector(`#p_${roomtypeId}`);
                 const deleteButton = document.getElementById(`delete_${roomtypeId}`);
                 if (roomtypeName && deleteButton) {
@@ -86,13 +88,20 @@ export class RoomtypeSelector {
                     button.outerHTML = "<button type='button' id='confirm_modification'>✅</button>";
                     deleteButton.outerHTML = "<button type='button' id='cancel_modification'>❌</button>";
                     document.querySelector("#confirm_modification")?.addEventListener("click", () => {
-                        this.modifyRoomtype(roomtypeId);
+                        // this.modifyRoomtype(roomtypeId);
                         this.initializeWindow();
                     });
                     document.querySelector("#cancel_modification")?.addEventListener("click", () => {
                         this.initializeWindow();
                     });
                 }
+            });
+        });
+
+        [...document.getElementsByClassName("roomtypeSelector")].forEach((roomtype) => {
+            const id = Number(roomtype.id.split("_")[1]);
+            roomtype.addEventListener("click", () => {
+                this.parentPage.selectedRoomtype = this.parentPage.roomTypeSelector?.roomtypes.find((roomtype) => roomtype.id == id);
             });
         });
     }
@@ -115,13 +124,9 @@ function fillSelectorContainer(roomtypes: Roomtype[]) {
     if (container) {
         container.innerHTML = "";
         roomtypes.forEach((roomtype: Roomtype) => {
-            container.innerHTML += `<p id="p_${roomtype.id}" style="display:inline;">${roomtype.name}</p>`;
+            container.innerHTML += `<p id="p_${roomtype.id}" class="roomtypeSelector" style="display:inline;">${roomtype.name}</p>`;
             container.innerHTML += `<button type="button" id="modify_${roomtype.id}" class="modify">✏️</button>`;
             container.innerHTML += `<button type="button" id="delete_${roomtype.id}" class="delete">🗑️</button><br>`;
         });
-        container.innerHTML += `<input type="text" id="name" placeholder="Elnevezés" style="display:none;">`;
-        container.innerHTML += `<button type="button" id="confirm" style="display:none;">✅</button>`;
     }
-
-
 }

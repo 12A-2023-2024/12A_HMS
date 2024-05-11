@@ -1,5 +1,5 @@
 import { Page } from "../page.js";
-import { Extras } from "./resources/extras";
+import { Extras } from "./resources/extras.js";
 import { RoomImage } from "./resources/image.js";
 import { login } from "./resources/login.js";
 

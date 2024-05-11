@@ -19,7 +19,7 @@ function convertImagesArrayToBase64(formImages : File[]){
     return images;
 }
 
-const fileToBase64 = (file: File) : Promise<string> => new Promise((resolve, reject) => {
+export const fileToBase64 = (file: File) : Promise<string> => new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve((reader.result as string).replace('data:', '').replace(/^.+,/, ''));
     reader.onerror = reject;

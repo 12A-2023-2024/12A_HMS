@@ -1,20 +1,19 @@
 export class Page {
-
     contentDiv: HTMLElement | null = null;
 
     constructor(htmlPage: string) {
         this.contentDiv = document.getElementById('content');
-        
-        this.getHtml(htmlPage).then( (html) => {
+
+        this.getHtml(htmlPage).then((html) => {
             if (this.contentDiv) {
                 this.contentDiv.innerHTML = html;
                 this.getHtmlCallback();
             }
         });
     }
-    
-    getHtmlCallback(){
-        
+
+    getHtmlCallback() {
+
     }
 
     async getHtml(url: string): Promise<string> {
@@ -24,10 +23,10 @@ export class Page {
         };
 
         return fetch(url, requestOptions)
-            .then( (response) => {
+            .then((response) => {
                 return response.text()
             })
-            .catch( (error) => {
+            .catch((error) => {
                 throw new Error(error);
             })
     }
@@ -48,9 +47,9 @@ export class Page {
         });
         return l;
     }
-    
+
     async fetch<T>(url: string, method: string, body: any = null): Promise<T> {
-        const userInfo = localStorage.getItem('user');   
+        const userInfo = localStorage.getItem('user');
         let token = '';
         if (userInfo) {
             token = JSON.parse(userInfo).token;
@@ -66,20 +65,20 @@ export class Page {
         };
 
         return fetch(url, requestOptions)
-            .then( (response) => {
+            .then((response) => {
                 if (response.status == 200) {
                     return response.text();
-                } else if (response.status == 500) {                    
+                } else if (response.status == 500) {
                     throw response;
                 } else {
                     throw new Error(`Hiba a back-end hívás során (ErrorCode: ${response.status})`)
                 }
             })
-            .then( (data) => {
+            .then((data) => {
                 if (data) {
                     return JSON.parse(data) as T
                 }
                 return null as T;
-            })            
+            })
     }
 }

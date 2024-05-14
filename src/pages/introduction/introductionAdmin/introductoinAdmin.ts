@@ -6,7 +6,6 @@ import { Login } from "../login.js";
 export class IntroductionAdminPage extends Page {
 
     data: introductionModel[] |undefined
-    newIntroduction = new introductionModel()
     constructor() {
         super('src/pages/introduction/introductionAdmin/introductoinAdmin.html');
     }
@@ -30,15 +29,15 @@ export class IntroductionAdminPage extends Page {
         })
     }
 
-    addData(fileData:string){
+    addData(fileData:string, newIntroduction:introductionModel){
         const url: string = "https://hms.jedlik.cloud/api/about/introduction"
         const method: string = "POST"
         const body: any= {
             order: 1,
-            text: this.newIntroduction.text,
-            section: this.newIntroduction.section,
+            text: newIntroduction.text,
+            section: newIntroduction.section,
             image: {
-                filename: this.newIntroduction.alt,
+                filename: newIntroduction.alt,
                 file: fileData
             }
         }
@@ -47,14 +46,18 @@ export class IntroductionAdminPage extends Page {
     }
 
     send(){
+        console.log("Itt vagyok gyökér");
         const newIntroduction = new introductionModel()
         const file = this.querySelector<HTMLInputElement>('#fileUpload');
+        console.log(file)
         newIntroduction.alt = this.querySelector<HTMLInputElement>('#fileUpload').value;
         newIntroduction.section = this.querySelector<HTMLSelectElement>('#section').value;
         newIntroduction.text = this.querySelector<HTMLTextAreaElement>('#title').value;
-        if (!file){
+        try {
             const fileData = this.getBase64(file)
-            fileData.then(data => this.addData(data));
+            fileData.then(data => this.addData(data, newIntroduction));
+        } catch (error) {
+            this.hibavanhülye(error);
         }
     }
 
@@ -75,6 +78,10 @@ export class IntroductionAdminPage extends Page {
   
       parseResult(result:string): string {
         return result.slice(result.indexOf("base64")+7)
+      }
+
+      hibavanhülye(error: any){
+        console.log(error)
       }
   
 }

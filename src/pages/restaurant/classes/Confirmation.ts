@@ -1,39 +1,37 @@
 export class Confirmation {
 
+    content = document.querySelector('#restaurant-content');
+    restaurantModalDiv = document.querySelector('#restaurant-modal');
+    confirmationDiv = document.querySelector('#restaurant-confirmation');
     question(header:string, text: string): Promise<boolean> {
 
 
         //https://stackoverflow.com/questions/45613894/resolve-promise-into-addeventlistener
-        const body = document.querySelector('body');
-        if (body) {
+        if (this.confirmationDiv&&this.content) {
             const modal = this.createModalElement(header, text);
-            const bgDiv = this.createBackgroundDiv();
-            body.appendChild(modal);
-            body.appendChild(bgDiv);
+            this.blurBackground();
+            this.confirmationDiv.appendChild(modal);
 
             return new Promise( (resolve, reject) => {      
-                const closeButton = body.querySelector('div#modal-confirmation button.close');
-                const yesButton = body.querySelector('div#modal-confirmation button.btn-success');
-                const noButton = body.querySelector('div#modal-confirmation button.btn-danger');
+                const closeButton = document.querySelector('#closeConfirmation');
+                const yesButton = document.querySelector('#yesBtn');
+                const noButton = document.querySelector('#noBtn');
 
 
-                if (closeButton && yesButton && noButton && modal && bgDiv) {
-                    closeButton.addEventListener('click', () => {
-                        body.removeChild(modal);
-                        body.removeChild(bgDiv);
+                if (closeButton && yesButton && noButton && modal) {
+                    closeButton.addEventListener('click', () => {                        
                         reject(null);                            
+                        this.undoBlur();
                     });
 
                     yesButton.addEventListener('click', () => {
-                        body.removeChild(modal);
-                        body.removeChild(bgDiv);
                         resolve(true);
+                        this.undoBlur();
                     });
 
                     noButton.addEventListener('click', () => {
-                        body.removeChild(modal);
-                        body.removeChild(bgDiv);
                         resolve(false);                            
+                        this.undoBlur();
                     });
                 }
                 else {
@@ -50,23 +48,20 @@ export class Confirmation {
 
     createModalElement(header: string, text: string): HTMLElement {
         const html = `
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">${header}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>${text}</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Igen</button>
-                    <button type="button" class="btn btn-danger">Nem</button>
-                </div>
-            </div>
-        </div>`
+        <div class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex justify-center items-center">
+        <div class="modal-content bg-white rounded-lg shadow-md p-8 w-96">
+          <span id="closeConfirmation" class="close text-gray-400 hover:text-gray-700 cursor-pointer absolute top-2 right-2">&times;</span>
+          <div>
+            <p class="block mb-2 font-bold">${header}</p>
+            <p class="block mb-2">${text}</p>
+          </div>
+          <div class="flex justify-between">
+            <button id="yesBtn" class="bg-green-600 text-white font-bold py-2 px-4 rounded">Igen</button>
+            <button id="noBtn" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Nem</button>
+          </div>
+        </div>
+    </div>
+    `
 
         const modal = document.createElement('div');
         modal.classList.add('modal', 'd-block');
@@ -78,10 +73,16 @@ export class Confirmation {
         return modal;
     }
 
-    createBackgroundDiv(): HTMLElement {
-        const div = document.createElement('div');
-        div.classList.add('modal-backdrop', 'fade', 'show');
-        return div
+    blurBackground(): void {
+        this.content?.classList.add('hidden');
+        this.restaurantModalDiv?.classList.add('hidden');
+    }
+    undoBlur(): void {
+        if (this.confirmationDiv) {
+            this.content?.classList.remove('hidden');
+            this.restaurantModalDiv?.classList.remove('hidden');
+            this.confirmationDiv.innerHTML='';       
+        }
     }
 
 }

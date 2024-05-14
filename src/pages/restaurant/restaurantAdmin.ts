@@ -65,18 +65,25 @@ export class RestaurantAdminPage extends Page {
     let modifyButtons = document.querySelectorAll('.modifyButton');
 
     deleteButtons.forEach((e) => {
-      //TODO
       e.addEventListener('click', () => {
         let id = Number(e.getAttribute('id'))
-        new Confirmation().question('Sajt','Asd');
-        // this.fetch<IMeal>(`https://hms.jedlik.cloud/api/restaurant/menuitems/${id}`, 'DELETE')
-        // .then(() => {
-        //   this.loadMessageBox('Étel sikeresen törölve!', false)
-        //   this.loadMeals()
-        //   })
-        // .catch((err: Error) => {
-        //   this.loadMessageBox(err.message, true)
-        // })
+        new Confirmation().question('Megerősítés',`Biztosan törli a következő ételt: ${e.getAttribute('name')}?`)
+        .then((result:boolean)=>{
+          if (result) {
+            this.fetch<IMeal>(`https://hms.jedlik.cloud/api/restaurant/menuitems/${id}`, 'DELETE')
+            .then(() => {
+              this.loadMessageBox('Étel sikeresen törölve!', false)
+              this.loadMeals()
+              })
+            .catch((err: Error) => {
+              this.loadMessageBox(err.message, true);
+            })
+          }
+        })
+        .catch((err:Error)=>{
+          this.loadMessageBox(err.message,true);
+        })
+        
       })
     })
     modifyButtons.forEach((e)=>{
@@ -121,39 +128,14 @@ export class RestaurantAdminPage extends Page {
       tbody.innerHTML = '';
       for (let index = this.mealPerPage*(this.currentPage-1); index < this.mealPerPage*(this.currentPage); index++) {
         tbody.innerHTML += this.generateTableRow(this.meals[index]) 
-        let buttons = document.querySelectorAll('.deleteButton');
-        buttons.forEach((e) => {
-          e.addEventListener('click', () => {
-            let id = Number(e.getAttribute('id'))
-            this.fetch(`https://hms.jedlik.cloud/api/restaurant/menuitems/${id}`, 'DELETE')
-            .then(() => {
-              alert('Sikeres törlés')
-              this.loadMeals()
-              })
-            .catch((err: Error) => {
-              this.loadMessageBox(err.message, true)
-            })
-          })
-        })
+        this.mealButtonsEventListeners();
       }
     }else if(this.currentPage==this.maxPage){
       tbody.innerHTML = '';
       for (let index = this.mealPerPage*(this.currentPage-1); index < this.meals.length-(this.mealPerPage*(this.currentPage-1)); index++) {
         tbody.innerHTML += this.generateTableRow(this.meals[index]) 
-        let buttons = document.querySelectorAll('.deleteButton');
-        buttons.forEach((e) => {
-          e.addEventListener('click', () => {
-            let id = Number(e.getAttribute('id'))
-            this.fetch(`https://hms.jedlik.cloud/api/restaurant/menuitems/${id}`, 'DELETE')
-            .then(() => {
-              alert('Sikeres törlés')
-              this.loadMeals()
-              })
-            .catch((err: Error) => {
-              this.loadMessageBox(err.message, true)
-            })
-          })
-        })
+        this.mealButtonsEventListeners();
+
       }
     }
   }
@@ -180,7 +162,7 @@ export class RestaurantAdminPage extends Page {
     </td>
     <td class="border px-4 py-2 text-center">
     <div class="float-right">
-      <button class="deleteButton px-8 mx-4 py-2 font-semibold text-sm bg-red-500 text-white rounded-full shadow-sm align-middle float-right" id="${meal.id}">Étel törlése</button>
+      <button class="deleteButton px-8 mx-4 py-2 font-semibold text-sm bg-red-500 text-white rounded-full shadow-sm align-middle float-right" id="${meal.id}" name="${meal.name}">Étel törlése</button>
       <button class="modifyButton px-8 mx-4 py-2 font-semibold text-sm bg-orange-500 text-white rounded-full shadow-sm align-middle" id="${meal.id}">Étel módosítása</button>
     </div>
     </td>
@@ -194,23 +176,25 @@ export class RestaurantAdminPage extends Page {
     let messageSpan = this.querySelector<HTMLElement>('#mainMessage');
 
     div.classList.remove('hidden')
+    div.classList.add('border');
     this.querySelector<HTMLElement>('#closeMainMessageBox').addEventListener('click', () => {
       this.querySelector<HTMLElement>('#mainMessageBoxDiv').classList.add('hidden');
-      if (isError) {
-        div.classList.remove('bg-red-100 border border-red-400 text-red-700')
-
-      }
     })
     if (isError) {
       div.classList.add('bg-red-100');
-      div.classList.add('border');
       div.classList.add('border-red-400');
       div.classList.add('text-red-700');
+      div.classList.remove('bg-green-100')
+      div.classList.remove('border-green-400')
+      div.classList.remove('text-green-700')
     } else {
       div.classList.add('bg-green-100')
-      div.classList.add('border')
       div.classList.add('border-green-400')
       div.classList.add('text-green-700')
+      div.classList.remove('bg-red-100');
+      div.classList.remove('border-red-400');
+      div.classList.remove('text-red-700');
+
     }
     messageSpan.innerText = message;
   }
@@ -224,7 +208,7 @@ export class RestaurantAdminPage extends Page {
         this.meals=[];
         if (!searchBox.value) {
           this.meals = arr;        
-          // this.mockMeal();    
+          this.mockMeal();    
         }else if (searchBox.value) {
           for (let index = 0; index < arr.length; index++) {
             const meal = arr[index];
@@ -431,15 +415,24 @@ export class RestaurantAdminPage extends Page {
 
     deleteBtn.addEventListener('click', () => {
       if (categorySelect.value != '') {
-        this.fetch(`https://hms.jedlik.cloud/api/restaurant/categories/${categorySelect.options[categorySelect.selectedIndex].value}`, 'DELETE')
-          .then(() => {
-            this.closeModal();
-            this.loadCategories('#mainMessageBoxDiv', '#mainMessage');
-
-          })
-          .catch((err: Error) => {
-            //TODO
-          })
+        new Confirmation().question('Megerősítés',`Biztosan törölni kívánja a következő kategóriát: ${categorySelect.options[categorySelect.selectedIndex].text}?`)
+        .then((result:boolean)=>{
+          if (result) {
+            this.fetch(`https://hms.jedlik.cloud/api/restaurant/categories/${categorySelect.options[categorySelect.selectedIndex].value}`, 'DELETE')
+              .then(() => {
+                this.closeModal();
+                this.loadCategories('#mainMessageBoxDiv', '#mainMessage');
+                this.loadMessageBox('Sikeresen törölte a ketegóriát!',false);
+              })
+              .catch((err: Error) => {
+                this.loadMessageBox(err.message,true);
+              })
+            
+          }
+        })
+        .catch((err:Error)=>{
+          this.loadMessageBox(err.message,true);
+        })
       }
     })
 

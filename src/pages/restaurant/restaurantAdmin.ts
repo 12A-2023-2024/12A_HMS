@@ -1,4 +1,6 @@
 import { Page } from "../page.js";
+import { Confirmation } from "./classes/Confirmation.js";
+import { MealImage } from "./classes/MealImage.js";
 import { ICategory } from "./interfaces/category.js";
 import { IMeal } from "./interfaces/meal.js";
 
@@ -12,18 +14,39 @@ export class RestaurantAdminPage extends Page {
     super('/src/pages/restaurant/restaurantAdmin.html');
     localStorage.setItem('user', `{
       "name": "administrator",
-      "token": "W87E5R62OR932MEVVGW4YAK2WAG2DZMT8WSZ58B8W9KWQL6QKCAUQWPUHUEFVR7JGIT6POJP2H0ZIBO76WAD5H7QSCNDTHGG8LL0VXAPSJGFMDWADTGRV37I",
+      "token": "0ASDV5GWM2R5QXK0AUXN18TR6D7TFFBLSXH27QTS18TQ6GJSM7ZN06H2NKY5GOYAKPMHOKZD2JJU1Q6GPYFFF4UZFKLTYC1XLL3H3IF9AQ1SXYLYF30WXW6U",
       "roles": [
           "admin"
       ],
-      "validTo": "2024-05-03T06:23:13.9680624+00:00"
+      "validTo": "2024-05-14T06:33:02.5117506+00:00"
     }`)
     this.loadCategories('#mainMessageBoxDiv', '#mainMessage');
 
   }
+
   getHtmlCallback(): void {
     this.addEventListeners();
   }
+
+
+  convertImagesArrayToBase64(formImages : File[]){
+    let images : MealImage[] = [];
+    formImages.forEach((image) => {
+        if (image instanceof File) {
+            this.fileToBase64(image).then((base64) => {
+                images.push(new MealImage(image.name, base64));
+            });
+        }
+    })
+    return images;
+  }
+  fileToBase64 = (file: File) : Promise<string> => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve((reader.result as string).replace('data:', '').replace(/^.+,/, ''));
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+});
+
   mockMeal() {
     for (let index = 0; index < 60; index++) {
       let _meal:IMeal = {categoryName:"sajt",categoryId:2,description:"sasas",id:30,name:"sajt",price:200,imageUrls:[]}
@@ -45,14 +68,15 @@ export class RestaurantAdminPage extends Page {
       //TODO
       e.addEventListener('click', () => {
         let id = Number(e.getAttribute('id'))
-        this.fetch<IMeal>(`https://hms.jedlik.cloud/api/restaurant/menuitems/${id}`, 'DELETE')
-        .then(() => {
-          this.loadMessageBox('Étel sikeresen törölve!', false)
-          this.loadMeals()
-          })
-        .catch((err: Error) => {
-          this.loadMessageBox(err.message, true)
-        })
+        new Confirmation().question('Sajt','Asd');
+        // this.fetch<IMeal>(`https://hms.jedlik.cloud/api/restaurant/menuitems/${id}`, 'DELETE')
+        // .then(() => {
+        //   this.loadMessageBox('Étel sikeresen törölve!', false)
+        //   this.loadMeals()
+        //   })
+        // .catch((err: Error) => {
+        //   this.loadMessageBox(err.message, true)
+        // })
       })
     })
     modifyButtons.forEach((e)=>{
@@ -261,7 +285,12 @@ export class RestaurantAdminPage extends Page {
     this.querySelector<HTMLElement>('#closeBtn').addEventListener('click', () => {
       this.closeModal();
     })
-
+    let images:MealImage[]= [];
+    mealImage.addEventListener("change", (e) => {
+      const formData = new FormData(document.querySelector("form") as HTMLFormElement);
+      const formImages = formData.getAll("images");
+      images = this.convertImagesArrayToBase64(formImages as File[]);
+  });
 
     newMealBtn.addEventListener('click', () => {
       let hasError = false;
@@ -281,40 +310,21 @@ export class RestaurantAdminPage extends Page {
         mealPrice.classList.add('border-rose-600')
         hasError = true;
       }
-      // if (!mealImage.value) {
-      //   mealImage.classList.add('border-rose-600')
-      //   hasError = true;
-      // }
+      if (!mealImage.value) {
+        mealImage.classList.add('border-rose-600')
+        hasError = true;
+      }
       if (!hasError) {
-        //TODO: képfeltöltés
-        let imagesString = `{"filename":"","file":""}`
-        // if (mealImage.files?.length==1) {
-        //   this.fileToBase64(mealImage.files[0])
-        //   .then((text:string)=>{
-        //     console.log(text)
-        //     imagesString=`   
-        //       {
-        //       "filename":${mealImage.files[0].name},
-        //       "file":${text}
-        //       }
-
-        //     `
-        //   })
-
-
-        // }
-
         let body = `
         {
           "name": "${mealName.value}",
           "price": ${Number(mealPrice.value)},
           "description": "${mealDescription.value}",
           "categoryId": ${Number(mealCategory.options[mealCategory.selectedIndex].value)},
-          "images": [${imagesString}]
+          "images": ${JSON.stringify(images)}
         }
         
         `
-
         console.log(body)
         this.fetch<any>('https://hms.jedlik.cloud/api/restaurant/menuitems', 'POST', body)
           .then(() => {

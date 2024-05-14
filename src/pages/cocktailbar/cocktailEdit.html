@@ -1,8 +1,8 @@
 <div class="flex gap-4 lg:flex-row md:flex-row sm:flex-col">
     <div class="flex-none w-32 px-1 bg-blue-300">
-        <a class="hover:text-darkGrayishBlue" data-route="addnew">
-            <div class="bg-lime-300 w-full h-48 text-center text-white text-9xl">+</div>
-        </a>
+        <button class="bg-lime-300 w-full h-48 text-center text-white text-9xl" id="btnShowAddNew">
+            +
+        </button>
     </div>
     <div class="flex flex-wrap flex-initial w-full p-1 gap-y-4 bg-blue-300">
         <div class="w-full bg-lime-300 p-1 text-center">
@@ -20,7 +20,7 @@
                 </div>
                 <div class="ctBackgroundBox"></div>
             </div>
-        </div> -->
+        </div>         -->
 
         <!-- ---------------------------------- -->
 
@@ -41,8 +41,8 @@
                 <input type="image" src="" alt="">
             </div>
             <div class="col-start-5">
-                <input type="button" value="Hozzáadás">
-                <input type="button" value="Mégsem">
+                <input type="button" value="Hozzáadás" class="h-1/2 w-full bg-lime-300" id="btnAddNew">
+                <input type="button" value="Mégsem" class="h-1/2 w-full bg-red-300" id="btnCancel">
             </div>
         </div>
     </div>

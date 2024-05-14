@@ -12,5 +12,5 @@ interface SocialMedia{
     id: number,
     name: string,
     iconURL: string,
-    socialURL: string
+    socialUrl: string
 }

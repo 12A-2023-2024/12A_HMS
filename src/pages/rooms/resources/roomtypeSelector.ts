@@ -17,7 +17,7 @@ export class RoomtypeSelector {
                 fillSelectorContainer(this.roomtypes);
                 this.addEventListeners();
             });
-    }
+        }
 
     private deleteRoomtype(roomtypeId: string) {
         const requestOptions: RequestInit = {
@@ -31,7 +31,7 @@ export class RoomtypeSelector {
             .then(() => this.initializeWindow())
     }
 
-    private modifyRoomtype(roomtypeId: Number) {
+    private modifyRoomtype(roomtypeId: Number) {    //
         var selectedRoomtype : Roomtype;
 
         var requestOptions: RequestInit = {
@@ -119,7 +119,7 @@ async function getRoomTypes(parentPage: RoomsAdminPage): Promise<Roomtype[]> {
     return result;
 }
 
-function fillSelectorContainer(roomtypes: Roomtype[]) {
+function fillSelectorContainer(roomtypes: Roomtype[]){
     const container = document.querySelector("#roomtype_container");
     if (container) {
         container.innerHTML = "";

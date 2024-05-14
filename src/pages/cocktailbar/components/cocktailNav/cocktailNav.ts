@@ -1,21 +1,24 @@
+import { CocktailBar } from "../../cocktailBar";
+
 export class CocktailNav{
    
     html: HTMLElement | null = null;
     name: string = "";
+    parent: CocktailBar | null = null;
 
-    constructor(id: number, name: string, place: string) {
+    constructor(id: number, name: string, place: string, parent: CocktailBar) {
         
         this.name = name;
+        this.parent = parent
         
-        
-        this.getHtml("src/components/cocktailNav/cocktailNav.html").then((html)=>{
+        this.getHtml("src/pages/cocktailbar/components/cocktailNav/cocktailNav.html").then((html)=>{
             const wrapperDiv = document.createElement("div")
             wrapperDiv.innerHTML = html
             const nameH = wrapperDiv.querySelector(".ctNavItem") as HTMLElement
-            console.log(nameH)
+           
             if( nameH ){
                 nameH.innerText = name;
-                
+                nameH.onclick = ()=>{parent.changeToCategory(this.name)}
 
 
             }

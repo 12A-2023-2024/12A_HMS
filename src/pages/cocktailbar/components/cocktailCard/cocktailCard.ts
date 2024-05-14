@@ -2,30 +2,36 @@ export class CocktailCard{
    
     html: HTMLElement | null = null;
     name: string = "";
-    abv: number = 0;
+    price: number = 0;
     description: string = "";
     category: string = "";
     img: string = "";
 
-    constructor(name: string, abv: number, description: string, category: string, img: string,  place: string) {
+    constructor(name: string, price: number, description: string, category: string, img: string,  place: string) {
         
+        
+
         this.name = name;
-        this.abv = abv;
+        this.price = price;
         this.description = description;
         this.category = category;
         this.img = img;
         
-        this.getHtml("src/components/cocktailCard/cocktailCard.html").then((html)=>{
+        this.getHtml("src/pages/cocktailbar/components/cocktailCard/cocktailCard.html").then((html)=>{
             const wrapperDiv = document.createElement("div")
             wrapperDiv.innerHTML = html
             const imgH = wrapperDiv.querySelector(".ctCardImg") as HTMLImageElement
             const nameH = wrapperDiv.querySelector(".ctName") as HTMLElement
             const descriptionH = wrapperDiv.querySelector(".ctDescription") as HTMLElement
-            const abvH = wrapperDiv.querySelector(".ctABV") as HTMLElement
-            if(imgH && nameH && descriptionH && abvH){
+            const priceH = wrapperDiv.querySelector(".ctABV") as HTMLElement
+            
+            if(imgH && nameH && descriptionH && priceH){
                 nameH.innerText = name;
                 descriptionH.innerText = description;
-                abvH.innerText = abv.toString() + " ·";
+                priceH.innerText = price.toString().slice(0,-3) + 
+                (price>=1000 ? "." : "") +
+                price.toString().slice(-3)  + 
+                "Ft ·";
                 imgH.src = img;
 
 

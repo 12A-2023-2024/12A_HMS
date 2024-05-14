@@ -1,5 +1,5 @@
 export class ctQueries{
-    token: string = "57GG3SW5EUVT4EBAGIAVXTJNA96OY8WGJBVUVQCCZX2XRR5VBDUUQUC6C227OESTPFTJBBTFL0N2JHENQUAIQ1WR5V2369TARK4X3U9RPFHTVF242UITLDO9";
+    token: string = "LAUC0TNWK8AY1GFVAJ31EM1IOOORX4B9GK5ZYMNV0WOHP5SONS8FGH5MP11V9UV6VOR8YU5R8D644TJ606OKLAVXAGNSAYSOJCPVIXAXTCE3184NFX64FCGT";
     baseUrl: string = "https://hms.jedlik.cloud/api/coctailbar/"
     constructor()
     {
@@ -19,15 +19,25 @@ export class ctQueries{
     }
 
     async getCategories(){
-        let result:{
-            id: number;
-            name: string;
-        }[] = [];
+        
         return this.fetch<{
             id: number;
             name: string;
         }[]>(this.baseUrl + "categories", 'GET')
             
+    }
+
+    async getCocktails(){
+        
+        return this.fetch<{
+            id: number;
+            name: string;
+            price: number;
+            description: string;
+            imageUrls: string[];
+            categoryId: number;
+            categoryName: string;
+        }[]>(this.baseUrl + "coctails", 'GET')
     }
 
 

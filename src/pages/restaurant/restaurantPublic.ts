@@ -1,4 +1,3 @@
-import { forEachChild } from "../../../../../../../node_modules/typescript/lib/typescript.js";
 import { Page } from "../page.js";
 import { ICategory } from "./interfaces/category.js";
 import { IMeal } from "./interfaces/meal.js";
@@ -7,26 +6,8 @@ export class RestaurantPublicPage extends Page {
     meals: IMeal[] = [];
   constructor() {
     super("/src/pages/restaurant/restaurantPublic.html");
-      this.makeMenuItems();
+    this.makeMenuItems();
   }
-
-// class MenuItem {
-//     public id: number;
-//     public name: string;
-//     public price: number;
-//     public description: string;
-//     public categoryId: number;
-//     public images: [];
-
-//     constructor(id: number, name: string, price: number, description: string, categoryId: number, images: []) {
-//         this.id = id;
-//         this.name = name;
-//         this.price = price;
-//         this.description = description;
-//         this.categoryId = categoryId;
-//         this.images = images;
-//     }
-// }
 
 makeMenuItemHtml(item: IMeal): void {
     let card = document.createElement("div");
@@ -35,14 +16,13 @@ makeMenuItemHtml(item: IMeal): void {
     let imageContainer = document.createElement("div");
     imageContainer.classList.add("h-5/6", "w-full", "p-3");
     let image = document.createElement("img");
-    image.classList.add("object-fill", "h-full");   // todo: image src
+    image.classList.add("object-fill", "h-full");
+    image.src = item.imageUrls[0];
     imageContainer.appendChild(image);
     card.appendChild(imageContainer);
 
     let info = document.createElement("div");
     info.classList.add("h-1/6", "w-full", "flex", "flex-row", "items-center", "justify-between", "p-2");
-    card.appendChild(info);
-
     let nameContainer = document.createElement("div");
     nameContainer.classList.add("flex-grow", "flex", "items-center");
     let p = document.createElement("p");
@@ -51,27 +31,34 @@ makeMenuItemHtml(item: IMeal): void {
     let p2 = document.createElement("p");
     p2.classList.add("font-bold");
     p2.innerText = item.price.toString();
-    nameContainer.appendChild(p2);
-    card.appendChild(nameContainer);
+    info.appendChild(nameContainer);
+    info.appendChild(p2);
+    card.appendChild(info);
 
 
     card.addEventListener('click', (event) => {
         // todo: expand with description
     });
 
-    document.querySelector("content-start")?.appendChild(card);
+    document.querySelector(".content-start")?.appendChild(card);
 }
 
-getMenuItems(): void {
-   this.fetch<IMeal[]>('https://hms.jedlik.cloud/api/restaurant/menuitems', 'GET')
-       .then((arr) => {
-           this.meals = arr;
-       })
-}
+async getMenuItems(): Promise<void> {
+        try {
+            const arr = await this.fetch<IMeal[]>('https://hms.jedlik.cloud/api/publicpages/menuitems', 'GET');
+            this.meals = arr;
+        } catch (error) {
+            console.error("Error fetching menu items:", error);
+        }
+    }
 
- makeMenuItems() : void {
+
+ async makeMenuItems() : Promise<void> {
+     await this.getMenuItems();
+     console.log(this.meals.length)
      this.meals.forEach(meal => {
          this.makeMenuItemHtml(meal);
-     })
+         console.log(meal.name);
+     });
 }
 }

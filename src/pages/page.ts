@@ -8,6 +8,7 @@ export class Page {
         this.getHtml(htmlPage).then( (html) => {
             if (this.contentDiv) {
                 this.contentDiv.innerHTML = html;
+                this.addEventListeners();
             }
         });
     }
@@ -25,5 +26,9 @@ export class Page {
             .catch( (error) => {
                 throw new Error(error);
             })
+    }
+
+    addEventListeners() {
+
     }
 }

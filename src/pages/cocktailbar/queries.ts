@@ -40,6 +40,10 @@ export class ctQueries{
         }[]>(this.baseUrl + "coctails", 'GET')
     }
 
+    async addCocktails() {
+        
+    }
+
 
     fetch<T>(url: string, method: string, body: any = null): Promise<T> {
         const userInfo = localStorage.getItem('user');   

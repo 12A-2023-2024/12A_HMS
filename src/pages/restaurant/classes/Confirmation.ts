@@ -1,29 +1,22 @@
 export class Confirmation {
 
-    content = document.querySelector('#restaurant-content');
     restaurantModalDiv = document.querySelector('#restaurant-modal');
     confirmationDiv = document.querySelector('#restaurant-confirmation');
     question(header:string, text: string): Promise<boolean> {
 
 
         //https://stackoverflow.com/questions/45613894/resolve-promise-into-addeventlistener
-        if (this.confirmationDiv&&this.content) {
+        if (this.confirmationDiv) {
             const modal = this.createModalElement(header, text);
             this.blurBackground();
             this.confirmationDiv.appendChild(modal);
 
             return new Promise( (resolve, reject) => {      
-                const closeButton = document.querySelector('#closeConfirmation');
                 const yesButton = document.querySelector('#yesBtn');
                 const noButton = document.querySelector('#noBtn');
 
 
-                if (closeButton && yesButton && noButton && modal) {
-                    closeButton.addEventListener('click', () => {                        
-                        reject(null);                            
-                        this.undoBlur();
-                    });
-
+                if (yesButton && noButton && modal) {
                     yesButton.addEventListener('click', () => {
                         resolve(true);
                         this.undoBlur();
@@ -49,8 +42,7 @@ export class Confirmation {
     createModalElement(header: string, text: string): HTMLElement {
         const html = `
         <div class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex justify-center items-center">
-        <div class="modal-content bg-white rounded-lg shadow-md p-8 w-96">
-          <span id="closeConfirmation" class="close text-gray-400 hover:text-gray-700 cursor-pointer absolute top-2 right-2">&times;</span>
+        <div class="modal-content bg-white rounded-lg shadow-md p-6 w-96">
           <div>
             <p class="block mb-2 font-bold">${header}</p>
             <p class="block mb-2">${text}</p>
@@ -74,12 +66,10 @@ export class Confirmation {
     }
 
     blurBackground(): void {
-        this.content?.classList.add('hidden');
         this.restaurantModalDiv?.classList.add('hidden');
     }
     undoBlur(): void {
         if (this.confirmationDiv) {
-            this.content?.classList.remove('hidden');
             this.restaurantModalDiv?.classList.remove('hidden');
             this.confirmationDiv.innerHTML='';       
         }

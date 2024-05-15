@@ -1,6 +1,6 @@
 import { Page } from "../page.js";
-import { Confirmation } from "./classes/Confirmation.js";
-import { MealImage } from "./classes/MealImage.js";
+import { Confirmation } from "./classes/confirmation.js";
+import { MealImage } from "./classes/meal-image.js";
 import { ICategory } from "./interfaces/category.js";
 import { IMeal } from "./interfaces/meal.js";
 
@@ -13,12 +13,6 @@ export class RestaurantAdminPage extends Page {
   constructor() {
     super('/src/pages/restaurant/restaurantAdmin.html');
     localStorage.setItem('user', `{
-      "name": "administrator",
-      "token": "0ASDV5GWM2R5QXK0AUXN18TR6D7TFFBLSXH27QTS18TQ6GJSM7ZN06H2NKY5GOYAKPMHOKZD2JJU1Q6GPYFFF4UZFKLTYC1XLL3H3IF9AQ1SXYLYF30WXW6U",
-      "roles": [
-          "admin"
-      ],
-      "validTo": "2024-05-14T06:33:02.5117506+00:00"
     }`)
     this.loadCategories('#mainMessageBoxDiv', '#mainMessage');
 
@@ -40,6 +34,7 @@ export class RestaurantAdminPage extends Page {
     })
     return images;
   }
+
   fileToBase64 = (file: File) : Promise<string> => new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve((reader.result as string).replace('data:', '').replace(/^.+,/, ''));
@@ -54,10 +49,81 @@ export class RestaurantAdminPage extends Page {
     }
   }
 
-  addModifyMealEventListeners() {
+  addModifyMealEventListeners(id:number) {
+    let mealImage = this.querySelector<HTMLInputElement>('#mealImage');
+    let mealName = this.querySelector<HTMLInputElement>('#mealName');
+    let mealCategory = this.querySelector<HTMLSelectElement>('#mealCategory');
+    let mealDescription = this.querySelector<HTMLInputElement>('#mealDescription');
+    let mealPrice = this.querySelector<HTMLInputElement>('#mealPrice');
+
+    let images:MealImage[]=[];
+    mealImage.addEventListener("change", (e) => {
+      const formData = new FormData(document.querySelector("form") as HTMLFormElement);
+      const formImages = formData.getAll("images");
+      images = this.convertImagesArrayToBase64(formImages as File[]);
+    });
+
     this.querySelector<HTMLElement>('#closeBtn').addEventListener('click',()=>this.closeModal());
+
     this.querySelector<HTMLElement>('#modifyMealButton').addEventListener('click',(()=>{
-      
+      this.categories.forEach(cat => {
+        mealCategory.appendChild(new Option(cat.name, cat.id.toString()));
+      });
+      const inputs = ['mealName', 'mealCategory', 'mealDescription', 'mealPrice', 'mealImage'];
+      inputs.forEach(element => {
+        this.querySelector<HTMLElement>(`#${element}`).addEventListener('focus', (event) => {
+          if (event.target) {
+            (<HTMLElement>event.target).classList.remove('border-rose-600');
+          }
+        })
+      })
+
+      let hasError = false;
+      if (!mealName.value) {
+        mealName.classList.add('border-rose-600')
+        hasError = true;
+      }
+      if (!mealCategory.value) {
+        mealCategory.classList.add('border-rose-600')
+        hasError = true;
+      }
+      if (!mealDescription.value) {
+        mealDescription.classList.add('border-rose-600')
+        hasError = true;
+      }
+      if (Number(mealPrice.value) <= 0) {
+        mealPrice.classList.add('border-rose-600')
+        hasError = true;
+      }
+      if (!mealImage.value) {
+        mealImage.classList.add('border-rose-600')
+        hasError = true;
+      }
+
+      if (!hasError) {
+        let body = `
+        {
+          "id":${id},
+          "name": "${mealName.value}",
+          "price": ${Number(mealPrice.value)},
+          "description": "${mealDescription.value}",
+          "categoryId": ${Number(mealCategory.options[mealCategory.selectedIndex].value)},
+          "images": ${JSON.stringify(images)}
+        }
+        
+        `
+        this.fetch<any>('https://hms.jedlik.cloud/api/restaurant/menuitems', 'PUT', body)
+          .then(() => {
+            this.loadMeals();
+            this.closeModal();
+            this.loadMessageBox('Étel sikeresen megváltoztatva!',false);
+          })
+          .catch((err: Error) => {
+            this.closeModal();
+            this.loadMessageBox(err.message,true);
+          })
+
+      }
     }))
   }
   mealButtonsEventListeners():void{
@@ -89,35 +155,50 @@ export class RestaurantAdminPage extends Page {
     modifyButtons.forEach((e)=>{
       e.addEventListener('click',()=>{
         let id = Number(e.getAttribute('id'));
-        this.querySelector<HTMLElement>('#restaurant-content').classList.add('hidden');
-        this.querySelector<HTMLElement>('nav').classList.add('hidden');
         let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
         this.fetch<IMeal>(`https://hms.jedlik.cloud/api/restaurant/menuitems/${id}`,'GET')
-          .then((meal:IMeal)=>{
+        .then((meal:IMeal)=>{
+            // this.querySelector<HTMLElement>('#restaurant-content').classList.add('hidden');
+            // this.querySelector<HTMLElement>('nav').classList.add('hidden');
+
             this.getHtml('./src/pages/restaurant/modals/modify-meal.html').then((html) => {
               modalDiv.innerHTML = html;
-              this.addModifyMealEventListeners();
+              this.addModifyMealEventListeners(id);
+
               this.querySelector<HTMLInputElement>('#mealName').value=meal.name;
               this.querySelector<HTMLInputElement>('#mealDescription').value=meal.description;
-              for (let i = 0; i < this.categories.length; i++) {
-                const category = this.categories[i];
-                this.querySelector<HTMLSelectElement>('#mealCategory').options.add(new Option(category.name,category.id.toString()))
-                if (category.name==meal.categoryName) {
-                  let index = this.categories.findIndex(category=>category.name==meal.categoryName);
-                  this.querySelector<HTMLSelectElement>('#mealCategory').options.selectedIndex=index;
-                  
-                }
-              }
-              
-              this.querySelector<HTMLInputElement>('#mealPrice').value=meal.price.toString();
 
+              this.categories.forEach(category => {
+                if (category.name==meal.categoryName) {
+                  this.querySelector<HTMLSelectElement>('#mealCategory').options.add(new Option(category.name,category.id.toString(),undefined,true))
+                }else{
+                this.querySelector<HTMLSelectElement>('#mealCategory').options.add(new Option(category.name,category.id.toString()))
+                }
+                
+              });
+              
+              this.querySelector<HTMLInputElement>('#mealPrice').value=meal.price.toString();     
             })
-      });
+          })
+          .catch((err:Error)=>{
+            this.loadMessageBox(err.message,true);
+          })
+          
       })
     })
   }
   generateTableRows(){
     const tbody = this.querySelector<HTMLElement>('tbody');
+    this.querySelector<HTMLElement>('thead').innerHTML=`
+    <tr>
+      <th>ID</th>
+      <th>Étel neve</th>
+      <th>Kategória</th>
+      <th>Ár</th>
+      <th>Leírás</th>
+      <th>Képek</th>
+      <th></th>
+    </tr>`
     if (this.currentPage==1) {
       tbody.innerHTML = '';
       for (let index = 0; index < this.mealPerPage; index++) {
@@ -144,29 +225,29 @@ export class RestaurantAdminPage extends Page {
     if (meal.imageUrls.length != 0) {
       images = '';
       meal.imageUrls.forEach(imgSource => {
-        images += `<img src="${imgSource}" width="40" height="40">\n`
+        images += `<img src="${imgSource}" class="" width="50" height="50">\n`
       });
     }
     
     let result = `
-    <tr>
-    <td class="border px-4 py-2 text-center">${meal.id}</td>
-    <td class="border px-4 py-2 text-center">${meal.name}</td>
-    <td class="border px-4 py-2 text-center">${meal.categoryName}</td>
-    <td class="border px-4 py-2 text-center">${meal.price} Ft</td>
-    <td class="border px-4 py-2 text-center">${meal.description}</td>
-    <td class="border px-4 py-2 text-center">
-    <div class="images">
-      ${images}
-    </div>
-    </td>
-    <td class="border px-4 py-2 text-center">
-    <div class="float-right">
-      <button class="deleteButton px-8 mx-4 py-2 font-semibold text-sm bg-red-500 text-white rounded-full shadow-sm align-middle float-right" id="${meal.id}" name="${meal.name}">Étel törlése</button>
-      <button class="modifyButton px-8 mx-4 py-2 font-semibold text-sm bg-orange-500 text-white rounded-full shadow-sm align-middle" id="${meal.id}">Étel módosítása</button>
-    </div>
-    </td>
-    </tr>
+      <tr>
+      <td class="border px-4 py-2 text-center">${meal.id}</td>
+      <td class="border px-4 py-2 text-center">${meal.name}</td>
+      <td class="border px-4 py-2 text-center">${meal.categoryName}</td>
+      <td class="border px-4 py-2 text-center">${meal.price} Ft</td>
+      <td class="border content-center text-center"><textarea class="resize-none bg-white" disabled readonly>${meal.description}</textarea></td>
+      <td class="border px-4 py-2 text-center">
+      <div class="images flex">
+        ${images}
+      </div>
+      </td>
+      <td class="border px-4 py-2 text-center">
+      <div class="float-right">
+        <button class="deleteButton px-8 mx-4 py-2 font-semibold text-sm bg-red-500 text-white rounded-full shadow-sm align-middle float-right" id="${meal.id}" name="${meal.name}">Étel törlése</button>
+        <button class="modifyButton px-8 mx-4 py-2 font-semibold text-sm bg-orange-500 text-white rounded-full shadow-sm align-middle" id="${meal.id}">Étel módosítása</button>
+      </div>
+      </td>
+      </tr>
     
     `
     return result;
@@ -274,7 +355,7 @@ export class RestaurantAdminPage extends Page {
       const formData = new FormData(document.querySelector("form") as HTMLFormElement);
       const formImages = formData.getAll("images");
       images = this.convertImagesArrayToBase64(formImages as File[]);
-  });
+    });
 
     newMealBtn.addEventListener('click', () => {
       let hasError = false;
@@ -309,7 +390,6 @@ export class RestaurantAdminPage extends Page {
         }
         
         `
-        console.log(body)
         this.fetch<any>('https://hms.jedlik.cloud/api/restaurant/menuitems', 'POST', body)
           .then(() => {
             this.loadMeals();
@@ -318,6 +398,7 @@ export class RestaurantAdminPage extends Page {
           })
           .catch((err: Error) => {
             this.loadMessageBox(err.message,true);
+            this.closeModal();
           })
 
       }
@@ -489,8 +570,8 @@ export class RestaurantAdminPage extends Page {
   }
   addEventListeners() {
     this.querySelector<HTMLElement>('#newMeal').addEventListener('click', () => {
-      this.querySelector<HTMLElement>('#restaurant-content').classList.add('hidden');
-      this.querySelector<HTMLElement>('nav').classList.add('hidden');
+      // this.querySelector<HTMLElement>('#restaurant-content').classList.add('hidden');
+      // this.querySelector<HTMLElement>('nav').classList.add('hidden');
       let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
       this.getHtml('/src/pages/restaurant/modals/new-meal.html').then((html) => {
         modalDiv.innerHTML = html;
@@ -499,8 +580,8 @@ export class RestaurantAdminPage extends Page {
     });
 
     this.querySelector<HTMLElement>('#modifyCategory').addEventListener('click', () => {
-      this.querySelector<HTMLElement>('#restaurant-content').classList.add('hidden');
-      this.querySelector<HTMLElement>('nav').classList.add('hidden');
+      // this.querySelector<HTMLElement>('#restaurant-content').classList.add('hidden');
+      // this.querySelector<HTMLElement>('nav').classList.add('hidden');
       let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
       this.getHtml('/src/pages/restaurant/modals/modify-category.html').then((html) => {
         modalDiv.innerHTML = html;
@@ -510,8 +591,8 @@ export class RestaurantAdminPage extends Page {
 
 
     this.querySelector<HTMLElement>('#newCategory').addEventListener('click', () => {
-      this.querySelector<HTMLElement>('#restaurant-content').classList.add('hidden');
-      this.querySelector<HTMLElement>('nav').classList.add('hidden');
+      // this.querySelector<HTMLElement>('#restaurant-content').classList.add('hidden');
+      // this.querySelector<HTMLElement>('nav').classList.add('hidden');
       let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
       this.getHtml('/src/pages/restaurant/modals/new-category.html').then((html) => {
         modalDiv.innerHTML = html;
@@ -523,8 +604,8 @@ export class RestaurantAdminPage extends Page {
     })
 
     this.querySelector<HTMLElement>('#deleteCategory').addEventListener('click', () => {
-      this.querySelector<HTMLElement>('#restaurant-content').classList.add('hidden');
-      this.querySelector<HTMLElement>('nav').classList.add('hidden');
+      // this.querySelector<HTMLElement>('#restaurant-content').classList.add('hidden');
+      // this.querySelector<HTMLElement>('nav').classList.add('hidden');
 
       let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
       this.getHtml('/src/pages/restaurant/modals/delete-category.html').then((html) => {
@@ -544,45 +625,51 @@ export class RestaurantAdminPage extends Page {
     let pagerPrevious = this.querySelector<HTMLElement>('#pager-previous');
     let pagerCurrent = this.querySelector<HTMLElement>('#pager-current');
     pagerNext.addEventListener('click', () => {
-      if (this.currentPage==this.maxPage-1) {
-        pagerLast.classList.add('hidden');
-        pagerNext.classList.add('hidden');
+      if (this.currentPage<this.maxPage) {
+        if (this.currentPage==this.maxPage-1) {
+          pagerLast.classList.remove('cursor-pointer');
+          pagerNext.classList.remove('cursor-pointer');
+        }
+        pagerFirst.classList.add('cursor-pointer');
+        pagerPrevious.classList.add('cursor-pointer');
+        this.currentPage++;
+        pagerCurrent.innerText = this.currentPage.toString();
+        this.generateTableRows();
+        
       }
-      pagerFirst.classList.remove('hidden');
-      pagerPrevious.classList.remove('hidden');
-      this.currentPage++;
-      pagerCurrent.innerText = this.currentPage.toString();
-      this.generateTableRows();
     })
     pagerPrevious.addEventListener('click', () => {
-      if (this.currentPage==2) {
-        pagerFirst.classList.add('hidden');
-        pagerPrevious.classList.add('hidden');
+      if (this.currentPage>1) {
+        if (this.currentPage==2) {
+          pagerFirst.classList.remove('cursor-pointer');
+          pagerPrevious.classList.remove('cursor-pointer');
+        }
+        pagerLast.classList.add('cursor-pointer');
+        pagerNext.classList.add('cursor-pointer');
+        this.currentPage--;
+        pagerCurrent.innerText = this.currentPage.toString();
+        this.generateTableRows();
+        
       }
-      pagerLast.classList.remove('hidden');
-      pagerNext.classList.remove('hidden');
-      this.currentPage--;
-      pagerCurrent.innerText = this.currentPage.toString();
-      this.generateTableRows();
 
     })
     pagerLast.addEventListener('click',()=>{
       this.currentPage=this.maxPage;
       pagerCurrent.innerText = this.currentPage.toString();
-      pagerLast.classList.add('hidden');
-      pagerNext.classList.add('hidden');
-      pagerFirst.classList.remove('hidden');
-      pagerPrevious.classList.remove('hidden');
+      pagerLast.classList.remove('cursor-pointer');
+      pagerNext.classList.remove('cursor-pointer');
+      pagerFirst.classList.add('cursor-pointer');
+      pagerPrevious.classList.add('cursor-pointer');
       this.generateTableRows();
 
     })
     pagerFirst.addEventListener('click',()=>{
       this.currentPage=1;
       pagerCurrent.innerText = this.currentPage.toString();
-      pagerFirst.classList.add('hidden');
-      pagerPrevious.classList.add('hidden');
-      pagerLast.classList.remove('hidden');
-      pagerNext.classList.remove('hidden');
+      pagerFirst.classList.remove('cursor-pointer');
+      pagerPrevious.classList.remove('cursor-pointer');
+      pagerLast.classList.add('cursor-pointer');
+      pagerNext.classList.add('cursor-pointer');
       this.generateTableRows();
 
     })

@@ -1,4 +1,4 @@
-import { RoomsAdminPage } from "../rooms_admin_page.js";
+import { RoomsAdminPage } from "../room_edit_page.js";
 import { Roomtype } from "./roomtype.js";
 
 export class RoomtypeSelector {
@@ -17,7 +17,7 @@ export class RoomtypeSelector {
                 fillSelectorContainer(this.roomtypes);
                 this.addEventListeners();
             });
-        }
+    }
 
     private deleteRoomtype(roomtypeId: string) {
         const requestOptions: RequestInit = {
@@ -80,7 +80,7 @@ async function getRoomTypes(parentPage: RoomsAdminPage): Promise<Roomtype[]> {
     return result;
 }
 
-function fillSelectorContainer(roomtypes: Roomtype[]){
+function fillSelectorContainer(roomtypes: Roomtype[]) {
     const container = document.querySelector("#roomtype_container");
     if (container) {
         container.innerHTML = "";

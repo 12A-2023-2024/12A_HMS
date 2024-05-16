@@ -26,14 +26,14 @@ export const fileToBase64 = (file: File) : Promise<string> => new Promise((resol
     reader.readAsDataURL(file);
 });
 
-function fetchRoomtype(roomtype : Roomtype, modify : boolean){
+function fetchRoomtype(roomtype : Roomtype){
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", page.token);
 
     const raw = JSON.stringify(roomtype);
 
-    if (modify) {
+    if (page.modify) {
        var  requestOptions = {
             method: "PUT",
             headers: {

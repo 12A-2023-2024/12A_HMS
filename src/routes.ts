@@ -2,6 +2,7 @@ import { ContactPage } from "./pages/contact/contact.js";
 import { HomePage } from "./pages/home/home.js";
 import { IntroductionPage } from "./pages/introduction/introduction.js";
 import { NewsPage } from "./pages/news/news.js";
+import { NewsAdminPage } from "./pages/news/newsadmin.js";
 
 export const routes: {[key: string]: {page: any}} = {
     '': {
@@ -15,6 +16,9 @@ export const routes: {[key: string]: {page: any}} = {
     },
     'news':{
         page: NewsPage
-    }
+    },
+    'newsadmin':{
+        page: NewsAdminPage
+    },
 
 }

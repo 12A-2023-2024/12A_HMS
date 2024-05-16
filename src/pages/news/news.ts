@@ -1,6 +1,5 @@
 import { Page } from "../page.js";
 import { Hir } from "./hir.js";
-import { Login } from "../introduction/login.js";
 
 export class NewsPage extends Page {
 
@@ -10,14 +9,11 @@ export class NewsPage extends Page {
 
     override getHtmlCallback(): void {
         this.generateNews();
-        this.querySelector<HTMLButtonElement>("#newsPOST").addEventListener("click",()=>{
-          this.postNews();
-        })
     }
 
-    generateNews(){
+    async generateNews(){
 
-        this.fetch<Hir[]>("https://hms.jedlik.cloud/api/publicpages/news", "GET")
+        await this.fetch<Hir[]>("https://hms.jedlik.cloud/api/publicpages/news", "GET")
             .then((result)=>{
                 var news = result;
                 let reverse = false
@@ -29,8 +25,8 @@ export class NewsPage extends Page {
                     this.generateArticle(reverse,article)
                 }
             })
-        
     }
+
 
     generateArticle(reverse: boolean, article: Hir){
         let newsContainer = document.querySelector("#news-container")?.querySelector("section");
@@ -63,111 +59,8 @@ export class NewsPage extends Page {
           <p class="mb-6 text-neutral-500 text-justify">
             ${article.text}
           </p>
-        </div>
+          </div>
       ` ;
         newsContainer?.appendChild(element);
-
-    }
-
-    async postNews(){
-      var filename = this.getImgName(this.querySelector<HTMLInputElement>("#imgUpload"));
-      var file = await this.getBase64(this.querySelector<HTMLInputElement>("#imgUpload"));
-      var date = this.getCurrentDate();
-      var text = this.querySelector<HTMLTextAreaElement>("#uploadMainText").value;
-      var title = this.querySelector<HTMLTextAreaElement>("#uploadHeaderText").value;
-
-      var canProceed = true;
-      if(!filename){
-        console.log("filename")
-        canProceed = false
-      }
-      if(!file){
-        console.log("file")
-
-        canProceed = false
-      }
-      if(!date){
-        console.log("date")
-
-        canProceed = false
-      }
-      if(!text){
-        console.log("text")
-
-        canProceed = false
-      }
-      if(!title){
-        console.log("title")
-
-        canProceed = false;
-      }
-
-      if(canProceed){
-        const body = {
-          date: date,
-          text: text,
-          title: title,
-          image: {
-              filename: filename,
-              file: file
-          },
-        }
-  
-        await this.login()
-  
-        this.fetch<null>("https://hms.jedlik.cloud/api/about/news", "POST", body)
-      }
-
-
-    }
-
-    async getBase64(element: HTMLInputElement) {
-      var filelist = element.files as FileList;
-      var file = filelist[0];
-      var filedata;
-      if(!file) return null
-      await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-      }).then(
-        data => filedata = this.parseResult(data as string)
-      );
-      return filedata;
-    }
-
-    getImgName(element: HTMLInputElement){
-      var filelist = element.files as FileList;
-      var file = filelist[0];
-      if(file) return file.name
-    }
-
-    async login(){
-      const url: string = "https://hms.jedlik.cloud/api/login"
-      const method: string = "POST"
-      const body: any= {
-          "loginName": "admin",
-          "password": "admin"
-       }
-      const data = this.fetch<Login>(url, method, body)
-      await data.then( (result) => {
-          localStorage.setItem('user', JSON.stringify(result));
-      })        
-  }
-
-
-    parseResult(result:string){
-      return result = result.slice(result.indexOf("base64")+7)
-    }
-
-    getCurrentDate(): string{
-      var today = new Date();
-      var dd = String(today.getDate()).padStart(2, '0');
-      var mm = String(today.getMonth() + 1).padStart(2, '0');
-      var yyyy = today.getFullYear();
-
-      var date: string = yyyy + '-' + mm + '-' + dd;
-      return date;
     }
 }

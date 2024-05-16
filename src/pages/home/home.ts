@@ -47,8 +47,6 @@ export class HomePage extends Page {
             <a href="${socialmedia.socialUrl}"><img src="${socialmedia.iconURL}" alt="${socialmedia.name}" class="h-10"></a>
             </li>
             `
-            console.log(socialmedia)
-            console.log(socialmedia.socialUrl)
         })
     }
 }

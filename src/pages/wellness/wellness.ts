@@ -1,52 +1,88 @@
 import { Page } from "../page.js";
+import { UserData } from "./user.js";
+import { WellnessProduct } from "./wellnessproduct.js";
 
 export class WellnessPage extends Page {
 
-    constructor() {
-        super('/src/pages/wellness/wellness.html')
-        this.getHtmlCallback();
-    }
+  constructor() {
+    super('/src/pages/wellness/wellness.html')
+    this.getHtmlCallback();
+  }
 
-    login(){
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        const raw = JSON.stringify({
-        "loginName": (document.getElementById("user") as HTMLInputElement).value.toString(), 
-        "password": (document.getElementById("pass")as HTMLInputElement).value.toString()
+  login() {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    const body = JSON.stringify({
+      "loginName": (document.getElementById("user") as HTMLInputElement).value.toString(),
+      "password": (document.getElementById("pass") as HTMLInputElement).value.toString()
+    });
+
+    this.fetch<UserData>("https://hms.jedlik.cloud/api/login", "POST", body)
+      .then((result) => {
+        localStorage.setItem("user", JSON.stringify(result));
+        localStorage.setItem("roles", JSON.stringify(result.roles));
+      })
+      .catch((error) => console.error(error));
+    (document.getElementById("user") as HTMLInputElement).value = '';
+    (document.getElementById("pass") as HTMLInputElement).value = '';
+    this.LoginVisual();
+  }
+
+  override getHtmlCallback() {
+    this.addButtonEventListeners();
+    this.getProductsData();
+  }
+
+  addButtonEventListeners() {
+    document.getElementById("btnconfirm")?.addEventListener("click", () => {
+      this.login();
+    });
+  }
+  getProductsData() {
+
+    this.fetch<WellnessProduct[]>("https://hms.jedlik.cloud/api/publicpages/wellnessproducts", "GET")
+      .then((result) => {
+        var maindiv = document.getElementById("maindiv") as HTMLElement;
+        // var contentCollection : HTMLCollection = maindiv.children;
+        maindiv.innerHTML = "";
+        result.forEach(element => {
+          maindiv.innerHTML += `
+              <div class="bg-blue-100 w-2/5 h-1/6 flex flex-col items-end justify-between rounded-md m-5">
+                <h1 class="text-lg font-bold self-center" >
+                ${element.name}
+                </h1>
+                <p class="text-base font-semibold self-start m-2">
+                  ${element.description}
+                </p>
+                <p>
+                ${element.price} Ft
+                </p>
+                <div class="rounded-md border border-transparent bg-blue-900 w-28 text-center float-right m-2  ">
+                  <p class="m-1 cartbtn"> Kosárba</p>
+                </div>
+              </div>
+            `;
         });
+
+
+
+
+      })
+      .catch((error) => console.error(error));
+
+
+  }
+  LoginVisual() {
+    var form = document.getElementById("form") as HTMLElement;
+    form.innerHTML = "";
+    var innerheader = document.querySelector("#profilepicdiv") as HTMLElement;
+    innerheader.innerHTML += `<img id="profilepic" src="" alt="Profile Picture" >`;
     
-        const requestOptions : RequestInit = {
-          method: "POST",
-          headers: myHeaders,
-          body: raw,
-          redirect: "follow"
-        };
-    
-        fetch("https://hms.jedlik.cloud/api/login", requestOptions)
-          .then((response) => response.text())
-          .then((result) => {
-            console.log(result);
-            localStorage.setItem("user", JSON.stringify(result));
-          })
-          .catch((error) => console.error(error));
-          (document.getElementById("user") as HTMLInputElement).value = '';
-          (document.getElementById("pass") as HTMLInputElement).value = '';
+    if(localStorage.getItem("roles")?.includes("admin")){
+      console.log("Logged in As admin")
     }
-
-    override getHtmlCallback(){
-      this.addEventListeners();
-    }
-
-    addEventListeners(){
-      console.log(document.getElementById("btnconfirm"));
-        document.getElementById("btnconfirm")?.addEventListener("click", ()=>{
-          this.login();
-      });
-    }
-    getProductsData(){
-
-    }
+  }
 
 
-    
+
 }

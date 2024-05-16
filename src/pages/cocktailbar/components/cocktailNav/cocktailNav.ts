@@ -1,13 +1,14 @@
 import { CocktailBar } from "../../cocktailBar";
 import { CocktailEdit } from "../../cocktailEdit";
+import { CocktailOrder } from "../../cocktailOrder";
 
 export class CocktailNav{
    
     html: HTMLElement | null = null;
     name: string = "";
-    parent: CocktailBar | CocktailEdit | null = null;
+    parent: CocktailBar | CocktailEdit | CocktailOrder | null = null;
 
-    constructor(id: number, name: string, place: string, parent: CocktailBar | CocktailEdit) {
+    constructor(id: number, name: string, place: string, parent: CocktailOrder | CocktailBar | CocktailEdit) {
         
         this.name = name;
         this.parent = parent

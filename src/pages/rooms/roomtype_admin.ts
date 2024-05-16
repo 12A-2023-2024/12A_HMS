@@ -26,24 +26,41 @@ export const fileToBase64 = (file: File) : Promise<string> => new Promise((resol
     reader.readAsDataURL(file);
 });
 
-function fetchRoomtype(roomtype : Roomtype){
+function fetchRoomtype(roomtype : Roomtype, modify : boolean){
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", page.token);
 
     const raw = JSON.stringify(roomtype);
 
-    const requestOptions : RequestInit = {
-    method: "POST",
-    headers: myHeaders,
-    body: raw,
-    redirect: "follow"
-    };
+    if (modify) {
+       var  requestOptions = {
+            method: "PUT",
+            headers: {
+                "Authorization": page.token,
+                "Content-Type": "application/json"
+            },
+            body: raw,
+            redirect: "follow" as RequestRedirect | undefined
+        }
+        fetch(`https://hms.jedlik.cloud/api/rooms/types`, requestOptions)
+            .then((response) => response.text())
+            .then((result) => console.log(result))
+            .catch((error) => console.error(error));
+    }
+    else{
+        const requestOptions : RequestInit = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+        };
 
-    fetch("https://hms.jedlik.cloud/api/rooms/types", requestOptions)
-    .then((response) => response.text())
-    .then((result) => console.log(result))
-    .catch((error) => console.error(error));
+        fetch("https://hms.jedlik.cloud/api/rooms/types", requestOptions)
+        .then((response) => response.text())
+        .then((result) => console.log(result))
+        .catch((error) => console.error(error));
+    }
 }
 
 function addEventListeners(){

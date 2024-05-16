@@ -7,6 +7,7 @@ export class RoomtypeAdminPage extends Page {
     token: string = "";
     images: RoomImage[] = [];
     extrasPopup?: Extras;
+    modify: boolean = false;
 
     constructor() {
         super('/src/pages/rooms/roomtype_admin.html');

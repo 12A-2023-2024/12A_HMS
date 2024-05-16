@@ -31,45 +31,6 @@ export class RoomtypeSelector {
             .then(() => this.initializeWindow())
     }
 
-    private modifyRoomtype(roomtypeId: Number) {    //
-        var selectedRoomtype : Roomtype;
-
-        var requestOptions: RequestInit = {
-            method: "GET",
-            headers: { "Authorization": this.parentPage.token },
-            redirect: "follow" as RequestRedirect | undefined
-        }
-        fetch(`https://hms.jedlik.cloud/api/rooms/types/${roomtypeId}`, requestOptions)
-            .then((response) => response.json())
-            .then((result) =>  selectedRoomtype = result)
-            .then(() => {
-                requestOptions = {
-                    method: "PUT",
-                    headers: {
-                        "Authorization": this.parentPage.token,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ 
-                        id: roomtypeId,
-                        name: selectedRoomtype.name,
-                        description: selectedRoomtype.description,
-                        pricePerNigthPerPerson: selectedRoomtype.pricePerNigthPerPerson,
-                        capacity: selectedRoomtype.capacity,
-                        active: selectedRoomtype.active,
-                        images: selectedRoomtype.images,
-                        parameters: selectedRoomtype.parameters
-                    }),
-                    redirect: "follow" as RequestRedirect | undefined
-                }
-                console.log(requestOptions.body);
-                console.log(selectedRoomtype.images);   //url has to be converted to base64
-                fetch(`https://hms.jedlik.cloud/api/rooms/types`, requestOptions)
-                    .then((response) => response.text())
-                    .then((result) => console.log(result))
-                    .catch((error) => console.error(error));
-            })
-    }
-
     private addEventListeners() {
         [...document.getElementsByClassName("delete")].forEach(button => {
             button.addEventListener("click", () => {

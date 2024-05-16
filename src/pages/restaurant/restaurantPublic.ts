@@ -17,19 +17,22 @@ makeMenuItemHtml(item: IMeal): void {
     let imageContainer = document.createElement("div");
     imageContainer.classList.add("h-5/6", "w-full", "p-3");
     let image = document.createElement("img");
-    image.classList.add("object-fill", "h-full");
+    image.classList.add("object-fill", "h-64");
     image.src = item.imageUrls[0];
     imageContainer.appendChild(image);
     card.appendChild(imageContainer);
 
     let description = document.createElement("div");
     description.id = item.name + "_description";
-    description.innerText = item.description;
-    description.classList.add("invisible", "w-full", "h-fit");
+    let pa = document.createElement("p");
+    pa.innerText = item.description;
+    pa.classList.add("truncate");
+    description.classList.add("invisible", "w-full", "h-fit", "text-wrap");
+    description.appendChild(pa);
     card.appendChild(description);
 
     let info = document.createElement("div");
-    info.classList.add("h-1/6", "w-full", "flex", "flex-row", "items-center", "justify-between", "p-2");
+    info.classList.add("h-14", "w-full", "flex", "flex-row", "items-center", "justify-between", "p-2");
     let nameContainer = document.createElement("div");
     nameContainer.classList.add("flex-grow", "flex", "items-center");
     let p = document.createElement("p");

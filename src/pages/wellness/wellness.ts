@@ -10,6 +10,7 @@ export class WellnessPage extends Page {
   }
 
   login() {
+    var sucLogin : boolean = false;
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     const body = JSON.stringify({
@@ -17,16 +18,22 @@ export class WellnessPage extends Page {
       "password": (document.getElementById("pass") as HTMLInputElement).value.toString()
     });
 
-    this.fetch<UserData>("https://hms.jedlik.cloud/api/login", "POST", body)
+     this.fetch<UserData>("https://hms.jedlik.cloud/api/login", "POST", body)
       .then((result) => {
         localStorage.setItem("user", JSON.stringify(result));
         localStorage.setItem("roles", JSON.stringify(result.roles));
+        sucLogin = true;
       })
-      .catch((error) => console.error(error));
-    (document.getElementById("user") as HTMLInputElement).value = '';
-    (document.getElementById("pass") as HTMLInputElement).value = '';
-    this.LoginVisual();
-  }
+      .catch((error) => {
+        console.error(error);
+        sucLogin = false;
+      });
+        (document.getElementById("pass") as HTMLInputElement).value = '';
+        (document.getElementById("user") as HTMLInputElement).value = '';  
+        this.LoginVisual();
+      
+
+    }
 
   override getHtmlCallback() {
     this.addButtonEventListeners();
@@ -45,23 +52,43 @@ export class WellnessPage extends Page {
         var maindiv = document.getElementById("maindiv") as HTMLElement;
         // var contentCollection : HTMLCollection = maindiv.children;
         maindiv.innerHTML = "";
+        var i: number = 0;
         result.forEach(element => {
-          maindiv.innerHTML += `
-              <div class="bg-blue-100 w-2/5 h-1/6 flex flex-col items-end justify-between rounded-md m-5">
+          i++;
+          if (i % 2 == 0) {
+            maindiv.innerHTML += `
+              <div class="bg-blue-100 w-2/5 h-1/6 flex flex-col items-end justify-between self-end rounded-md m-5">
                 <h1 class="text-lg font-bold self-center" >
-                ${element.name}
+                  ${element.name}
                 </h1>
                 <p class="text-base font-semibold self-start m-2">
                   ${element.description}
                 </p>
                 <p>
-                ${element.price} Ft
+                  ${element.price} Ft
                 </p>
                 <div class="rounded-md border border-transparent bg-blue-900 w-28 text-center float-right m-2  ">
                   <p class="m-1 cartbtn"> Kosárba</p>
                 </div>
-              </div>
-            `;
+              </div>`;
+          }
+          else{
+              maindiv.innerHTML += `
+                <div class="bg-blue-100 w-2/5 h-1/6 flex flex-col items-end justify-between rounded-md m-5">
+                  <h1 class="text-lg font-bold self-center" >
+                  ${element.name}
+                  </h1>
+                  <p class="text-base font-semibold self-start m-2">
+                    ${element.description}
+                  </p>
+                  <p>
+                  ${element.price} Ft
+                  </p>
+                  <div class="rounded-md border border-transparent bg-blue-900 w-28 text-center float-right m-2  ">
+                    <p class="m-1 cartbtn"> Kosárba</p>
+                  </div>
+                </div>`;
+          }
         });
 
 
@@ -77,8 +104,8 @@ export class WellnessPage extends Page {
     form.innerHTML = "";
     var innerheader = document.querySelector("#profilepicdiv") as HTMLElement;
     innerheader.innerHTML += `<img id="profilepic" src="" alt="Profile Picture" >`;
-    
-    if(localStorage.getItem("roles")?.includes("admin")){
+
+    if (localStorage.getItem("roles")?.includes("admin")) {
       console.log("Logged in As admin")
     }
   }

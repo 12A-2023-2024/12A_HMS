@@ -132,11 +132,11 @@ export class NewsAdminPage extends Page {
   
         await this.login()
   
-        await this.fetch<null>("https://hms.jedlik.cloud/api/about/news", "POST", body)
         this.querySelector<HTMLTextAreaElement>("#uploadMainText").value = '';
         this.querySelector<HTMLTextAreaElement>("#uploadHeaderText").value = '';
         this.querySelector<HTMLInputElement>("#imgUpload").value = ''
         
+        await this.fetch<null>("https://hms.jedlik.cloud/api/about/news", "POST", body)
         this.generateNews()
       }
 

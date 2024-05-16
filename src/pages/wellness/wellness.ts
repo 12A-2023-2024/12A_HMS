@@ -106,7 +106,8 @@ export class WellnessPage extends Page {
     innerheader.innerHTML += `<img id="profilepic" src="" alt="Profile Picture" >`;
 
     if (localStorage.getItem("roles")?.includes("admin")) {
-      console.log("Logged in As admin")
+      var maincontainer : HTMLElement = document.querySelector(".maincontainer")!;
+      maincontainer.innerHTML = '';
     }
   }
 

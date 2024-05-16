@@ -15,6 +15,7 @@ export class NewsAdminPage extends Page {
         this.querySelector<HTMLButtonElement>("#newsPOST").addEventListener("click",()=>{
           this.postNews();
         })
+        this.login()
     }
 
     async generateNews(){
@@ -42,7 +43,6 @@ export class NewsAdminPage extends Page {
 
     async deleteNews(button: HTMLButtonElement){
       let id = button.dataset.id
-      await this.login()
       await this.fetch<null>(`https://hms.jedlik.cloud/api/about/news/${id}`, "DELETE")
       this.generateNews()
 
@@ -130,7 +130,6 @@ export class NewsAdminPage extends Page {
           },
         }
   
-        await this.login()
   
         this.querySelector<HTMLTextAreaElement>("#uploadMainText").value = '';
         this.querySelector<HTMLTextAreaElement>("#uploadHeaderText").value = '';

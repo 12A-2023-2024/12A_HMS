@@ -1,8 +1,11 @@
+import { NavBar } from "../../navbar.js";
+import { routes } from "../../routes.js";
 import { Page } from "../page.js";
-import { Confirmation } from "./classes/confirmation.js";
+import { Confirmation } from "./classes/Confirmation.js";
 import { MealImage } from "./classes/meal-image.js";
 import { ICategory } from "./interfaces/category.js";
 import { IMeal } from "./interfaces/meal.js";
+import { RestaurantPublicPage } from "./restaurantPublic.js";
 
 export class RestaurantAdminPage extends Page {
   categories: ICategory[] = [];
@@ -12,9 +15,29 @@ export class RestaurantAdminPage extends Page {
   maxPage: number = 1
   constructor() {
     super('/src/pages/restaurant/restaurantAdmin.html');
+    let userString = localStorage.getItem('user');  
+    if (userString) {
+      let user = JSON.parse(userString);
+      if (user.roles.includes('admin')) {
+        var diff = (new Date(user.validTo).getDate() - new Date().getDate());
+        alert(diff)
+        this.loadCategories('#mainMessageBoxDiv', '#mainMessage');
+      }
+    }else{
+      // alert('be kéne lépni')
+      // alert(new Date('2024-05-16T05:46:01.70012+00:00'))
+      let nav = new NavBar(routes);
+      nav.renderContent('login');
+      window.history.pushState({}, '', `?page=login`);
+    }
     localStorage.setItem('user', `{
+      "name": "administrator",
+      "token": "AK50OBXFOL7CWBIBHUVPOL9XH301XY0GEJ2FZBIFR7Y45QBOHDEEGEHUV7KIIJREB7OZQWAOZLJXB21L5BZ9Y8LGZARWBNE9EI2EUJ5JET9M1SYO7PFNTW8D",
+      "roles": [
+          "admin"
+      ],
+      "validTo": "2024-05-16T05:46:01.70012+00:00"
     }`)
-    this.loadCategories('#mainMessageBoxDiv', '#mainMessage');
 
   }
 

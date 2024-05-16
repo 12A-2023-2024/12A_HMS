@@ -12,22 +12,23 @@
     </div>
     <div class="flex">
       <div class="w-2/3">
-        <div class="flex">
+        <div class="flex space-x-32">
           <label for="searchMeal" class="block mb-2 font-bold mx-4">Étel neve:</label>
-          <label for="itemPerPage" class="block mb-2 font-bold mx-4">Étel oldalanként:</label>
-    
+          <label for="itemPerPage" class="block mb-2 font-bold">Étel/oldal:</label>
         </div>
-        <input id="searchMeal" type="text" placeholder="Kérem az étel nevét!" class="border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:border-blue-500 ml-4">         
-        <select id="itemPerPage" class="border border-gray-300 rounded mx-4">
-          <option value="20" selected>20</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-        </select>
-        <button id="searchMealBtn" class="bg-green-500 text-white font-bold py-2 px-4 rounded-full">Keresés</button>
+        <div class="flex space-x-9">
+          <input id="searchMeal" type="text" placeholder="Kérem az étel nevét!" class="border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:border-blue-500 ml-4">         
+          <select id="itemPerPage" class="border border-gray-300 rounded mx-4">
+            <option value="20" selected>20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+          <button id="searchMealBtn" class="bg-green-500 text-white font-bold py-2 px-4 rounded-full">Keresés</button>
+        </div>
       </div>
     </div>
-    <div class="text-center hidden" id="pager-div">
-      <span class="me-3 z-10 cursor-not-allowed" id="pager-first">&lt;&lt;</span>
+    <div class="text-center hidden select-none" id="pager-div">
+      <span class="me-3" id="pager-first">&lt;&lt;</span>
       <span class="me-3" id="pager-previous">&lt;</span>
       <span class="me-3 fw-bold" id="pager-current">1</span>
       <span class="me-3 cursor-pointer" id="pager-next">&gt;</span>

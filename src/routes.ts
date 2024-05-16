@@ -23,6 +23,9 @@ export const routes: {[key: string]: {page: any}} = {
     },
     'restaurantAdmin': {
         page: RestaurantAdminPage
+    },
+    'login':{
+        page:RestaurantPublicPage
     }
 
 }

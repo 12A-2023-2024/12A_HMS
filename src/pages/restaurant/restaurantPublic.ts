@@ -74,10 +74,72 @@ async getMenuItems(): Promise<void> {
 
  async makeMenuItems() : Promise<void> {
      await this.getMenuItems();
-     console.log(this.meals.length)
+     this.getCategories();
+     this.addCategories();
      this.meals.forEach(meal => {
          this.makeMenuItemHtml(meal);
-         console.log(meal.name);
      });
 }
+
+    makeMenuItemsForCategory(category: ICategory) {
+     
+ }
+
+    getCategories() : void {
+        this.meals.forEach(meal =>{
+            if (!this.isInCategories(meal.categoryId)) {
+                this.categories.push({
+                    id: meal.categoryId,
+                    name: meal.categoryName,
+                    active: false
+            });
+                console.log("isincategory")
+            }
+        })
+        console.log(this.meals)
+        console.log(this.categories);
+    }
+
+    isInCategories(categoryId:number) : boolean {
+        for (let cat of this.categories) {
+            if (cat.id == categoryId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    comboboxChanged(event: Event): void {
+        console.log(this.categories);
+        for (let cat of this.categories) {
+            const target = event.target as HTMLSelectElement;
+            if (cat.name == target.value) {
+                cat.active = true;
+            } else {
+                cat.active = false;
+            }
+        }
+    }
+
+    addCategories(): void {
+        let combobox = document.createElement("select");
+        combobox.id  = "categorySelector";
+        combobox.classList.add("text-xl", "font-bold", "p-4", "rounded-md");
+        let blank = document.createElement("option");
+        blank.setAttribute("disabled", "diabled");
+        blank.setAttribute("selected", "selected");
+        blank.innerHTML = "Kategória";
+        combobox.appendChild(blank);
+        for (let cat of this.categories) {
+            let option = document.createElement("option");
+            option.id = cat.id.toString();
+            option.value = cat.name;
+            option.innerHTML = cat.name;
+            combobox.appendChild(option);
+        }
+        combobox.addEventListener("change", this.comboboxChanged.bind(this));
+        document.getElementById("combobox-container")?.appendChild(combobox);
+    }
+
+
 }

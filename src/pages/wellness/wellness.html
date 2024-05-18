@@ -1,76 +1,138 @@
 
-    <div class="header">
-        <div class="innerheader">
-            <img class="logoImg" src=""  alt="LOGO" >
-        </div>
-        <div class="innerheader">
-        </div>
-        <div class="innerheader"></div>
+<div class="header">
+    <div class="innerheader">
+        <img class="logoImg" src=""  alt="LOGO" >
     </div>
-    <div class="container">
-        <form id="form">
-            <label for="user">Username: </label> <br>
-            <input type="text" id="user" name="user" placeholder="Userxy"></input> <br>
-            <label for="pass">Password: </label> <br>
-            <input type="password" id="pass" name="pass" placeholder="secPass123"></input> <br>
-            <input type="button" id="btnconfirm" name="submit" value="Login"></input> <br>
-        </form>
+    <div class="innerheader">
     </div>
-    <div class="maincontainer bg-green-200 bg-opacity-30 w-4/5  h-screen m-auto flex flex-col h-screen ">
-            <h1 class="text-5xl self-center m  mb-20" >HMS wellness</h1> 
-    
-            <div id="carouselExampleSlidesOnly" class="relative" data-twe-carousel-initdata-twe-ride="carousel">
-                <div class="relative w-full overflow-hidden after:clear-both after:block after:content-['']">
-                    <div class="relative float-left -mr-[100%] w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none" data-twe-carousel-item data-twe-carousel-active>
-                        <img src="https://mdbcdn.b-cdn.net/img/new/slides/041.webp" class="block w-full" alt="Wild Landscape" />
+    <div class="innerheader"></div>
+</div>
+<div class="container">
+    <form id="form">
+        <label for="user">Username: </label> <br>
+        <input type="text" id="user" name="user" placeholder="Userxy"></input> <br>
+        <label for="pass">Password: </label> <br>
+        <input type="password" id="pass" name="pass" placeholder="secPass123"></input> <br>
+        <input type="button" id="btnconfirm" name="submit" value="Login"></input> <br>
+    </form>
+</div>
+<div class="maincontainer bg-green-200 bg-opacity-30 w-4/5  h-screen m-auto flex flex-col h-screen ">
+        <h1 class="text-5xl self-center m  mb-20" >HMS wellness</h1> 
+
+
+
+        <div class="max-w-2xl mx-auto">
+
+            <div id="default-carousel" class="relative" data-carousel="static">
+                <!-- Carousel wrapper -->
+                <div class="overflow-hidden relative h-56 rounded-lg sm:h-64 xl:h-80 2xl:h-96">
+                    <!-- Item 1 -->
+                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                        <span class="absolute top-1/2 left-1/2 text-2xl font-semibold text-white -translate-x-1/2 -translate-y-1/2 sm:text-3xl dark:text-gray-800">First Slide</span>
+                        <img src="src/Névtelen.png" class="block absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2" alt="...">
                     </div>
-                    <div class="relative float-left -mr-[100%] hidden w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none" data-twe-carousel-item>
-                      <img src="https://mdbcdn.b-cdn.net/img/new/slides/042.webp" class="block w-full" alt="Camera" />
+                    <!-- Item 2 -->
+                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                        <img src="https://flowbite.com/docs/images/carousel/carousel-2.svg" class="block absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2" alt="...">
                     </div>
-                    <div class="relative float-left -mr-[100%] hidden w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none" data-twe-carousel-item>
-                      <img src="https://mdbcdn.b-cdn.net/img/new/slides/043.webp" class="block w-full" alt="Exotic Fruits" />
+                    <!-- Item 3 -->
+                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                        <img src="https://flowbite.com/docs/images/carousel/carousel-3.svg" class="block absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2" alt="...">
                     </div>
-              </div>
+                </div>
+                <!-- Slider indicators -->
+                <div class="flex absolute bottom-5 left-1/2 z-30 space-x-3 -translate-x-1/2">
+                    <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 1" data-carousel-slide-to="0"></button>
+                    <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
+                    <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 3" data-carousel-slide-to="2"></button>
+                </div>
+                <!-- Slider controls -->
+                <button type="button" class="flex absolute top-0 left-0 z-30 justify-center items-center px-4 h-full cursor-pointer group focus:outline-none" data-carousel-prev>
+                    <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                        <svg class="w-5 h-5 text-white sm:w-6 sm:h-6 dark:text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        <span class="hidden">Previous</span>
+                    </span>
+                </button>
+                <button type="button" class="flex absolute top-0 right-0 z-30 justify-center items-center px-4 h-full cursor-pointer group focus:outline-none" data-carousel-next>
+                    <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                        <svg class="w-5 h-5 text-white sm:w-6 sm:h-6 dark:text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        <span class="hidden">Next</span>
+                    </span>
+                </button>
             </div>
-    
-            <div id="maindiv" class="flex h-full  flex-col">    
-            <div class="self-end bg-blue-100 w-2/5 h-1/6 flex flex-col items-end justify-between rounded-md m-5">
-                <h1 class="text-lg font-bold self-center" >
-                    Kőbánya a weben
-                </h1>
-                <p class="text-base font-semibold self-start m-2">
-                    mamlasz
-                </p>
-                <div class="rounded-md border border-transparent bg-blue-900 w-28 text-center float-right m-2  ">
-                    <p class="m-1"> Kosárba</p>
+        
+           
+        </div>
+        
+        
+        <div id="maindiv" class="flex h-full  flex-col">    
+            
+            
+            <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <a href="#">
+                    <img class="p-8 rounded-t-lg" src="/docs/images/products/apple-watch.png" alt="product image" />
+                </a>
+                <div class="px-5 pb-5">
+                    <a href="#">
+                        <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport</h5>
+                    </a>
+                    <div class="flex items-center mt-2.5 mb-5">
+                        <div class="flex items-center space-x-1 rtl:space-x-reverse">
+                            <svg class="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                            </svg>
+                            <svg class="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                            </svg>
+                            <svg class="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                            </svg>
+                            <svg class="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                            </svg>
+                            <svg class="w-4 h-4 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                            </svg>
+                        </div>
+                        <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">5.0</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-3xl font-bold text-gray-900 dark:text-white">$599</span>
+                        <a href="#" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add to cart</a>
+                    </div>
                 </div>
             </div>
 
-
-                <div class="bg-blue-100 w-2/5 h-1/6 flex flex-col items-end justify-between rounded-md m-5">
-                    <h1 class="text-lg font-bold self-center" >
-                        Kőbánya a weben
-                    </h1>
-                    <p class="text-base font-semibold self-start m-2">
-                        mamlasz
-                    </p>
-                    <div class="rounded-md border border-transparent bg-blue-900 w-28 text-center float-right m-2  ">
-                        <p class="m-1"> Kosárba</p>
+            <div class="w-full self-end max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <a href="#">
+                    <img class="p-8 rounded-t-lg" src="/docs/images/products/apple-watch.png" alt="product image" />
+                </a>
+                <div class="px-5 pb-5">
+                    <a href="#">
+                        <h5 class="text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">szolg neve</h5>
+                    </a>
+                    <div class="flex items-center mt-2.5 mb-5">
+                        <h5 class="text-l font-semibold tracking-tight text-gray-900 dark:text-white">asdsadsadsadsadsadsadasdsad</h5>
                     </div>
-                </div>
-    
-                <div class="self-end bg-blue-100 w-2/5 h-1/6 flex flex-col items-end justify-between rounded-md m-5">
-                    <h1 class="text-lg font-bold self-center" >
-                        Kőbánya a weben
-                    </h1>
-                    <p class="text-base font-semibold self-start m-2">
-                        mamlasz
-                    </p>
-                    <div class="rounded-md border border-transparent bg-blue-900 w-28 text-center float-right m-2  ">
-                        <p class="m-1"> Kosárba</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-3xl font-bold text-gray-900 dark:text-white">7599.-</span>
+                        <a href="#" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add to cart</a>
                     </div>
                 </div>
             </div>
+            
+            
         </div>
+    </div>
+
     
-        <script src="../../../js/pages/wellness/wellness.js"></script>
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="../../../js/pages/wellness/wellness.js"></script>
+    <script src="https://unpkg.com/flowbite@1.4.0/dist/flowbite.js"></script>

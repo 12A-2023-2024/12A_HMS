@@ -10,19 +10,21 @@ export class WellnessAdminPage extends Page {
 
     override getHtmlCallback(){
         this.addButtonEventListeners();
-    }
-    AddToCart(){
-        console.log("asd");
+        this.checkAdminPrivilege();
     }
 
     addButtonEventListeners(){
-        var cartbtn = document.querySelectorAll(".cartbtn");
-        console.log(cartbtn);
-        console.log(typeof(cartbtn));
-        cartbtn.forEach(element => {
-            element.addEventListener("click", ()=>{
-                this.AddToCart();
-            });
-        });
+        
+    }
+    checkAdminPrivilege(){
+        if (!localStorage.getItem("roles")?.includes("admin")) {
+            var maincontainer : HTMLElement = document.querySelector("#content")!;
+            maincontainer.innerHTML = '';
+          }
+        else{
+            console.log(localStorage.getItem("roles")?.includes("admin"));
+            console.log(localStorage.getItem("roles"));
+            console.log("Sikeres bejelentkezés!");
+        }
     }
 }

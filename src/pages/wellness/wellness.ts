@@ -99,6 +99,14 @@ export class WellnessPage extends Page {
 
 
   }
+  addAdminButtonListener(){
+    var adminbutton : HTMLElement = document.getElementById("AdminButton")!; 
+    adminbutton.addEventListener("click", ()=>{
+      var url : string[] = window.location.href.split("?");
+      window.history.replaceState(null, "", `${url[0]}?page=servicesadmin`);
+      location.reload();
+    });
+  }
   LoginVisual() {
     var form = document.getElementById("form") as HTMLElement;
     form.innerHTML = "";
@@ -106,11 +114,11 @@ export class WellnessPage extends Page {
     innerheader.innerHTML += `<img id="profilepic" src="" alt="Profile Picture" >`;
 
     if (localStorage.getItem("roles")?.includes("admin")) {
-      var maincontainer : HTMLElement = document.querySelector(".maincontainer")!;
-      maincontainer.innerHTML = '';
+      var maincontainer : HTMLElement = document.querySelector("#AdmDiv")!;
+      maincontainer.innerHTML += `<a id="AdminButton" class="hover:text-darkGrayishBlue font-bold" data-route="servicesadmin">Átlépés Admin Nézetbe</a>`;
+      this.addAdminButtonListener();
     }
   }
-
 
 
 }

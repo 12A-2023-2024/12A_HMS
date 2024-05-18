@@ -23,14 +23,16 @@ export class WellnessPage extends Page {
         localStorage.setItem("user", JSON.stringify(result));
         localStorage.setItem("roles", JSON.stringify(result.roles));
         sucLogin = true;
+        this.LoginVisual();
       })
       .catch((error) => {
         console.error(error);
         sucLogin = false;
       });
         (document.getElementById("pass") as HTMLInputElement).value = '';
-        (document.getElementById("user") as HTMLInputElement).value = '';  
-        this.LoginVisual();
+        (document.getElementById("user") as HTMLInputElement).value = ''; 
+
+        
       
 
     }

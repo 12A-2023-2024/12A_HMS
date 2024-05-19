@@ -11,7 +11,7 @@ export class RestaurantPublicPage extends Page {
 
 makeMenuItemHtml(item: IMeal): void {
     let card = document.createElement("div");
-    card.classList.add("h-96", "w-96", "flex", "flex-col", "shadow-lg", "p-5", "rounded-2xl", "divide-y-2");
+    card.classList.add("h-96", "w-96", "flex", "flex-col", "shadow-lg", "p-5", "rounded-2xl", "divide-y-2", "border");
     card.id = item.name;
 
     let imageContainer = document.createElement("div");
@@ -76,14 +76,10 @@ async getMenuItems(): Promise<void> {
      await this.getMenuItems();
      this.getCategories();
      this.addCategories();
-     this.meals.forEach(meal => {
-         this.makeMenuItemHtml(meal);
-     });
+     for (let cat of this.categories) {
+         this.makeCategory(cat);
+     }
 }
-
-    makeMenuItemsForCategory(category: ICategory) {
-     
- }
 
     getCategories() : void {
         this.meals.forEach(meal =>{
@@ -96,8 +92,6 @@ async getMenuItems(): Promise<void> {
                 console.log("isincategory")
             }
         })
-        console.log(this.meals)
-        console.log(this.categories);
     }
 
     isInCategories(categoryId:number) : boolean {
@@ -110,11 +104,12 @@ async getMenuItems(): Promise<void> {
     }
 
     comboboxChanged(event: Event): void {
-        console.log(this.categories);
         for (let cat of this.categories) {
             const target = event.target as HTMLSelectElement;
             if (cat.name == target.value) {
                 cat.active = true;
+                document.querySelector(".content-start")!.innerHTML = "";
+                this.makeCategory(cat);
             } else {
                 cat.active = false;
             }
@@ -139,6 +134,24 @@ async getMenuItems(): Promise<void> {
         }
         combobox.addEventListener("change", this.comboboxChanged.bind(this));
         document.getElementById("combobox-container")?.appendChild(combobox);
+    }
+
+    makeCategory(cat: ICategory) : void {
+        let header = document.createElement("div");
+        header.classList.add("w-full", "text-left", "text-3xl", "font-bold", "mt-10");
+        header.innerText = cat.name;
+
+        let line = document.createElement("hr");
+        line.classList.add("my-3", "w-full");
+        header.appendChild(line);
+
+        document.querySelector(".content-start")?.appendChild(header);
+
+        for (let meal of this.meals) {
+            if (meal.categoryId == cat.id) {
+                this.makeMenuItemHtml(meal);
+            }
+        }
     }
 
 

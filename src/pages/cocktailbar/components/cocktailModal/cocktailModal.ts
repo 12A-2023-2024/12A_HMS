@@ -1,38 +1,35 @@
 import { Page } from "../../../page.js";
+import { ctQueries } from "../../queries.js";
+import { ActiveCard } from "../activeCard.js";
 import { CocktailCard } from "../cocktailCard/cocktailCard.js";
 
 export class cocktailModal {
 
-    activeCard: CocktailCard | null = null
-
     constructor() {
+
         const modalWrapper = document.querySelector('div#modalWrapper') as HTMLElement
 
         this.getHtml('src/pages/cocktailbar/components/cocktailModal/cocktailModal.html').then((html)=>{
-            const cocktailModal = document.createElement('div')
-            cocktailModal.innerHTML = html
+            modalWrapper.innerHTML = html
 
-            const name = cocktailModal.querySelector('input#nameInput') as HTMLInputElement
-            const price = cocktailModal.querySelector('input#priceInput') as HTMLInputElement
-            const description = cocktailModal.querySelector('#inputdescriptionInput') as HTMLInputElement
-            const category = cocktailModal.querySelector('select#categoryInput') as HTMLSelectElement
-            const img = cocktailModal.querySelector('img#imgInput') as HTMLImageElement
+            const name = modalWrapper.querySelector('input#nameInput') as HTMLInputElement
+            const price = modalWrapper.querySelector('input#priceInput') as HTMLInputElement
+            const description = modalWrapper.querySelector('#descriptionInput') as HTMLInputElement
+            const category = modalWrapper.querySelector('select#categoryInput') as HTMLSelectElement
+            const img = modalWrapper.querySelector('img#imgInput') as HTMLImageElement
 
-            console.log(name)
             if (name && price && description && category && img) {
-                console.log('params found')
-                name.value = this.activeCard?.name ?? ""
-                price.value = this.activeCard?.price.toString() ?? ""
-                description.value = this.activeCard?.description ?? ""
+                name.value = ActiveCard?.name ?? ""
+                price.value = ActiveCard?.price.toString() ?? ""
+                description.value = ActiveCard?.description ?? ""
 
-                const xpath = '//option[text()="'+ this.activeCard?.category ?? "" +'"]'
+                const xpath = `//option[text()="${ActiveCard?.category}"]`;
                 const cardCategory = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue as HTMLOptionElement
-                category.selectedIndex = cardCategory.index
+                category.selectedIndex = cardCategory.index                
 
-                img.src = this.activeCard?.img ?? ""
+                img.src = ActiveCard?.img ?? ""
             }
 
-            modalWrapper.innerHTML = html
         })
     }
 

@@ -1,3 +1,5 @@
+import { ActiveCard, ChangeActive } from "../activeCard.js";
+
 export class CocktailCard{
    
     html: HTMLElement | null = null;
@@ -39,9 +41,7 @@ export class CocktailCard{
             this.html = wrapperDiv.firstElementChild as HTMLElement
 
             this.html?.addEventListener('click', () => {
-                const currentActive = document.querySelector('.activeCard') as HTMLElement
-                currentActive?.classList.remove('activeCard')
-                this.html?.classList.add('activeCard')
+                ChangeActive(this)
             })
 
             const wrap = document.querySelector(place)
@@ -49,7 +49,7 @@ export class CocktailCard{
 
             wrap?.appendChild(this.html)
 
-            this.createNavEventListener()
+            this.createEventListener()
         })
     }
     
@@ -69,20 +69,16 @@ export class CocktailCard{
             })
     }
 
-    createNavEventListener() {
+    createEventListener() {
         const navLinks = document.querySelectorAll('a[data-route="cocktailmodal"]');
         navLinks.forEach((link) => {
             link.addEventListener('click', (event) => {
                 const route = link.getAttribute('data-route');
-                this.renderContent(route);
+                if ( route != null && this.routes[route] && this.routes[route].page) {
+                    new this.routes[route].page();
+                }
             });
         });
-    }
-    renderContent(route: string | null) {
-        if ( route != null && this.routes[route] && this.routes[route].page) {
-            const page = new this.routes[route].page();
-            window.history.pushState({}, '', '');
-        }
     }
     
 }

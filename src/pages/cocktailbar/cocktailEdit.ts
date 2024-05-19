@@ -1,3 +1,4 @@
+import { routes } from "../../routes.js";
 import { Page } from "../page.js";
 import { CocktailCard } from "./components/cocktailCard/cocktailCard.js";
 import { CocktailNav } from "./components/cocktailNav/cocktailNav.js";
@@ -8,6 +9,7 @@ export class CocktailEdit extends Page {
     query: ctQueries | null = null;
     navItems: CocktailNav[] = [];
     cocktailCards: CocktailCard[] | null = null;
+    activeCard: CocktailCard |  null = null;
 
     constructor() {
         super('/src/pages/cocktailbar/cocktailEdit.html');
@@ -19,9 +21,7 @@ export class CocktailEdit extends Page {
       
             result.forEach(({id, name})=>{
                 this.navItems.push(new CocktailNav(id, name, ".ctLocalNavigation", this))
-                console.log(name);
             })
-            console.log(this.navItems);
         })
     }
 
@@ -40,12 +40,11 @@ export class CocktailEdit extends Page {
                 return n.name === category
             })
 
-            console.log(name)
             name?.html?.classList.add("selectedNav");
             result.forEach(({id,name,price,description,imageUrls,categoryId,categoryName})=>{
                 
                 if(categoryName === category){
-                    this.cocktailCards?.push(new CocktailCard(name,price,description,categoryName,imageUrls[0],".cocktailWrapper"))
+                    this.cocktailCards?.push(new CocktailCard(name,price,description,categoryName,imageUrls[0],".cocktailWrapper", routes))
                 }
             })
 

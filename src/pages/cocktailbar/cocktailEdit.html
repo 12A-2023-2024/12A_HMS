@@ -1,19 +1,25 @@
-<div class="flex flex-col gap-y-4 bg-blue-300">
-    <div class="flex justify-between items-center w-full bg-yellow-300 p-1">        
+<div class="flex flex-col gap-y-4">
+    <div class="flex justify-between items-center w-full p-1">        
         <div class="inline-block select-none">
             <button class="w-12 rounded-lg bg-transparent text-transparent" disabled>-</button>
             <button class="w-12 rounded-lg bg-transparent text-transparent" disabled>-</button>
         </div>
-        <input type="search" name="cocktailSearch" placeholder="Search" class="w-3/6 rounded-lg outline-none text-center italic">
+        <input type="search" name="cocktailSearch" placeholder="Search" class="w-3/6 rounded-lg outline-none text-center italic bg-slate-200">
         <div class="inline-block">
-            <button class="w-12 rounded-lg bg-lime-300">Add</button>
+            <button class="w-12 rounded-lg bg-lime-300" id="btnAddNew">Add</button>
             <button class="w-12 rounded-lg bg-red-300">Del</button>
         </div>
     </div>
-    <div class="ctLocalNavigation | flex flex-wrap w-full justify-center gap-5 border-t-2 border-slate-900 mb-14 pt-2">
-    </div>
-    <div class="flex gap-4 flex-wrap items-center justify-center">
 
+    <div class="ctLocalNavigation | flex flex-wrap w-full justify-center gap-5 border-t-2 border-slate-900 mb-14 pt-2">
+    </div>    
+
+    <div class="cocktailWrapper | flex gap-4 flex-wrap items-center justify-center">
+
+    </div>
+
+    <div class="grid grid-cols-3 container bg-lime-300" id="modalWrapper">
+        
     </div>
 </div>
 

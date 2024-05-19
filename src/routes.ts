@@ -4,6 +4,7 @@ import { HomePage } from "./pages/home/home.js";
 import { IntroductionPage } from "./pages/introduction/introduction.js";
 import { CocktailEdit } from "./pages/cocktailbar/cocktailEdit.js"
 import { CocktailOrder } from "./pages/cocktailbar/cocktailOrder.js";
+import { cocktailModal } from "./pages/cocktailbar/components/cocktailModal/cocktailModal.js";
 
 export const routes: {[key: string]: {page: any}} = {
     '': {
@@ -20,6 +21,9 @@ export const routes: {[key: string]: {page: any}} = {
     }, 
     'cocktailedit':{
         page: CocktailEdit
+    },
+    'cocktailmodal':{
+        page: cocktailModal
     },
     'cocktailOrder':{
         page: CocktailOrder

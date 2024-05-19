@@ -1,22 +1,22 @@
-<div class="col-start-1">
-    <div class="grid grid-flow-col justify-start">
-        <label for="name" id="lblName" class="inline-block m-1">Név: </label>
-        <input type="text" name="name" id="nameInput" class="inline-block m-1">
+<div class="col-start-1 bg-red-300">
+    <div class="grid grid-cols-2">
+        <label for="name" id="lblName" class="m-1 inline-block">Név: </label>
+        <input type="text" name="name" id="nameInput" class="m-1 inline-block">
     </div>
 
-    <div class="grid grid-flow-col justify-start">
-        <label for="price" class="inline-block m-1">Ár: </label>
-        <input type="text" name="price" id="priceInput" class="inline-block m-1">
+    <div class="grid grid-cols-2">
+        <label for="price" class="m-1 inline-block">Ár: </label>
+        <input type="text" name="price" id="priceInput" class="m-1 inline-block">
     </div>
 
-    <div class="grid grid-flow-col justify-start">
-        <label for="description" class="inline-block m-1">Leírás: </label>
-        <input type="text" name="description" id="descriptionInput" class="inline-block m-1">
+    <div class="grid grid-cols-2">
+        <label for="description" class="m-1 inline-block">Leírás: </label>
+        <input type="text" name="description" id="descriptionInput" class="m-1 inline-block">
     </div>
 
-    <div class="grid grid-flow-col justify-start">
-        <label for="category" class="inline-block m-1">Kategória: </label>
-        <select name="category" id="categoryInput" class="inline-block m-1">
+    <div class="grid grid-cols-2">
+        <label for="category" class="m-1 inline-block">Kategória: </label>
+        <select name="category" id="categoryInput" class="m-1 inline-block">
             <option value="base"></option>
             <option value="longDrink">Hosszú italok</option>
             <option value="wine">Borok & Pezsgők</option>
@@ -28,11 +28,11 @@
 
 </div>
 
-<div class="col-start-2">
-    <img src="" alt="" id="imgInput">
+<div class="col-start-2 text-center">
+    <img src="" alt="" id="imgInput" class="w-1/2 inline-block">
 </div>
 
-<div class="grid justify-center bg-yellow-300 col-start-3">
-    <button class="bg-blue-300">Hozzáadás</button>
-    <button class="bg-red-300">Mégsem</button>
+<div class="grid gap-2 p-2 bg-yellow-300 col-start-3">
+    <button class="bg-lime-300 w-1/2 mx-auto rounded-lg">Hozzáadás</button>
+    <button class="bg-red-300 w-1/2 mx-auto rounded-lg" id="btnCancel">Mégsem</button>
 </div>

@@ -10,4 +10,6 @@ export function ChangeActive(card:CocktailCard) {
 
 export function DropActive() {
     ActiveCard = null
+    const modalWrapper = document.querySelector('div#modalWrapper') as HTMLElement
+    modalWrapper.innerHTML = ""
 }

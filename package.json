@@ -2,14 +2,14 @@
   "name": "hms_12a",
   "description": "Hotel Management System by 12A",
   "scripts": {
-    "watch": "npx concurrently \"npx tsc -w\" \"npx tailwindcss -i ./css/input.css -o ./css/output.css --watch\""    
+    "watch": "npx concurrently \"npx tsc -w\" \"npx tailwindcss -i ./css/input.css -o ./css/output.css --watch\""
   },
   "dependencies": {
-    
+    "typescript": "^5.4.5"
   },
   "devDependencies": {
-    "tailwind": "^4.0.0",
     "prettier": "~3.2.5",
-    "prettier-plugin-tailwindcss": "~0.5.11"
+    "prettier-plugin-tailwindcss": "~0.5.11",
+    "tailwind": "^4.0.0"
   }
 }

@@ -13,7 +13,6 @@ export class WellnessAdminPage extends Page {
         this.checkAdminPrivilege();
         this.addMainDivIfNotExistent();
         this.getProductsData();
-        this.addButtonEventListeners();
     }
 
     addButtonEventListeners(){
@@ -34,7 +33,6 @@ export class WellnessAdminPage extends Page {
         this.fetch<WellnessProduct[]>("https://hms.jedlik.cloud/api/publicpages/wellnessproducts", "GET")
           .then((result) => {
             var maindiv = document.getElementById("maindiv") as HTMLElement;
-            // var contentCollection : HTMLCollection = maindiv.children;
             maindiv.innerHTML = "";
             var i: number = 0;
             result.forEach(element => {
@@ -74,10 +72,7 @@ export class WellnessAdminPage extends Page {
                     </div>`;
               }
             });
-    
-    
-    
-    
+            this.addButtonEventListeners();
           })
           .catch((error) => console.error(error));
     

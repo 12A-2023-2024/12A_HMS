@@ -3,7 +3,6 @@ import { UserData } from "./user.js";
 import { WellnessProduct } from "./wellnessproduct.js";
 
 export class WellnessPage extends Page {
-
   constructor() {
     super('/src/pages/wellness/wellness.html')
     this.getHtmlCallback();
@@ -38,17 +37,28 @@ export class WellnessPage extends Page {
     }
 
   override getHtmlCallback() {
-    this.addButtonEventListeners();
     this.getProductsData();
+  }
+  addToCart(){
+    console.log("asd");
+  }
+  addToCartBtnListener(){
+    var cartbtn : NodeListOf<HTMLElement> = document.querySelectorAll("p.cartbtn")!;
+    var i : number = 0;
+    cartbtn.forEach((e)=>{
+        e.addEventListener("click", ()=>{
+          this.addToCart();
+        });
+    });
   }
 
   addButtonEventListeners() {
     document.getElementById("btnconfirm")?.addEventListener("click", () => {
       this.login();
     });
+    this.addToCartBtnListener();
   }
   getProductsData() {
-
     this.fetch<WellnessProduct[]>("https://hms.jedlik.cloud/api/publicpages/wellnessproducts", "GET")
       .then((result) => {
         var maindiv = document.getElementById("maindiv") as HTMLElement;
@@ -73,6 +83,7 @@ export class WellnessPage extends Page {
                   <p class="m-1 cartbtn"> Kosárba</p>
                 </div>
               </div>`;
+              console.log("button appended.");
           }
           else{
               maindiv.innerHTML += `
@@ -90,16 +101,13 @@ export class WellnessPage extends Page {
                     <p class="m-1 cartbtn"> Kosárba</p>
                   </div>
                 </div>`;
+                console.log("button appended.");
           }
         });
-
-
-
-
+        this.addButtonEventListeners();
       })
       .catch((error) => console.error(error));
-
-
+      
   }
   addAdminButtonListener(){
     var adminbutton : HTMLElement = document.getElementById("AdminButton")!; 

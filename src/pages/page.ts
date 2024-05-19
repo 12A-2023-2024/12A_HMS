@@ -35,6 +35,13 @@ export class Page {
     querySelector<T>(selector: string):T{
         return document.querySelector(selector) as T;
     }
+    querySelectorAll<T>(selector: string): Array<T> {
+        let l: Array<T> = [];
+        document?.querySelectorAll(selector).forEach(element => {
+            l.push(element as T)
+        });
+        return l;
+    }
     fetch<T>(url: string, method: string, body: any = null): Promise<T> {
         const userInfo = localStorage.getItem('user');   
         let token = '';

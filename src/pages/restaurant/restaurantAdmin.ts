@@ -1,49 +1,54 @@
 import { NavBar } from "../../navbar.js";
 import { routes } from "../../routes.js";
+import { HomePage } from "../home/home.js";
+import { Login } from "../login/login.js";
 import { Page } from "../page.js";
+import { User } from "../login/user.js";
 import { Confirmation } from "./classes/Confirmation.js";
 import { MealImage } from "./classes/meal-image.js";
 import { ICategory } from "./interfaces/category.js";
 import { IMeal } from "./interfaces/meal.js";
-import { RestaurantPublicPage } from "./restaurantPublic.js";
 
 export class RestaurantAdminPage extends Page {
   categories: ICategory[] = [];
   meals: IMeal[] = [];
   mealPerPage: number = 20;
   currentPage: number = 1;
-  maxPage: number = 1
+  maxPage: number = 1;
+  URLs:string[]= [];
+  convertedImages:MealImage[]=[];
   constructor() {
     super('/src/pages/restaurant/restaurantAdmin.html');
     let userString = localStorage.getItem('user');  
     if (userString) {
-      let user = JSON.parse(userString);
-      if (user.roles.includes('admin')) {
-        var diff = (new Date(user.validTo).getDate() - new Date().getDate());
-        alert(diff)
+      let user:User = JSON.parse(userString);
+      let diff:number = new Date(user.validTo).getTime() - new Date().getTime();
+      if (user.roles.includes('admin') && diff>0) {
         this.loadCategories('#mainMessageBoxDiv', '#mainMessage');
       }
+      else{
+        new Login();
+      }
     }else{
-      // alert('be kéne lépni')
-      // alert(new Date('2024-05-16T05:46:01.70012+00:00'))
-      let nav = new NavBar(routes);
-      nav.renderContent('login');
-      window.history.pushState({}, '', `?page=login`);
+      new Login();
     }
-    localStorage.setItem('user', `{
-      "name": "administrator",
-      "token": "AK50OBXFOL7CWBIBHUVPOL9XH301XY0GEJ2FZBIFR7Y45QBOHDEEGEHUV7KIIJREB7OZQWAOZLJXB21L5BZ9Y8LGZARWBNE9EI2EUJ5JET9M1SYO7PFNTW8D",
-      "roles": [
-          "admin"
-      ],
-      "validTo": "2024-05-16T05:46:01.70012+00:00"
-    }`)
-
   }
 
-  getHtmlCallback(): void {
+  override getHtmlCallback(): void {
     this.addEventListeners();
   }
+  randomStringGenerator(length:number) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      counter += 1;
+    }
+    return result;
+}
+
 
 
   convertImagesArrayToBase64(formImages : File[]){
@@ -58,18 +63,93 @@ export class RestaurantAdminPage extends Page {
     return images;
   }
 
+
+  async loadImage(src: string): Promise<HTMLImageElement> {
+    return await new Promise((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = 'Anonymous'; // Enable CORS
+      img.onload = () => resolve(img);
+      img.onerror = () => reject(new Error(`Failed to load image: ${src}`));
+      img.src = src;
+    });
+  }
+
+
+  async imageToFile(imageElement: HTMLImageElement, fileName: string = 'image.png', mimeType: string = 'image/png'): Promise<File> {
+     return await new Promise((resolve, reject) => {
+      // Create a canvas element
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+  
+      if (!ctx) {
+        return reject(new Error('Could not get canvas context'));
+      }
+  
+      // Set canvas dimensions to match the image
+      canvas.width = imageElement.width;
+      canvas.height = imageElement.height;
+  
+      // Draw the image onto the canvas
+      ctx.drawImage(imageElement, 0, 0);
+  
+      // Convert the canvas to a Blob
+      canvas.toBlob((blob) => {
+        if (blob) {
+          // Create a File from the Blob
+          const file = new File([blob], fileName, { type: mimeType });
+          resolve(file);
+        } else {
+          reject(new Error('Canvas toBlob failed'));
+        }
+      }, mimeType);
+    });
+  }
+  
+
+  removeItem<T>(arr: Array<T>, index: number): Array<T> { 
+    if (index > -1) {
+      arr.splice(index, 1);
+    }
+    return arr;
+  }
+
   fileToBase64 = (file: File) : Promise<string> => new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve((reader.result as string).replace('data:', '').replace(/^.+,/, ''));
     reader.onerror = reject;
     reader.readAsDataURL(file);
 });
+  loadModifyMealImages(){
+    this.querySelector<HTMLElement>('#images').innerHTML='';
+    for (let i = 0; i < this.URLs.length; i++) {
+      const url = this.URLs[i];
+      this.querySelector<HTMLElement>('#images').innerHTML+=`
+      <div class="flex flex-col h-28">
+      <img src="${url}" width="100" height="100">
+      <span index="${i}" class="text-black cursor-pointer block mx-auto">&#10005;</span>
+      </div>
+      
+      `
+    }
+  }
 
   mockMeal() {
     for (let index = 0; index < 60; index++) {
       let _meal:IMeal = {categoryName:"sajt",categoryId:2,description:"sasas",id:30,name:"sajt",price:200,imageUrls:[]}
       this.meals.push(_meal);
     }
+  }
+  deleteImgEventListeners(urls:string[]){
+    let deleteImgs = document.querySelectorAll('#images span');
+    deleteImgs.forEach(element => {
+      element.addEventListener('click',()=>{
+        let index = Number(element.getAttribute('index'))
+        this.URLs = this.removeItem(this.URLs,index)
+        this.convertedImages= this.removeItem(this.convertedImages,index);
+        this.loadModifyMealImages();
+        this.deleteImgEventListeners(this.URLs)
+      })
+    });
   }
 
   addModifyMealEventListeners(id:number) {
@@ -78,16 +158,17 @@ export class RestaurantAdminPage extends Page {
     let mealCategory = this.querySelector<HTMLSelectElement>('#mealCategory');
     let mealDescription = this.querySelector<HTMLInputElement>('#mealDescription');
     let mealPrice = this.querySelector<HTMLInputElement>('#mealPrice');
-
     let images:MealImage[]=[];
     mealImage.addEventListener("change", (e) => {
       const formData = new FormData(document.querySelector("form") as HTMLFormElement);
       const formImages = formData.getAll("images");
       images = this.convertImagesArrayToBase64(formImages as File[]);
     });
+    this.loadModifyMealImages();
+    this.deleteImgEventListeners(this.URLs);
 
     this.querySelector<HTMLElement>('#closeBtn').addEventListener('click',()=>this.closeModal());
-
+    
     this.querySelector<HTMLElement>('#modifyMealButton').addEventListener('click',(()=>{
       this.categories.forEach(cat => {
         mealCategory.appendChild(new Option(cat.name, cat.id.toString()));
@@ -100,6 +181,7 @@ export class RestaurantAdminPage extends Page {
           }
         })
       })
+
 
       let hasError = false;
       if (!mealName.value) {
@@ -118,12 +200,19 @@ export class RestaurantAdminPage extends Page {
         mealPrice.classList.add('border-rose-600')
         hasError = true;
       }
-      if (!mealImage.value) {
+      if (!mealImage.value && this.URLs.length==0) {
         mealImage.classList.add('border-rose-600')
         hasError = true;
       }
-
       if (!hasError) {
+        
+        this.convertedImages.forEach(img => {
+          if (!images.includes(img)) {
+            img.fileName = this.randomStringGenerator(20);
+            images.push(img);
+            
+          }
+        });
         let body = `
         {
           "id":${id},
@@ -149,6 +238,7 @@ export class RestaurantAdminPage extends Page {
       }
     }))
   }
+  
   mealButtonsEventListeners():void{
     let deleteButtons = document.querySelectorAll('.deleteButton');
     let modifyButtons = document.querySelectorAll('.modifyButton');
@@ -177,28 +267,40 @@ export class RestaurantAdminPage extends Page {
     })
     modifyButtons.forEach((e)=>{
       e.addEventListener('click',()=>{
+        this.convertedImages=[];
         let id = Number(e.getAttribute('id'));
         let modalDiv = this.querySelector<HTMLElement>('#restaurant-modal');
         this.fetch<IMeal>(`https://hms.jedlik.cloud/api/restaurant/menuitems/${id}`,'GET')
-        .then((meal:IMeal)=>{
-            // this.querySelector<HTMLElement>('#restaurant-content').classList.add('hidden');
-            // this.querySelector<HTMLElement>('nav').classList.add('hidden');
+          .then((meal:IMeal)=>{
+            this.getHtml('./src/pages/restaurant/modals/modify-meal.html')
+              .then((html) => {
+                modalDiv.innerHTML = html;
+                this.URLs = meal.imageUrls;
+                this.addModifyMealEventListeners(id);
+                this.URLs.forEach(url => {
+                  this.loadImage(url)
+                  .then((img)=>{
+                    this.imageToFile(img)
+                    .then((file)=>{
+                      this.fileToBase64(file)
+                      .then((base64)=>{
+                        this.convertedImages.push(new MealImage(file.name,base64));
+                      })
+                    })
+                  })
+                });
+                this.querySelector<HTMLInputElement>('#mealName').value=meal.name;
+                this.querySelector<HTMLInputElement>('#mealDescription').value=meal.description;
 
-            this.getHtml('./src/pages/restaurant/modals/modify-meal.html').then((html) => {
-              modalDiv.innerHTML = html;
-              this.addModifyMealEventListeners(id);
 
-              this.querySelector<HTMLInputElement>('#mealName').value=meal.name;
-              this.querySelector<HTMLInputElement>('#mealDescription').value=meal.description;
-
-              this.categories.forEach(category => {
-                if (category.name==meal.categoryName) {
-                  this.querySelector<HTMLSelectElement>('#mealCategory').options.add(new Option(category.name,category.id.toString(),undefined,true))
-                }else{
-                this.querySelector<HTMLSelectElement>('#mealCategory').options.add(new Option(category.name,category.id.toString()))
-                }
-                
-              });
+                this.categories.forEach(category => {
+                  if (category.name==meal.categoryName) {
+                    this.querySelector<HTMLSelectElement>('#mealCategory').options.add(new Option(category.name,category.id.toString(),undefined,true))
+                  }else{
+                  this.querySelector<HTMLSelectElement>('#mealCategory').options.add(new Option(category.name,category.id.toString()))
+                  }
+                  
+                });
               
               this.querySelector<HTMLInputElement>('#mealPrice').value=meal.price.toString();     
             })
@@ -245,7 +347,7 @@ export class RestaurantAdminPage extends Page {
   }
   generateTableRow(meal:IMeal){
     let images: string = `Nem található kép az ételhez.`
-    if (meal.imageUrls.length != 0) {
+    if (meal.imageUrls.length != 0 && meal&&meal.imageUrls) {
       images = '';
       meal.imageUrls.forEach(imgSource => {
         images += `<img src="${imgSource}" class="" width="50" height="50">\n`
@@ -312,7 +414,7 @@ export class RestaurantAdminPage extends Page {
         this.meals=[];
         if (!searchBox.value) {
           this.meals = arr;        
-          this.mockMeal();    
+          // this.mockMeal();    
         }else if (searchBox.value) {
           for (let index = 0; index < arr.length; index++) {
             const meal = arr[index];
@@ -502,7 +604,6 @@ export class RestaurantAdminPage extends Page {
     });
 
     categorySelect.addEventListener('change', () => {
-      console.log(categorySelect.options[categorySelect.selectedIndex].value)
       if (categorySelect.options[categorySelect.selectedIndex].text != '') {
         deleteBtn.disabled = false;
         deleteBtn.classList.add('bg-green-500');

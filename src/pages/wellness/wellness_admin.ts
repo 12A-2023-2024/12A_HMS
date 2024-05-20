@@ -9,11 +9,13 @@ export class WellnessAdminPage extends Page {
         this.getHtmlCallback();
     }
 
-    override getHtmlCallback(){
+    override async getHtmlCallback(){
         this.checkAdminPrivilege();
         this.addMainDivIfNotExistent();
-        this.getProductsData();
+        await this.getProductsData();
         this.carlogolistener();
+        this.newWellnessProductButtonListener();
+        this.deleteproductbuttonlistener();
     }
 
     addButtonEventListeners(){
@@ -30,9 +32,9 @@ export class WellnessAdminPage extends Page {
             console.log("Sikeres bejelentkezés!");
         }
     }
-    getProductsData() {
+    async getProductsData() {
 
-        this.fetch<WellnessProduct[]>("https://hms.jedlik.cloud/api/publicpages/wellnessproducts", "GET")
+        await this.fetch<WellnessProduct[]>("https://hms.jedlik.cloud/api/publicpages/wellnessproducts", "GET")
           .then((result) => {
             var maindiv = document.getElementById("maindiv") as HTMLElement;
             maindiv.innerHTML = "";
@@ -53,10 +55,10 @@ export class WellnessAdminPage extends Page {
                     </p>
                     <div>
                         <div class="rounded-md border border-transparent bg-red-900 w-28 text-center float-right m-2  ">
-                          <p class="m-1 deletebtn"> Törlés</p>
+                          <p class="m-1 deletebtn" data-index="${element.id}"> Törlés</p>
                         </div>
                         <div class="rounded-md border border-transparent bg-green-900 w-28 text-center float-right m-2  ">
-                          <p class="m-1 modifybtn"> Módósítás</p>
+                          <p class="m-1 modifybtn" data-index="${element.id}"> Módósítás</p>
                         </div>
                         <div class="rounded-md border border-transparent bg-blue-900 w-28 text-center float-right m-2  ">
                             <p class="m-1 cartbtn"> Igénybevétel</p>
@@ -78,10 +80,10 @@ export class WellnessAdminPage extends Page {
                       </p>
                       <div>
                         <div class="rounded-md border border-transparent bg-red-900 w-28 text-center float-right m-2  ">
-                          <p class="m-1 deletebtn"> Törlés</p>
+                          <p class="m-1 deletebtn" data-index="${element.id}"> Törlés</p>
                         </div>
                         <div class="rounded-md border border-transparent bg-green-900 w-28 text-center float-right m-2  ">
-                          <p class="m-1 modifybtn"> Módósítás</p>
+                          <p class="m-1 modifybtn" data-index="${element.id}"> Módósítás</p>
                         </div>
                         <div class="rounded-md border border-transparent bg-blue-900 w-28 text-center float-right m-2  ">
                             <p class="m-1 cartbtn"> Igénybevétel</p>
@@ -111,11 +113,80 @@ export class WellnessAdminPage extends Page {
     modifywellnessproduct(){
 
     }
-    deletewellnessproduct(){
-
+    deleteproductbuttonlistener(){
+      var asd : NodeListOf<HTMLElement> = document.querySelectorAll(".deletebtn")!;
+      console.log(asd);
+      var i : number = 0;
+      var asdi : number = 0;
+      asd.forEach((element) => {
+        i = Number(asd[asdi].dataset.index)
+        asdi++;
+        element.classList.add(`${i}del`);
+        element.addEventListener("click", ()=>{
+          this.deletewellnessproduct(i);
+        });
+      });
+    }
+    deletewellnessproduct(index : number){
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      const body = null;
+        this.fetch<null>(`https://hms.jedlik.cloud/api/wellness/products/${index}`, "DELETE", body)
+      .then((result) => {
+        alert("A termék sikeresen törölve a listából!");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    }
+    newWellnessProductButtonListener(){
+      document.getElementById("addWellnessProduct")?.addEventListener("click", (e)=>{
+        this.addNewWellnessPorduct();
+      });
+    }
+    addNewWellnessPorduct(){
+      var name : string = (document.getElementById("name") as HTMLInputElement).value.toString();
+      var cost : string = (document.getElementById("cost") as HTMLInputElement).value.toString();
+      var desc : string = (document.getElementById("desc") as HTMLInputElement).value.toString();
+      var cat : string = (document.getElementById("cat") as HTMLInputElement).value.toString();
+      if(!name || !cost || !desc || !cat){
+        alert("Kérem adjon meg minden adatot!");
+      }
+      else{
+        const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      const body = JSON.stringify({
+        "name": name,
+        "price": cost,
+        "description": desc,
+        "categoryId": cat 
+      });
+        this.fetch<null>("https://hms.jedlik.cloud/api/wellness/products", "POST", body)
+      .then((result) => {
+        alert("A termék sikeresen hozzáadva a listához!");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+      }
     }
     makeanorder(e : string, roomnumber : number){
+      var usedstring : string[] = e.split(" x");
+      for (let index = 0; index < Number(usedstring[1]); index++) {
+        const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      const body = JSON.stringify({
+          "RoomNumber": roomnumber
+        });
+  
+       this.fetch<null>("https://hms.jedlik.cloud/api/wellness/sale", "POST", body)
+        .then((result) => {
 
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      }
     }
     addToCart(e : HTMLElement){
       var cartData : HTMLElement = document.querySelector(".cartData")!;
@@ -146,19 +217,26 @@ export class WellnessAdminPage extends Page {
       });
     }
     cartlogoclicked(){
-      var asd : NodeListOf<HTMLElement> = document.querySelectorAll(".cartElement")!;
-      var listofnames : string[] = [];
-      asd.forEach((e)=>{
-        e.className = "cartElement hidden";
-        listofnames.push(e.innerText);
-      });
-      var roomnumber : number = 0;
-      listofnames.forEach((e)=>{
-        this.makeanorder(e, roomnumber);
-      });
-
-      var cartdata : HTMLElement = document.querySelector(".cartData")!;
-      cartdata.innerHTML = "";
+      var roomnumber : number = Number((document.getElementById("roomnumber") as HTMLInputElement).value);
+      if(roomnumber == 0){
+        return;
+      }
+      else{
+        var asd : NodeListOf<HTMLElement> = document.querySelectorAll(".cartElement")!;
+        var listofnames : string[] = [];
+        asd.forEach((e)=>{
+          e.className = "cartElement hidden";
+          listofnames.push(e.innerText);
+        });
+        
+        listofnames.forEach((e)=>{
+          this.makeanorder(e, roomnumber);
+        });
+  
+        var cartdata : HTMLElement = document.querySelector(".cartData")!;
+        cartdata.innerHTML = "";
+        (document.getElementById("roomnumber") as HTMLInputElement).value = "";
+      }
     }
     carlogolistener(){
       document.querySelector(".cartImg")!.addEventListener("click", ()=>{

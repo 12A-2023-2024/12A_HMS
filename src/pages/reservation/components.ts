@@ -67,7 +67,6 @@ export class filterMenu extends HTMLElement {
 
     const target = this.querySelector(".filterMenuMain");
     this.data.forEach((item: string) => {
-      console.log(item);
       const fragment = document.createElement("div");
       const filter = document.createElement("input");
       filter.setAttribute("type", "checkbox");

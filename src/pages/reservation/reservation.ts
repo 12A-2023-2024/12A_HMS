@@ -22,11 +22,15 @@ export class ReservationPage extends Page {
     customElements.define("result-card", resultCard);
     customElements.define("filter-menu", filterMenu);
 
-    const searchResult = document.getElementById("searchResults");
-    searchResult?.appendChild(
-      new filterMenu(["4People", "2People", "1Person"]),
-    );
-
+    const searchResult = document.getElementById("searchResults") as HTMLElement;
+    const parameterList: string[] = [];
+    API.queryParameters().then((parameters: any) => {
+      parameters.forEach((parameter: { name: string; }) => {
+        parameterList.push(parameter.name)
+      });
+      searchResult.appendChild(new filterMenu(parameterList));
+    });
+    
     addCallBacks();
   }
 }

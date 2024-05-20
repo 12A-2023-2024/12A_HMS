@@ -54,16 +54,16 @@ export class API {
     return token;
   }
 
-  static async getReservations() {
-    let url = "https://hms.jedlik.cloud/api/reservations/list";
-    let method = "GET";
+  static async checkin(number: number) {
+    let url = "https://hms.jedlik.cloud/api/publicpages/checkin/" + number;
+    let method = "POST";
 
     return await API.fetch(url, method);
   }
 
-  static async checkin(number: number) {
-    let url = "https://hms.jedlik.cloud/api/publicpages/checkin/" + number;
-    let method = "POST";
+  static async queryParameters() {
+    let url = "https://hms.jedlik.cloud/api/publicpages/roomparameters"
+    let method = "GET"
 
     return await API.fetch(url, method);
   }

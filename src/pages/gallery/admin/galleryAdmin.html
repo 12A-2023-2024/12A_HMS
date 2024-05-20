@@ -1,0 +1,52 @@
+<div class="px-10">
+    <div class="flex place-content-center select-none cursor-pointer hidden">
+        <div id="carouselMenu" class="bg-slate-500 text-white text-2xl p-2">Körhinta</div>
+        <div id="bannerMenu" class="bg-slate-200 text-2xl p-2">Zászló</div>
+    </div>
+    <div class="flex grid-cols-1 mt-10 hidden" id="uj-kep"> 
+        Ha mégsem módosítani szeretne, hanem újat feltölteni kattintson ide:
+        <input type="button" value="Új kép!" id="newButton" class="w-20 mx-10 duration-200 bg-gray-500 text-gray-50 transition-all">
+    </div> 
+    <h1 class="px-10 bg-slate-200 mt-5 mb-5 h-10 justify-center content-center"><p id="felirat" class="text-gray-950 text-xl">Új kép</p></h1>
+    <form action="">
+        <div class="flex flex-col items-center">
+            <div class="space-x-10 mt-3">
+                <label class="text-xl" for="fileupload">kép feltöltése:</label>
+                <input class="justify-self-end" name="fileupload" id="fileupload" type="file" multiple accept="image/*">
+            </div>
+            <div class="space-x-10 mt-3">
+                <label class="text-xl" for="alt">alternatív szöveg:</label>
+                <input class="justify-self-end bg-gray-300 border-2 border-slate-950 px-2.5" type="text" id="alt" name="alt" placeholder="alternatív szöveg">
+            </div>
+            <div class="space-x-10 mt-3">
+                <label class="text-xl" for="href">link:</label>
+                <input class="justify-self-end bg-gray-300 border-2 border-slate-950 px-2.5" type="text" id="href" name="href" placeholder="link">
+            </div>
+            <div class="space-x-10 mt-3 list-main hidden flex">
+                <div>
+                    <label class="text-xl" for="title">Felsorolás:</label><br>
+                </div>
+                <div>
+                    <div id="minusListElement" class="bg-gray-500 text-gray-50 w-5 h-5 text-center mt-3">-</div>
+                    <div class="space-x-10 list-main hidden">
+                        <div id="inputs-main"></div>
+                    </div>
+                    <div id="plusListElement" class="bg-gray-500 text-gray-50 w-5 h-5 text-center mt-1">+</div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="grid grid-cols-1">
+        <input type="button" value="Küldés!" id="sendButton" class="w-20 justify-self-end duration-200 bg-gray-500 text-gray-50 transition-all">
+        <input type="button" value="Módosít!" id="modifyButton" class="w-20 justify-self-end hidden duration-200 bg-gray-500 text-gray-50 transition-all">
+        <input type="button" value="Törlés!" id="deleteButton" class="w-20 justify-self-end mt-2 hidden duration-200 bg-gray-500 text-gray-50 transition-all">
+    </div>
+    Módosításhoz válassza ki a módosítani kívánt képet:
+    <div class="flex grid-cols-1">
+        <input type="button" value="Sorrend módosítás" id="orderButton" class="w-96 mx-5 mt-2 duration-200 bg-gray-500 text-gray-50 transition-all">
+    </div>
+    <div id="images-container" class="grid grid-cols-2">
+
+    </div>
+</div>

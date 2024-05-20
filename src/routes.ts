@@ -3,6 +3,7 @@ import { HomePage } from "./pages/home/home.js";
 import { IntroductionPage } from "./pages/introduction/introduction.js";
 import { RoomtypeAdminPage } from "./pages/rooms/roomtype_admin_page.js";
 import { RoomsAdminPage } from "./pages/rooms/rooms_admin_page.js";
+import { RoomClient } from "./pages/rooms/room_client.js";
 
 export const routes: { [key: string]: { page: any } } = {
     '': {
@@ -21,6 +22,6 @@ export const routes: { [key: string]: { page: any } } = {
         page: RoomsAdminPage
     },
     'room_test':{
-        page: RoomsAdminPage
+        page: RoomClient
     }
 }

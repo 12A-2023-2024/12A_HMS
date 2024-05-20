@@ -88,6 +88,17 @@ export class RoomsAdminPage extends Page {
             });
         });
 
+        Array.from(document.getElementsByClassName("delete")).forEach((button) => { 
+            button.addEventListener("click", () => {
+                const roomNumber = button.closest("div")?.id.split("_")[1];
+                this.rooms.forEach((room) => {
+                    if (room.roomNumber == roomNumber) {
+                        this.deleteRoom(room);
+                    }
+                });
+            });
+        });
+
         document.querySelector("#new_room")?.addEventListener("click", () => {
             this.addRoom();
         });
@@ -101,6 +112,22 @@ export class RoomsAdminPage extends Page {
     private addRoom() { 
         const page = new RoomsEditPage(this, false);
         page.show();
+    }
+
+    private deleteRoom(room: Room) { 
+        console.log(room);
+        const requestOptions = {
+            method: "DELETE",
+            headers: {
+                "Authorization": this.token
+            },
+            redirect: "follow" as RequestRedirect | undefined
+        };
+
+        fetch(`https://hms.jedlik.cloud/api/rooms/${room.roomNumber}`, requestOptions)
+            .then((response) => response.text())
+            .then(() => this.fillContainer())
+            .catch((error) => console.error(error));
     }
 }
 

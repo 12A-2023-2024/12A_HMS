@@ -48,7 +48,7 @@ export class Page {
         return l;
     }
 
-    async fetch<T>(url: string, method: string, body: any = null): Promise<T> {
+    public async fetch<T>(url: string, method: string, body: any = null): Promise<T> {
         const userInfo = localStorage.getItem('user');
         let token = '';
         if (userInfo) {

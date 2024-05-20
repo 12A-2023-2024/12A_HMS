@@ -4,10 +4,9 @@ import { Datest } from "./date.js";
 import { filterMenu, resultCard } from "./components.js";
 
 export class ReservationPage extends Page {
+  token: string = '';
   constructor() {
-    super("/src/pages/reservation/reservation.html")
-    let room = API.queryRooms();
-    console.log(room);
+    super("/src/pages/reservation/reservation.html");
   }
 
   override getHtmlCallback() {
@@ -23,36 +22,17 @@ export class ReservationPage extends Page {
     customElements.define("result-card", resultCard);
     customElements.define("filter-menu", filterMenu);
 
-    const hotelRoom = {
-      roomNumber: 123,
-      numberOfBeds: 2, // Could be an array for multiple beds: [ { type: "King" }, { type: "Twin" } ]
-      numberOfBathrooms: 1,
-      hasBalcony: true,
-      squareMeters: 45,
-      pricePerNight: 150,
-      isAvailable: true,
-    };
-
-    // const searchResult = document.getElementById("searchResults");
-    // searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
-    // searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
-    // searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
-    // searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
-    // searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
-    // searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
-    // searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
-    // searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
-    // searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
-    // searchResult?.appendChild(
-    //   new filterMenu(["4People", "2People", "1Person"]),
-    // );
+    const searchResult = document.getElementById("searchResults");
+    searchResult?.appendChild(
+      new filterMenu(["4People", "2People", "1Person"]),
+    );
 
     addCallBacks();
   }
 }
 
-
 function addCallBacks() {
+
 
   //Align endDate min and value to startDate (endDate is the day after startDate)
   const startDateField = document.getElementById('startDate') as HTMLInputElement;
@@ -74,5 +54,25 @@ function addCallBacks() {
     const value = Number(personCountField.value);
     const newValue = Math.max(1, value - 1);
     personCountField.value = newValue.toString();
+  });
+
+  // Search command
+  const searchButton = document.getElementById('searchButton') as HTMLElement;
+  searchButton.addEventListener('click', () => {
+    const floor = 0; // create search field
+    const fromPrice = null;
+    const toPrice = null;
+    const capacity = Number.parseInt(personCountField.value);
+    const parameters = null;
+    const fromDate = startDateField.value;
+    const toDate = endDateField.value;
+
+    const searchResult = document.getElementById("searchResults") as HTMLElement;
+    API.queryRooms(floor, fromPrice, toPrice, 5, parameters, fromDate, toDate).then((rooms) => {
+      searchResult.innerHTML = "";
+      rooms.forEach(room => {
+        searchResult?.appendChild(new resultCard("asd", "asd", room));
+      });
+    });
   });
 }

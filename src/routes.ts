@@ -8,6 +8,10 @@ import { IntroductionAdminPage } from "./pages/introduction/introductionAdmin/in
 import { GalleryPage } from "./pages/gallery/gallery.js";
 import { GalleryAdminPage } from "./pages/gallery/admin/galleryAdmin.js";
 import { ContactAdminPage } from "./pages/contact/admin/contactAdmin.js";
+import { RestaurantStaffPage } from "./pages/restaurant/restaurantStaff.js";
+import { RestaurantPublicPage } from "./pages/restaurant/restaurantPublic.js";
+import { RestaurantAdminPage } from "./pages/restaurant/restaurantAdmin.js";
+import { Login } from "./pages/login/login.js";
 
 export const routes: {[key: string]: {page: any}} = {
     '': {
@@ -39,5 +43,18 @@ export const routes: {[key: string]: {page: any}} = {
     },
     'gallery': {
         page: GalleryPage
+    },
+    'restaurantPublic': {
+        page: RestaurantPublicPage
+    },
+    'restaurantStaff': {
+        page: RestaurantStaffPage
+    },
+    'restaurantAdmin': {
+        page: RestaurantAdminPage
+    },
+    'login':{
+        page:Login
     }
 }
+

@@ -38,6 +38,7 @@ export class WellnessPage extends Page {
 
   override getHtmlCallback() {
     this.getProductsData();
+    this.loginformshow();
   }
   addToCart(e : HTMLElement){
     var cartData : HTMLElement = document.querySelector(".cartData")!;
@@ -70,10 +71,24 @@ export class WellnessPage extends Page {
         });
     });
   }
+  loginformshow(){
+    var loginsformbtn : HTMLElement = document.querySelector(".bejelentkezesSzöveg")! ;
+    loginsformbtn.addEventListener("click", ()=>{
+      var loginform : HTMLElement = document.querySelector(".formforlogin")!;
+      if(loginform.classList.contains("collapse")){
+        loginform.className = "formforlogin visible";
+      }
+      else{
+        loginform.className = "formforlogin collapse";
+      }
+    });
+    
+  }
 
   addButtonEventListeners() {
     document.getElementById("btnconfirm")?.addEventListener("click", () => {
       this.login();
+      console.log("asd");
     });
     this.addToCartBtnListener();
   }

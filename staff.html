@@ -9,55 +9,59 @@
 </head>
 
 <body>
-  <!-- Navbar -->
-  <nav class="relative container mx-auto p-6">
-    <!-- Flex container -->
-    <div class="flex items-center justify-between">
-      <!-- Logo -->
-      <div class="pt-2">
-        <img src="img/logo.svg" alt="" />
-      </div>
-      <!-- Menu Items -->
-      <div class="hidden space-x-6 md:flex">
-        <a class="hover:text-darkGrayishBlue" data-route="">Recepció</a>
-        <a class="hover:text-darkGrayishBlue" data-route="">Étterem</a>
-        <a class="hover:text-darkGrayishBlue" data-route="">Wellness</a>
-        <a class="hover:text-darkGrayishBlue" data-route="">Koktél bár</a>
-        <a class="hover:text-darkGrayishBlue" data-route="roomtype_admin">Szoba tipus</a>
-        <a class="hover:text-darkGrayishBlue" data-route="rooms_admin">Szoba </a>
-        <a class="hover:text-darkGrayishBlue" data-route="">Admin</a>
-        <a class="hover:text-darkGrayishBlue" data-route="">Login</a>
-      </div>
+    <!-- Navbar -->
+    <nav class="relative container mx-auto p-6">
+        <!-- Flex container -->
+        <div class="flex items-center justify-between">
+          <!-- Logo -->
+          <div class="pt-2">
+            <img src="img/logo.svg" alt="" />
+          </div>
+          <!-- Menu Items -->
+          <div class="hidden space-x-6 md:flex">
+            <a class="hover:text-darkGrayishBlue" data-route="">Recepció</a>
+            <a class="hover:text-darkGrayishBlue" data-route="restaurantStaff">Étterem</a>
+            <a class="hover:text-darkGrayishBlue" data-route="">Wellness</a>
+            <a class="hover:text-darkGrayishBlue" data-route="">Koktél bár</a>
+            <a class="hover:text-darkGrayishBlue" data-route="roomtype_admin">Szoba tipus</a>
+            <a class="hover:text-darkGrayishBlue" data-route="rooms_admin">Szoba </a>
+            <a class="hover:text-darkGrayishBlue" data-route="restaurantAdmin">Éttermi adminoldal</a>
+            <a class="hover:text-darkGrayishBlue" data-route="login">Login</a>
+          </div>
 
-      <!-- Hamburger Icon -->
-      <button id="menu-btn" class="block hamburger md:hidden focus:outline-none">
-        <span class="hamburger-top"></span>
-        <span class="hamburger-middle"></span>
-        <span class="hamburger-bottom"></span>
-      </button>
-    </div>
-
-    <!-- Mobile Menu -->
-    <div class="md:hidden">
-      <div id="menu"
-        class="absolute flex-col items-center hidden self-end py-8 mt-10 space-y-6 font-bold bg-white sm:w-auto sm:self-center left-6 right-6 drop-shadow-md">
-        <a href="#">Recepció</a>
-        <a href="#">Étterem</a>
-        <a href="#">Wellness</a>
-        <a href="#">Koktél bár</a>
-        <a href="#">Admin</a>
-        <a href="#">Login</a>
-      </div>
-    </div>
-  </nav>
-
-  <div id="content" class="container mx-auto">
-
-
+          <!-- Hamburger Icon -->
+          <button
+            id="menu-btn"
+            class="block hamburger md:hidden focus:outline-none"
+          >
+            <span class="hamburger-top"></span>
+            <span class="hamburger-middle"></span>
+            <span class="hamburger-bottom"></span>
+          </button>
+        </div>
+  
+        <!-- Mobile Menu -->
+        <div class="md:hidden">
+          <div
+            id="menu"
+            class="absolute flex-col items-center hidden self-end py-8 mt-10 space-y-6 font-bold bg-white sm:w-auto sm:self-center left-6 right-6 drop-shadow-md"
+          >
+            <a href="#">Recepció</a>
+            <a href="#">Étlap</a>
+            <a href="#">Étterem</a>
+            <a href="#">Wellness</a>
+            <a href="#">Koktél bár</a>
+            <a href="#">Admin</a>
+            <a href="#">Login</a>
+          </div>
+        </div>
+      </nav>
+      
+      <div id="content" class="container mx-auto">
   </div>
 
 
   <script type="module" src="js/index.js"></script>
 </body>
-
 </html>
+

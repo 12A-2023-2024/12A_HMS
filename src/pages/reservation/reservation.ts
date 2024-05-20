@@ -23,10 +23,10 @@ export class ReservationPage extends Page {
     customElements.define("filter-menu", filterMenu);
 
     const searchResult = document.getElementById("searchResults") as HTMLElement;
-    const parameterList: string[] = [];
+    const parameterList: any[] = [];
     API.queryParameters().then((parameters: any) => {
-      parameters.forEach((parameter: { name: string; }) => {
-        parameterList.push(parameter.name)
+      parameters.forEach((parameter: any) => {
+        parameterList.push(parameter)
       });
       searchResult.appendChild(new filterMenu(parameterList));
     });
@@ -36,8 +36,6 @@ export class ReservationPage extends Page {
 }
 
 function addCallBacks() {
-
-
   //Align endDate min and value to startDate (endDate is the day after startDate)
   const startDateField = document.getElementById('startDate') as HTMLInputElement;
   const endDateField = document.getElementById('endDate') as HTMLInputElement;
@@ -67,12 +65,11 @@ function addCallBacks() {
     const fromPrice = null;
     const toPrice = null;
     const capacity = Number.parseInt(personCountField.value);
-    const parameters = null;
     const fromDate = startDateField.value;
     const toDate = endDateField.value;
     const searchResult = document.getElementById("searchResults") as HTMLElement;
-    
-    API.queryRooms(floor, fromPrice, toPrice, capacity, parameters, fromDate, toDate).then((rooms) => {
+    API.queryRooms(floor, fromPrice, toPrice, capacity, filterMenu.get_checked_parameters(), fromDate, toDate).then((rooms) => {
+      console.log(filterMenu.get_checked_parameters());
       searchResult.innerHTML = "";
       rooms.forEach(room => {
         searchResult?.appendChild(new resultCard(room.roomType.name, room.roomType.imageUrls[0], room));
@@ -80,5 +77,3 @@ function addCallBacks() {
     });
   });
 }
-
-

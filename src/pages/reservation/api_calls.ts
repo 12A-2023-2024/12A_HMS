@@ -108,7 +108,6 @@ export class API {
       (fromDate? "fromDate=" + fromDate + '&': '') +
       (toDate? "toDate=" + toDate + '&': '' );
 
-    console.log(url.slice(0, -1));
     const method = "GET";
 
     return API.fetch(url.slice(0, -1), method);

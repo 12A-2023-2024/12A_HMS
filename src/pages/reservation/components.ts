@@ -52,8 +52,8 @@ export class resultCard extends HTMLElement {
 }
 
 export class filterMenu extends HTMLElement {
-  data: any;
-  constructor(data: any) {
+  data: any[];
+  constructor(data: any[]) {
     super();
     this.data = data;
   }
@@ -66,18 +66,30 @@ export class filterMenu extends HTMLElement {
     this.appendChild(content);
 
     const target = this.querySelector(".filterMenuMain");
-    this.data.forEach((item: string) => {
+    this.data.forEach((item: {name: string, id: string}) => {
       const fragment = document.createElement("div");
       const filter = document.createElement("input");
       filter.setAttribute("type", "checkbox");
-      filter.id = "filterButton" + item;
+      filter.id = "filterButton" + item.id;
+      filter.classList.add("roomParameter");
       const lbl = document.createElement("label");
-      lbl.setAttribute("for", "filterButton" + item);
+      lbl.setAttribute("for", "filterButton" + item.id);
       lbl.classList.add("pl-2");
-      lbl.textContent = item;
+      lbl.textContent = item.name;
       fragment?.appendChild(filter);
       fragment?.appendChild(lbl);
       target?.appendChild(fragment);
     });
+  }
+
+  static get_checked_parameters() {
+    let params = "";
+    for (var param of document.getElementsByClassName("roomParameter")) {
+      if (param.checked) {
+        params += param.getAttribute("id")?.slice(12) + ';';
+      }
+    }
+
+    return params.slice(0, -1);
   }
 }

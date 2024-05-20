@@ -105,14 +105,15 @@ export class WellnessPage extends Page {
       .then((result) => {
         var maindiv = document.getElementById("maindiv") as HTMLElement;
         maindiv.innerHTML = "";
-        var i: number = 0;
+        var srclist = [`src/pages/wellness/wellness_kepek/13-wellness-IMG_0763-800x533w.jpg`, "src/pages/wellness/wellness_kepek/wellness-hetvege-ajandekba.jpg", "src/pages/wellness/wellness_kepek/introduction-images-for-a-hotels-pool-bar-area (1).jpeg", "src/pages/wellness/wellness_kepek/iszappakolás2.jpg", "src/pages/wellness/wellness_kepek/xd.jpg", "src/pages/wellness/wellness_kepek/https___allyoucanmove.hu_media_aycm_gym_5eb2e18785c7a5.30261326.jpg", "src/pages/wellness/wellness_kepek/introduction-images-for-a-hotels-children-playground-area (3).jpeg"];
+        var i: number = 0; 
         result.forEach(element => {
           i++;
           if (i % 2 == 0) {
             maindiv.innerHTML += `
             <div class="w-full mx-16 self-end max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-700 dark:border-gray-700">
             <p>
-                <img class="p-8 rounded-t-lg" src="${element.imageUrls[0]}" alt="product image" />
+                <img class="p-8 rounded-t-lg" src="${srclist[i-1]}" alt="product image" />
             </p>
             <div class="px-5 pb-5">
                 <p>
@@ -132,7 +133,7 @@ export class WellnessPage extends Page {
               maindiv.innerHTML += `
               <div class="w-full mx-16 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-700 dark:border-gray-700">
               <p>
-                  <img class="p-8 rounded-t-lg" src="${element.imageUrls[0]}" alt="product image" />
+                  <img class="p-8 rounded-t-lg" src="${srclist[i-1]}" alt="product image" />
               </p>
               <div class="px-5 pb-5">
                   <p">
@@ -189,6 +190,4 @@ export class WellnessPage extends Page {
         `;
     }
 }
-
-
 }

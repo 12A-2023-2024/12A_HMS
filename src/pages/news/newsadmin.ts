@@ -15,7 +15,9 @@ export class NewsAdminPage extends Page {
         this.querySelector<HTMLButtonElement>("#newsPOST").addEventListener("click",()=>{
           this.postNews();
         })
-        this.login()
+        this.querySelector<HTMLButtonElement>("#btnconfirm").addEventListener("click",()=>{
+          this.login();
+        })
     }
 
     async generateNews(){
@@ -164,18 +166,18 @@ export class NewsAdminPage extends Page {
       if(file) return file.name
     }
 
-    async login(){
-      const url: string = "https://hms.jedlik.cloud/api/login"
-      const method: string = "POST"
-      const body: any= {
-          "loginName": "admin",
-          "password": "admin"
-       }
-      const data = this.fetch<Login>(url, method, body)
-      await data.then( (result) => {
-          localStorage.setItem('user', JSON.stringify(result));
-      })        
-  }
+  //   async login(){
+  //     const url: string = "https://hms.jedlik.cloud/api/login"
+  //     const method: string = "POST"
+  //     const body: any= {
+  //         "loginName": "admin",
+  //         "password": "admin"
+  //      }
+  //     const data = this.fetch<Login>(url, method, body)
+  //     await data.then( (result) => {
+  //         localStorage.setItem('user', JSON.stringify(result));
+  //     })        
+  // }
 
 
     parseResult(result:string){
@@ -191,4 +193,46 @@ export class NewsAdminPage extends Page {
       var date: string = yyyy + '-' + mm + '-' + dd;
       return date;
     }
+
+    login() {
+      var sucLogin : boolean = false;
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      const body = JSON.stringify({
+        "loginName": (document.getElementById("user") as HTMLInputElement).value.toString(),
+        "password": (document.getElementById("pass") as HTMLInputElement).value.toString()
+      });
+  
+       this.fetch<UserData>("https://hms.jedlik.cloud/api/login", "POST", body)
+        .then((result) => {
+          localStorage.setItem("user", JSON.stringify(result));
+          localStorage.setItem("roles", JSON.stringify(result.roles));
+          sucLogin = true;
+          this.LoginVisual();
+        })
+        .catch((error) => {
+          console.error(error);
+          sucLogin = false;
+        });
+          (document.getElementById("pass") as HTMLInputElement).value = '';
+          (document.getElementById("user") as HTMLInputElement).value = ''; 
+      }
+
+      LoginVisual() {
+        var form = document.querySelector(".formforlogin")!;
+        form.className = "formforlogin collapse";
+        var logintext = document.querySelector(".bejelentkezesSzöveg")!;
+        logintext.className = "font-bold bejelentkezesSzöveg collapse";
+        this.querySelector<HTMLElement>("div.container div.container").innerHTML = '';
+        // var innerheader = document.querySelector("#profilepicdiv")!;
+        // innerheader.innerHTML += `<img id="profilepic" src="" alt="Profile Picture" >`;
+      }
+
+}
+
+interface UserData{
+  name: string;
+  token: string;
+  roles: string[];
+  validTo: string;
 }

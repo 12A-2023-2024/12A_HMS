@@ -16,6 +16,7 @@ export class WellnessAdminPage extends Page {
         this.carlogolistener();
         this.newWellnessProductButtonListener();
         this.deleteproductbuttonlistener();
+        this.modifyproductbuttonlistener();
     }
 
     addButtonEventListeners(){
@@ -110,18 +111,55 @@ export class WellnessAdminPage extends Page {
             `;
         }
     }
-    modifywellnessproduct(){
-
-    }
-    deleteproductbuttonlistener(){
-      var asd : NodeListOf<HTMLElement> = document.querySelectorAll(".deletebtn")!;
+    modifyproductbuttonlistener(){
+      var asd : NodeListOf<HTMLElement> = document.querySelectorAll(".modifybtn")!;
       console.log(asd);
       var i : number = 0;
       var asdi : number = 0;
       asd.forEach((element) => {
         i = Number(asd[asdi].dataset.index)
         asdi++;
-        element.classList.add(`${i}del`);
+        element.addEventListener("click", ()=>{
+          this.modifywellnessproduct(i);
+        });
+      });
+    }
+    modifywellnessproduct(index : number){
+      var name : string = (document.getElementById("name") as HTMLInputElement).value.toString();
+      var cost : number = Number((document.getElementById("cost") as HTMLInputElement).value);
+      var desc : string = (document.getElementById("desc") as HTMLInputElement).value.toString();
+      var cat : number = Number((document.getElementById("cat") as HTMLInputElement).value);
+      if(!name || !cost || !desc || !cat){
+        alert("Kérem adjon meg minden adatot!");
+      }
+      else{
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        const body = {
+          "id": index,
+          "name": name,
+          "price": cost,
+          "imageUrls": [],
+          "description": desc,
+          "categoryId": cat 
+        };
+        console.log(body);
+          this.fetch<null>(`https://hms.jedlik.cloud/api/wellness/products`, "PUT", body)
+        .then((result) => {
+          alert("A termék sikeresen módosítva a listában!");
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      }
+    }
+    deleteproductbuttonlistener(){
+      var asd : NodeListOf<HTMLElement> = document.querySelectorAll(".deletebtn")!;
+      var i : number = 0;
+      var asdi : number = 0;
+      asd.forEach((element) => {
+        i = Number(asd[asdi].dataset.index)
+        asdi++;
         element.addEventListener("click", ()=>{
           this.deletewellnessproduct(i);
         });
@@ -219,6 +257,7 @@ export class WellnessAdminPage extends Page {
     cartlogoclicked(){
       var roomnumber : number = Number((document.getElementById("roomnumber") as HTMLInputElement).value);
       if(roomnumber == 0){
+        alert("Kérem adjon meg szobaszámot!")
         return;
       }
       else{

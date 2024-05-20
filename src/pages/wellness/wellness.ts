@@ -36,8 +36,9 @@ export class WellnessPage extends Page {
 
     }
 
-  override getHtmlCallback() {
-    this.getProductsData();
+  override async getHtmlCallback() {
+    this.addMainDivIfNotExistent();
+    await this.getProductsData();
     this.loginformshow();
     this.carlogolistener();
   }
@@ -99,8 +100,8 @@ export class WellnessPage extends Page {
     });
     this.addToCartBtnListener();
   }
-  getProductsData() {
-    this.fetch<WellnessProduct[]>("https://hms.jedlik.cloud/api/publicpages/wellnessproducts", "GET")
+  async getProductsData() {
+    await this.fetch<WellnessProduct[]>("https://hms.jedlik.cloud/api/publicpages/wellnessproducts", "GET")
       .then((result) => {
         var maindiv = document.getElementById("maindiv") as HTMLElement;
         maindiv.innerHTML = "";
@@ -176,6 +177,18 @@ export class WellnessPage extends Page {
       this.addAdminButtonListener();
     }
   }
+  addMainDivIfNotExistent(){
+    var div : HTMLElement = document.querySelector(".maincontainer")!;
+    var subdiv : HTMLElement | null = document.querySelector("#maindiv");
+    if(subdiv == null){
+        div.innerHTML += `
+        <div id="maindiv" class="flex h-full  flex-col">    
+            <div>
+            </div>
+        </div>
+        `;
+    }
+}
 
 
 }

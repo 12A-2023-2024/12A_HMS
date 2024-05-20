@@ -69,38 +69,44 @@ export class WellnessPage extends Page {
           i++;
           if (i % 2 == 0) {
             maindiv.innerHTML += `
-              <div class="bg-blue-100 w-2/5 h-1/6 flex flex-col items-end justify-between self-end rounded-md m-5">
-                <h1 class="text-lg font-bold self-center" >
-                  ${element.name}
-                </h1>
-                <p class="text-base font-semibold self-start m-2">
-                  ${element.description}
-                </p>
-                <p>
-                  ${element.price} Ft
-                </p>
-                <div class="rounded-md border border-transparent bg-blue-900 w-28 text-center float-right m-2  ">
-                  <p class="m-1 cartbtn"> Kosárba</p>
+            <div class="w-full self-end max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <a href="#">
+                <img class="p-8 rounded-t-lg" src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="product image" />
+            </a>
+            <div class="px-5 pb-5">
+                <a href="#">
+                    <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">${element.name}</h5>
+                </a>
+                <div class="flex items-center mt-2.5 mb-5 text-gray-900 dark:text-white">
+                ${element.description}
                 </div>
-              </div>`;
+                <div class="flex items-center justify-between">
+                    <span class="text-3xl font-bold text-gray-900 dark:text-white">${element.price} Ft</span>
+                    <a href="#" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Kosárba</a>
+                </div>
+            </div>
+        </div>`;
               console.log("button appended.");
           }
           else{
               maindiv.innerHTML += `
-                <div class="bg-blue-100 w-2/5 h-1/6 flex flex-col items-end justify-between rounded-md m-5">
-                  <h1 class="text-lg font-bold self-center" >
-                  ${element.name}
-                  </h1>
-                  <p class="text-base font-semibold self-start m-2">
-                    ${element.description}
-                  </p>
-                  <p>
-                  ${element.price} Ft
-                  </p>
-                  <div class="rounded-md border border-transparent bg-blue-900 w-28 text-center float-right m-2  ">
-                    <p class="m-1 cartbtn"> Kosárba</p>
+              <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+              <a href="#">
+                  <img class="p-8 rounded-t-lg" src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="product image" />
+              </a>
+              <div class="px-5 pb-5">
+                  <a href="#">
+                      <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">${element.name}</h5>
+                  </a>
+                  <div class="flex items-center mt-2.5 mb-5 text-gray-900 dark:text-white">
+                  ${element.description}
                   </div>
-                </div>`;
+                  <div class="flex items-center justify-between">
+                      <span class="text-3xl font-bold text-gray-900 dark:text-white">${element.price} Ft</span>
+                      <a href="#" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Kosárba</a>
+                  </div>
+              </div>
+          </div>`;
                 console.log("button appended.");
           }
         });

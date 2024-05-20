@@ -1,62 +1,36 @@
-<div class="flex gap-4 lg:flex-row md:flex-row sm:flex-col">
-    <div class="flex-none w-32 px-1 bg-blue-300">
-        <button class="bg-lime-300 w-full h-48 text-center text-white text-9xl" id="btnShowAddNew">
-            +
-        </button>
-    </div>
-    <div class="flex flex-wrap flex-initial gap-y-4 w-full p-1 bg-blue-300">
-        <div class="w-full bg-lime-300 p-1 text-center">
-            <input type="search" name="cocktailSearch" placeholder="Search" class="w-3/6 inline-block rounded-md outline-none text-center italic">
+<div class="flex flex-col justify-center items-center gap-y-4">
+    <div class="flex justify-between items-center w-full p-1">        
+        <div class="inline-block select-none">
+            <button class="w-12 rounded-lg bg-transparent text-transparent" disabled>-</button>
+            <button class="w-12 rounded-lg bg-transparent text-transparent" disabled>-</button>
         </div>
+        <input type="search" name="cocktailSearch" placeholder="Search" class="w-3/6 rounded-lg outline-none text-center italic bg-slate-200">
+        <div class="inline-block">
+            <button class="w-12 rounded-lg bg-lime-300" id="btnAddNew" data-route="cocktailmodal">Add</button>
+            <button class="w-12 rounded-lg bg-red-300">Del</button>
+        </div>
+    </div>
+
+    <div class="ctLocalNavigation | flex flex-wrap w-full justify-center gap-5 border-t-2 border-slate-900 mb-14 pt-2">
+    </div>    
+
+    <div class="cocktailWrapper | flex gap-4 flex-wrap items-center justify-center">
+
+    </div>
+
+    <div class="grid grid-cols-3 bg-lime-300" id="modalWrapper">
+        
+    </div>
+</div>
+
+<!-- <div class="flex gap-4 lg:flex-row md:flex-row sm:flex-col">
+    <div class="flex flex-wrap flex-initial gap-y-4 w-full p-1 bg-blue-300">
+        
         <div class="ctLocalNavigation | flex flex-wrap w-full justify-center gap-5 border-t-2 border-slate-900 mb-14 pt-2">
         </div>
 
         <div class="cocktailWrapper w-full bg-blue-300">
 
-            <!-- ------------ Cocktail list content example ------------ -->
-    
-            <!-- <div class="lg:basis-1/5 md:basis-1/3 sm:basis-full bg-lime-300">
-                <div class="ctCard bg-red-300">
-                    <img class="ctCardImg" src="" alt="">
-                    <div class="ctContent">
-                        <p class="ctName mb-3 mt-2 text-xl "></p>
-                        <p class="text-xs text-center ctDescriptionFull"><span class="ctABV font-bold"></span> <span class="ctDescription"></span></p>
-                    </div>
-                    <div class="ctBackgroundBox"></div>
-                </div>
-            </div>         -->
-    
-            <!-- ---------------------------------- -->
-
-        </div>
-
-        <div id="EditModal" class="grid-cols-5 w-full bg-yellow-300 hidden">
-            <div class="col-start-1">
-                <label for="name" class="m-1 block h-6">Név:</label>
-                <label for="abv" class="m-1 block h-6">ABV:</label>
-                <label for="desc" class="m-1 block h-6">Leírás:</label>
-                <label for="category" class="m-1 block h-6">Kategória:</label>
-            </div>
-            <div class="col-start-2">
-                <input class="m-1 block" type="text" name="name" id="nameInput">
-                <input class="m-1 block" type="text" name="abv" id="abvInput">
-                <input class="m-1 block" type="text" name="desc" id="descriptionInput">
-                <select name="category" id="categoryInput" class="m-1 h-6 block">
-                    <option value="choose"></option>
-                    <option value="longDrink">Hosszú italok</option>
-                    <option value="wine">Borok & Pezsgők</option>
-                    <option value="cocktail">Koktélok</option>
-                    <option value="beer">Sörök & Ciderek</option>
-                    <option value="softDrink">Üdítők</option>
-                </select>
-            </div>
-            <div class="col-start-3 col-end-4">
-                <input type="image" src="" alt="">
-            </div>
-            <div class="col-start-5">                
-                <button class="h-1/2 w-full bg-lime-300" id="btnConfirm">Hozzáadás</button>
-                <button class="h-1/2 w-full bg-red-300" id="btnCancel">Mégsem</button>
-            </div>
         </div>
     </div>
-</div>
+</div> -->

@@ -1,0 +1,38 @@
+<div class="col-start-1 bg-red-300">
+    <div class="grid grid-cols-2">
+        <label for="name" id="lblName" class="m-1 inline-block">Név: </label>
+        <input type="text" name="name" id="nameInput" class="m-1 inline-block">
+    </div>
+
+    <div class="grid grid-cols-2">
+        <label for="price" class="m-1 inline-block">Ár: </label>
+        <input type="text" name="price" id="priceInput" class="m-1 inline-block">
+    </div>
+
+    <div class="grid grid-cols-2">
+        <label for="description" class="m-1 inline-block">Leírás: </label>
+        <input type="text" name="description" id="descriptionInput" class="m-1 inline-block">
+    </div>
+
+    <div class="grid grid-cols-2">
+        <label for="category" class="m-1 inline-block">Kategória: </label>
+        <select name="category" id="categoryInput" class="m-1 inline-block">
+            <option value="base"></option>
+            <option value="longDrink">Hosszú italok</option>
+            <option value="wine">Borok & Pezsgők</option>
+            <option value="cocktail">Koktélok</option>
+            <option value="beer">Sörök & Ciderek</option>
+            <option value="softDrink">Üdítők</option>
+        </select>
+    </div>
+
+</div>
+
+<div class="col-start-2 text-center">
+    <img src="" alt="" id="imgInput" class="w-1/2 inline-block">
+</div>
+
+<div class="grid gap-2 p-2 bg-yellow-300 col-start-3">
+    <button class="bg-lime-300 w-1/2 mx-auto rounded-lg">Hozzáadás</button>
+    <button class="bg-red-300 w-1/2 mx-auto rounded-lg" id="btnCancel">Mégsem</button>
+</div>

@@ -24,7 +24,7 @@ export class RoomtypeAdminPage extends Page {
 
     public fillContainer() {
         const container = document.querySelector(".roomtype_container");
-        
+
         const requestOptions = {
             method: "GET",
             headers: {
@@ -32,7 +32,7 @@ export class RoomtypeAdminPage extends Page {
             },
             redirect: "follow" as RequestRedirect | undefined
         };
-        
+
         if (container) {
             container.innerHTML = "";
             fetch("https://hms.jedlik.cloud/api/rooms/types?onlyActives=true", requestOptions)
@@ -41,15 +41,17 @@ export class RoomtypeAdminPage extends Page {
                     this.roomtypes = result;
                 })
                 .then(() => {
-                    this.roomtypes.forEach((roomtype) => { 
+                    this.roomtypes.forEach((roomtype) => {
                         container.innerHTML += `
-                        <div id="roomtype_${roomtype.id}">
-                            <p>${roomtype.name}</p>
-                            <p>${roomtype.capacity}</p>
-                            <p>${roomtype.pricePerNigthPerPerson}</p>
-                            <p>${roomtype.description}</p>
-                            <button type="button" class="modify">✏️</button>
-                            <button class="delete">🗑️</button>
+                        <div class=" m-2 border-solid border-2 border-slate-600 h-min p-1.5 w-fit rounded">
+                            <div id="roomtype_${roomtype.id}" class="grid gap-5 grid-flow-col auto-cols-max w-fit m-auto">
+                                <p class="font-bold">${roomtype.name}</p>
+                                <p>${roomtype.capacity} fő</p>
+                                <p>${roomtype.pricePerNigthPerPerson} Ft</p>
+                                <p>${roomtype.description}</p>
+                                <button type="button" class="modify">✏️</button>
+                                <button class="delete">🗑️</button>
+                            </div>
                         </div>
                         `;
                     });
@@ -61,6 +63,7 @@ export class RoomtypeAdminPage extends Page {
     private addEventListeners() {
         Array.from(document.getElementsByClassName("modify")).forEach((button) => {
             button.addEventListener("click", () => {
+                document.querySelector("#new_roomtype")?.classList.add("hidden");
                 const roomTypeId = button.closest("div")?.id.split("_")[1];
                 this.roomtypes.forEach((roomtype) => {
                     if (roomtype.id == roomTypeId) {
@@ -72,6 +75,7 @@ export class RoomtypeAdminPage extends Page {
 
         document.querySelector("#new_roomtype")?.addEventListener("click", () => {
             this.addRoomType();
+            document.querySelector("#new_roomtype")?.classList.add("hidden");
         });
     }
 

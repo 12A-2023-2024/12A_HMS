@@ -1,43 +1,53 @@
-<div class="roomtype_container">
+<h1 class="mb-2.5 font-bold text-4xl text-center mb-4">Szoba tipusok</h1>
+<div class="flex">
+    <div class=" roomtype_container bg-neutral-300 w-4/5 m-auto flex flex-wrap h-fit p-3 rounded">
 
-</div>
+    </div>
 
-<button id="new_roomtype">Új szobatípus</button>
+    <button id="new_roomtype" class="h-fit m-2 bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150">Új szobatípus</button>
 
-<div class="form-container" id="roomtype_edit" style="display: none;">
-    <h1 class="title">Szobatípus szerkesztése</h1>
-    <form id="roomtype_form">
-        <div>
-            <label for="roomtype_name">Szobatípus elnevezése:</label>
-            <input type="text" id="roomtype_name" name="roomtype_name">
-        </div>
+    <div class="ml-3 form-container bg-neutral-200  h-fit p-2 rounded relative " id="roomtype_edit" style="display: none;" >
+        <h1 class="title title text-center text-xl font-bold mb-5 ">Szobatípus szerkesztése</h1>
+        <button id="closebutton" type="button" class="absolute top-0 right-0 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+            <span class="sr-only">Close modal</span>
+        </button>
+        <form id="roomtype_form">
+            <div class="mb-2">
+                <label for="roomtype_name" class="block uppercase text-blueGray-600   mb-2">Szobatípus elnevezése:</label>
+                <input class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" type="text" id="roomtype_name" name="roomtype_name">
+            </div>
 
-        <div>
-            <label for="description">Leírás:</label>
-            <textarea id="description" name="description"></textarea>
-        </div>
+            <div class="mb-2">
+                <label for="description" class="block uppercase text-blueGray-600  mb-2">Leírás:</label>
+                <textarea id="description" name="description" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"></textarea>
+            </div>
 
-        <div>
-            <label for="capacity">Vendégek száma:</label>
-            <input type="number" id="capacity" name="capacity">
-        </div>
+            <div class="mb-2">
+                <label for="capacity" class="block uppercase text-blueGray-600  mb-2">Vendégek száma:</label>
+                <input type="number" id="capacity" name="capacity" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+            </div>
 
-        <div>
-            <label for="price">Ár:</label>
-            <input type="number" id="price" name="price">
-        </div>
+            <div class="mb-2">
+                <label for="price" class="block uppercase text-blueGray-600  mb-2">Ár:</label>
+                <input type="number" id="price" name="price" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+            </div>
 
-        <button type="button" id="extras">Extrák</button>
+            <button type="button" id="extras" class="m-1 bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150">Extrák</button>
 
-        <input type="file" name="images" alt="images" multiple>
+            <input type="file" name="images" alt="images" multiple class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
 
-        <button type="submit" id="submit">Felvétel</button>
-    </form>
-</div>
+            <button type="submit" id="submit" class="m-2 bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150">Felvétel</button>
+        </form>
+    </div>
 
-<div id="extras_popup" style="display: none;">
-    <button id="close" style="margin-left: 92%;">X</button>
-    <form></form>
-    <button id="extras_submit">Kész</button>
-    <button id="extras_new">Új felvétele</button>
+    <div id="extras_popup" style="display: none;" class="ml-3 form-container bg-neutral-200  h-fit p-2 rounded relative ">
+        <button id="close" style="margin-left: 92%;">X</button>
+        
+        <form></form>
+        <button id="extras_submit" class="m-2 bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150">Kész</button>
+        <button id="extras_new" class="m-2 bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150">Új felvétele</button>
+    </div>
 </div>

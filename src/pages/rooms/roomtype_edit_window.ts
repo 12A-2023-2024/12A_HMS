@@ -36,6 +36,7 @@ export class RoomTypeEditPage {
         });
 
         document.querySelector("#roomtype_form")?.addEventListener("submit", (e) => {
+            document.querySelector("#new_roomtype")?.classList.remove("hidden");
             e.preventDefault();
             const formData = new FormData(e.target as HTMLFormElement);
             const name = formData.get("roomtype_name") as string;
@@ -57,6 +58,12 @@ export class RoomTypeEditPage {
         });
 
         document.querySelector("#close")?.addEventListener("click", () => {
+            this.parentPage.extrasPopup?.hide();
+        });
+        
+        document.querySelector("#closebutton")?.addEventListener("click", () => {
+            this.hide();
+            document.querySelector("#new_roomtype")?.classList.remove("hidden");
             this.parentPage.extrasPopup?.hide();
         });
 
@@ -165,4 +172,6 @@ export const fileToBase64 = (file: File): Promise<string> => new Promise((resolv
     reader.onerror = reject;
     reader.readAsDataURL(file);
 });
+
+
 

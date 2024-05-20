@@ -12,6 +12,9 @@ module.exports = {
      margin: {
       'auto': 'auto',
     },
+    height: {
+      'big' : '8000px'
+    },
     },
   },
   plugins: [],

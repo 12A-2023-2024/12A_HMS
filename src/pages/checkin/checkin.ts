@@ -1,4 +1,3 @@
-import { Page } from "../page";
 const inputElements = document.querySelectorAll("input")
 
 inputElements.forEach(element => {
@@ -55,6 +54,48 @@ async function checkReservationNumber() {
         }
     };
 
-    const response = await fetch(url, requestOptions)
-    //Do stuff here after we have reservations ready
+    const response = await fetch(url, requestOptions);
+    if (response.status == 200) {
+        showSuccess();
+        return;
+    }
+    showFailure();
+}
+
+function showSuccess() {
+    console.log("Success")
+    const errorMessageElement = document.querySelector("#errorMessage") as HTMLElement
+    errorMessageElement.innerHTML = "Kérjük, vegye el a belépőkártyáit!"
+    showMessage()
+    initiateReset(10)
+}
+
+function showFailure() {
+    console.log("Failure")
+    const errorMessageElement = document.querySelector("#errorMessage") as HTMLElement
+    errorMessageElement.innerHTML = "Hibás kód!"
+    showMessage()
+    initiateReset(1)
+}
+
+function showMessage() {
+    const errorMessageElement = document.querySelector("#errorMessage")
+    errorMessageElement?.classList.remove("text-slate-500")
+    errorMessageElement?.classList.add("text-white")
+}
+
+function hideMessage() {
+    const errorMessageElement = document.querySelector("#errorMessage")
+    errorMessageElement?.classList.add("text-slate-500")
+    errorMessageElement?.classList.remove("text-white")
+}
+
+function initiateReset(seconds: number) {
+    setTimeout(() => {
+        inputElements.forEach(element => {
+            element.value = ""
+        });
+        hideMessage()
+        inputElements[0].focus()
+    }, seconds * 1000)
 }

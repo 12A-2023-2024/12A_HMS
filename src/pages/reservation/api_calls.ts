@@ -1,6 +1,19 @@
 import { Page } from "../page";
 import { ReservationPage } from "./reservation";
 
+export type Room = {
+  id: number,
+  roomNumber: string,
+  roomType: {
+    name: string,
+    description: string,
+    imageUrls: string[],
+    parameters: string[]
+  },
+  capacity: number,
+  pricePerNigthPerPerson: number
+};
+
 export class Guest {
   name: String;
   address: String;
@@ -84,7 +97,7 @@ export class API {
     parameters: string | null = null,
     fromDate: string | null = null,
     toDate: string | null = null,
-  ) {
+  ): Promise<Room[]> {
     const params = {
       floor: floor,
       fromPrice: fromPrice,
@@ -94,12 +107,20 @@ export class API {
       fromDate: fromDate,
       toDate: toDate,
     };
-    const url =
-      "https://hms.jedlik.cloud/api/publicpages/findrooms?" +
-      JSON.stringify(params);
+    let url =
+      "https://hms.jedlik.cloud/api/publicpages/findrooms?" + 
+      (floor? "floor=" + floor + '&': '') +
+      (fromPrice? "fromPrice=" + fromPrice + '&': '') +
+      (toPrice? "toPrice=" + toPrice + '&': '') +
+      (capacity? "capacity=" + capacity + '&': '') +
+      (parameters? "parameters=" + parameters + '&': '') +
+      (fromDate? "fromDate=" + fromDate + '&': '') +
+      (toDate? "toDate=" + toDate + '&': ')';
+
+    console.log(url.slice(0, -1));
     const method = "GET";
 
-    return API.fetch(url, method);
+    return API.fetch(url.slice(0, -1), method);
   }
 
   static async fetch<T>(url: string, method: string, body: any = null): Promise<T> {

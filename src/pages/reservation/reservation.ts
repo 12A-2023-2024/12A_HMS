@@ -1,5 +1,5 @@
 import { Page } from "../page.js";
-import { API } from "./api_calls.js";
+import { API, Room } from "./api_calls.js";
 import { Datest } from "./date.js";
 import { filterMenu, resultCard } from "./components.js";
 
@@ -66,13 +66,15 @@ function addCallBacks() {
     const parameters = null;
     const fromDate = startDateField.value;
     const toDate = endDateField.value;
-
     const searchResult = document.getElementById("searchResults") as HTMLElement;
-    API.queryRooms(floor, fromPrice, toPrice, 5, parameters, fromDate, toDate).then((rooms) => {
+    
+    API.queryRooms(floor, fromPrice, toPrice, capacity, parameters, fromDate, toDate).then((rooms) => {
       searchResult.innerHTML = "";
       rooms.forEach(room => {
-        searchResult?.appendChild(new resultCard("asd", "asd", room));
+        searchResult?.appendChild(new resultCard(room.roomType.name, room.roomType.imageUrls[0], room));
       });
     });
   });
 }
+
+

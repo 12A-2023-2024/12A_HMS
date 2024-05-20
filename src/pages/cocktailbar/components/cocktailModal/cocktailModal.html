@@ -1,4 +1,4 @@
-<div class="col-start-1 bg-red-300">
+<div class="col-start-1 m-auto">
     <div class="grid grid-cols-2">
         <label for="name" id="lblName" class="m-1 inline-block">Név: </label>
         <input type="text" name="name" id="nameInput" class="m-1 inline-block">
@@ -16,7 +16,7 @@
 
     <div class="grid grid-cols-2">
         <label for="category" class="m-1 inline-block">Kategória: </label>
-        <select name="category" id="categoryInput" class="m-1 inline-block">
+        <select name="category" id="categoryInput" class="m-1 inline-block bg-white">
             <option value="base"></option>
             <option value="longDrink">Hosszú italok</option>
             <option value="wine">Borok & Pezsgők</option>
@@ -28,23 +28,21 @@
 
 </div>
 
-<div class="col-start-2 flex justify-center items-center bg-blue-300">
-    <!-- <img src="" alt="" id="imgInput" class="w-1/2 inline-block"> -->
-
+<div class="col-start-2 flex justify-center items-center m-2">
     <div class="max-w-96 w-full bg-slate-50 p-4 rounded-3xl">
         <input type="file" class="hidden" id="fileInput">
         <div class="ImgArea | flex justify-center items-center flex-col relative w-full h-56 bg-slate-200 mb-4 rounded-xl overflow-hidden" data-img="">
            <i class="text-8xl"> </i> 
            <h3 class="text-xl font-medium mb-1.5">Upload Image</h3>
            <p class="text-slate-400">Image must be less that <span class="font-semibold">2MB</span></p>
-           <img src="" alt="">
+           <img src="" alt="" class="">
         </div>
         <button id="selectImg" class="block w-full h-8 px-4 rounded-lg bg-blue-500 text-white font-medium text-base border-none cursor-pointer transition-all hover:bg-blue-600">Select Image</button>
     </div>
 
 </div>
 
-<div class="grid gap-2 p-2 bg-yellow-300 col-start-3">
-    <button class="bg-lime-300 w-1/2 mx-auto rounded-lg">Hozzáadás</button>
+<div class="grid gap-2">
+    <button class="bg-lime-300 w-1/2 mx-auto rounded-lg" id="btnSend">Hozzáadás</button>
     <button class="bg-red-300 w-1/2 mx-auto rounded-lg" id="btnCancel">Mégsem</button>
 </div>

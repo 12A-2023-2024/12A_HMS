@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Gin Basil Sour",
+        "price": "1800",
+        "description": "Gin, bazsalikom, citromlé, cukorszirup, pasztőrözött tojásfehérje",
+        "categoryId": 5,
+        "image": "basil-sour.png"
+    },
+    {
+        "name": "Porn Star Martini",
+        "price": "1800",
+        "description": "Vanília vodka, maracuja, maracuja likőr, limelé, habzóbor",
+        "categoryId": 5,
+        "image": "pornstar.png"
+    }
+    
+]

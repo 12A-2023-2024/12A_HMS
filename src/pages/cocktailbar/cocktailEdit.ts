@@ -1,6 +1,7 @@
 import { routes } from "../../routes.js";
+import { ContactPage } from "../contact/contact.js";
 import { Page } from "../page.js";
-import { DropActive } from "./components/activeCard.js";
+import { ActiveCard, DropActive } from "./components/activeCard.js";
 import { CocktailCard } from "./components/cocktailCard/cocktailCard.js";
 import { CocktailNav } from "./components/cocktailNav/cocktailNav.js";
 import { ctQueries } from "./queries.js";
@@ -10,7 +11,6 @@ export class CocktailEdit extends Page {
     query: ctQueries | null = null;
     navItems: CocktailNav[] = [];
     cocktailCards: CocktailCard[] | null = null;
-    activeCard: CocktailCard |  null = null;
     routes: {[key: string]: {page: any}} = {}    
 
     constructor() {
@@ -27,6 +27,7 @@ export class CocktailEdit extends Page {
         })
 
         this.AddEvetListeners()
+        this.query?.composePayload()
     }
 
     changeToCategory(category:string)
@@ -55,8 +56,9 @@ export class CocktailEdit extends Page {
 
     }
 
-    AddEvetListeners() {
-        
+    AddEvetListeners() {        
+        const del = document.querySelector('button#btnDel')
+
         this.contentDiv?.addEventListener('click', (event) => {
             const target = event.target as HTMLElement;                        
                 if (target && target.id === 'btnAddNew') {
@@ -66,6 +68,24 @@ export class CocktailEdit extends Page {
                             DropActive()
                             new this.routes[route].page()
                         }
+                    }
+                }
+                if (target && target.id === 'btnDel') {
+                    if (ActiveCard != null) {
+                        this.query?.getCocktails().then((drinks) => {
+                            drinks.forEach(drink => {
+                                if (drink.name == ActiveCard?.name
+                                    && drink.price == ActiveCard.price
+                                    && drink.description == ActiveCard.description
+                                    && drink.categoryName == ActiveCard.category) {
+
+                                        this.query?.deleteCocktail(drink.id)
+                                }
+                            });
+                        })
+                    }
+                    else {
+                        alert('No drink was selected!')
                     }
                 }
         })

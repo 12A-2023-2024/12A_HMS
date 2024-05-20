@@ -68,25 +68,37 @@ a[data-route].active {
     width: 10rem;
   flex-direction: column;
   position: relative;
+  z-index: 3;
 }
 .ctCardImg{
   height: 10rem;
   object-fit: contain;
+  z-index: inherit;
 }
 .ctName{
   text-align: center;
-  
-
+}
+.ctContent {
+  height: 80px;
+  overflow-y: scroll;
+  z-index: inherit;  
+}
+.ctDescriptionFull {
+  height: 32px;
+  text-wrap: wrap;
 }
 .ctBackgroundBox{
   border-radius: 1rem;
   position: absolute;
-  z-index: -1;
+  z-index: 2;
   left: 0;
   right: 0;
   top: 6rem;
   bottom: 0;
   background-color: #999;
+}
+.cocktailWrapper {
+  z-index: 1;
 }
 .underAnimation{
   position: relative;
@@ -120,7 +132,7 @@ a[data-route].active {
   width: 100%;
 }
 
-.imgArea::before {
+.ImgArea::before {
   content: attr(data-img);
   position: absolute;
   top: 0;
@@ -140,17 +152,17 @@ a[data-route].active {
   z-index: 200;
 }
 
-.imgArea._active:hover::before {
+.ImgArea._active:hover::before {
   opacity: 1;
 }
 
-.imgArea img {
+.ImgArea img {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;  
+  object-position: center;    
   z-index: 100;
 }

@@ -44,8 +44,87 @@ export class ctQueries{
         }[]>(this.baseUrl + "coctails", 'GET')
     }
 
-    async addCocktails() {
+    async postCocktail(data:{}) {
+        console.log(`data as given: - ${data}`)
+        console.log(`data after stringify: - ${JSON.stringify(data)}`)
+        this.fetch(this.baseUrl + 'coctails', 'POST', JSON.stringify(data))
+    }
+
+    async getBase64Img(file:File) {
+        const base64String = await this.convertFileToBase64(file)                    
+        return base64String?.split(',')[1]
+    }
+
+    async convertFileToBase64(file: File): Promise<string> {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    async deleteCocktail(id:number) {
+        this.fetch(this.baseUrl + `coctails/${id}`, 'DELETE')
+    }
+
+    async fetchCmsData(url:string) {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        const data = await response.json()
+        return data
+    }
+
+    async fetchImage(data:Array<{name:string, price:string, description:string, categoryId:string, image:string}>) {
+        let response:any | null = null
+        const blobs:Array<any> = new Array()
         
+        data.forEach(element => {
+            const imgBaseUrl = 'src/pages/cocktailbar/components/imgs/'
+            response = fetch(imgBaseUrl + element.image)                        
+        });
+        if (!(await response).ok) {
+            throw new Error(`HTTP error! status: ${(await response).status}`);
+        }
+
+        const blob = await (await response).blob();
+        blobs.push(blob)
+        return blobs;
+    }
+
+    async composePayload() {
+        console.log('compose payload called')
+        try {
+            const data = await this.fetchCmsData('src/pages/cocktailbar/components/drinkData.json')
+            
+            const fileBlob = await this.fetchImage(data)
+
+            fileBlob.forEach(blob => {
+                const imageFile = new File([blob], data.image, {type:blob.type})
+    
+                const payload = {
+                    name: data.name,
+                    price: data.price,
+                    description: data.description,
+                    categoryId: data.categoryId,
+                    images: [
+                        {
+                            filename: imageFile.name,
+                            file: this.getBase64Img(imageFile)
+                        }
+                    ]
+                }       
+                this.postCocktail(payload)
+                
+                
+            });
+
+
+        } catch (error) {
+            console.log(`error thrown at cocposition: - ${error}`)
+        }
     }
 
     async addSale(guestId: number, cocktailId: number){

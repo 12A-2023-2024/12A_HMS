@@ -77,7 +77,7 @@ export class CocktailCard{
     }
 
     createEventListener() {
-        const navLinks = document.querySelectorAll('a[data-route="cocktailmodal"]');
+        const navLinks = document.querySelectorAll('div[data-route="cocktailmodal"]');
         navLinks.forEach((link) => {
             link.addEventListener('click', (event) => {
                 const route = link.getAttribute('data-route');

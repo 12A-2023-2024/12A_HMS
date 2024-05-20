@@ -59,8 +59,8 @@ export class RoomsAdminPage extends Page {
 
                                 if (roomType && roomType.name) {
                                     container.innerHTML += `
-                                        <div class="m-2 border-solid border-2 border-slate-600 h-min p-1.5 w-fit" id="room_${room.roomNumber}">
-                                            <div class="grid gap-5 grid-flow-col auto-cols-max w-fit m-auto">
+                                        <div class="rounded m-2 border-solid border-2 border-slate-600 h-min p-1.5 w-fit" >
+                                            <div id="room_${room.roomNumber}" class="grid gap-5 grid-flow-col auto-cols-max w-fit m-auto">
                                                 <p class="text-xl font-bold">${room.roomNumber}</p>
                                                 <p class="text-neutral-600">${roomType.name}</p>
                                                 <button type="button" class="modify">✏️</button>
@@ -76,6 +76,7 @@ export class RoomsAdminPage extends Page {
         }
     }
 
+    
     private addEventListeners() {
         Array.from(document.getElementsByClassName("modify")).forEach((button) => {
             button.addEventListener("click", () => {
@@ -101,7 +102,10 @@ export class RoomsAdminPage extends Page {
 
         document.querySelector("#new_room")?.addEventListener("click", () => {
             this.addRoom();
+            document.querySelector("#new_room")?.classList.add("hidden");
         });
+        
+
     }
 
     private modifyRoom(room: Room) {
@@ -124,7 +128,7 @@ export class RoomsAdminPage extends Page {
             redirect: "follow" as RequestRedirect | undefined
         };
 
-        fetch(`https://hms.jedlik.cloud/api/rooms/${room.roomNumber}`, requestOptions)
+        fetch(`https://hms.jedlik.cloud/api/rooms/${room.id}`, requestOptions)
             .then((response) => response.text())
             .then(() => this.fillContainer())
             .catch((error) => console.error(error));

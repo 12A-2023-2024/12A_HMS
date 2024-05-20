@@ -85,6 +85,7 @@ export class RoomsEditPage {
 
     private addEventListeners(modifiedRoom?: Room) {
         document.querySelector("form")?.addEventListener("submit", (e) => {
+            document.querySelector("#new_room")?.classList.remove("hidden");
             e.preventDefault();
             const formData = new FormData(e.target as HTMLFormElement);
             const roomNumber = formData.get("room_number") as string;
@@ -96,6 +97,10 @@ export class RoomsEditPage {
                     this.newRoom(new Room(roomNumber, selectedRoomtypeId));
                 }
             }
+        });
+        document.querySelector("#closebutton")?.addEventListener("click", () => {
+            this.hide();
+            document.querySelector("#new_room")?.classList.remove("hidden");
         });
     }
 }

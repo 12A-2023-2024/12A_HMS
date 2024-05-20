@@ -11,7 +11,7 @@
 
 <body class="font-mono bg-neutral-300">
     <div class="w-3/5 bg-neutral-200 m-auto h-screen p-3 rounded">
-        <h1 class="text-center m-auto text-4xl">Szoba típus</h1>
+        <h1 id="room_type" class="text-center m-auto text-4xl">Szoba típus</h1>
         <div class="grid gap-4  m-auto	mt-3.5">
             <div>
                 <div class="h-auto max-w-full rounded-lg">
@@ -20,13 +20,13 @@
                         <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
                             <!-- Item 1 -->
                             <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
-                                <img src="resources/roompic1.jpg"
+                                <img src="resources/roompic1.jpg" id="pic1"
                                     class="absolute block max-w-full h-auto -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 rounded"
                                     alt="">
                             </div>
                             <!-- Item 2 -->
                             <div class="hidden duration-700 ease-in-out" data-carousel-item="">
-                                <img src="resources/roompic2.jpg"
+                                <img src="resources/roompic2.jpg" 
                                     class="absolute block max-w-full h-auto -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 rounded"
                                     alt="">
                             </div>
@@ -83,7 +83,7 @@
             </div>
             <div class="grid grid-cols-5 gap-4">
                 <div>
-                    <img class="h-auto max-w-full rounded-lg" src="resources/roompic1.jpg" alt="">
+                    <img class="h-auto max-w-full rounded-lg" id="pic1" src="resources/roompic1.jpg" alt="">
                 </div>
                 <div>
                     <img class="h-auto max-w-full rounded-lg" src="resources/roompic2.jpg" alt="">

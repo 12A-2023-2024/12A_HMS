@@ -19,5 +19,8 @@ export const routes: { [key: string]: { page: any } } = {
     },
     'rooms_admin': {
         page: RoomsAdminPage
+    },
+    'room_test':{
+        page: RoomsAdminPage
     }
 }

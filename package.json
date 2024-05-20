@@ -5,6 +5,7 @@
     "watch": "npx concurrently \"npx tsc -w\" \"npx tailwindcss -i ./css/input.css -o ./css/output.css --watch\""
   },
   "dependencies": {
+    "flowbite": "^2.3.0",
     "typescript": "^5.4.5"
   },
   "devDependencies": {

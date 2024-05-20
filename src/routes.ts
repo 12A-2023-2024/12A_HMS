@@ -39,6 +39,7 @@ export const routes: {[key: string]: {page: any}} = {
     },
     'servicesadmin':{
         page: WellnessAdminPage
+    },
     'news':{
         page: NewsPage
     },

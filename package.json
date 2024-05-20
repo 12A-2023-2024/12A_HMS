@@ -13,7 +13,7 @@
   "dependencies": {
     "browserslist": "^4.23.0",
     "caniuse-lite": "^1.0.30001620",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
     "tailwind": "^4.0.0"
   }
 }

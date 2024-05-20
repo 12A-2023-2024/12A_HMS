@@ -111,7 +111,7 @@ export class WellnessPage extends Page {
             maindiv.innerHTML += `
             <div class="w-full self-end max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             <p>
-                <img class="p-8 rounded-t-lg" src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="product image" />
+                <img class="p-8 rounded-t-lg" src="${element.imageUrls[0]}" alt="product image" />
             </p>
             <div class="px-5 pb-5">
                 <p>
@@ -131,7 +131,7 @@ export class WellnessPage extends Page {
               maindiv.innerHTML += `
               <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
               <p>
-                  <img class="p-8 rounded-t-lg" src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="product image" />
+                  <img class="p-8 rounded-t-lg" src="${element.imageUrls[0]}" alt="product image" />
               </p>
               <div class="px-5 pb-5">
                   <p">

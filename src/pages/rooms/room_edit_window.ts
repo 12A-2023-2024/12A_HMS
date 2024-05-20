@@ -1,11 +1,9 @@
 import { Room } from "./resources/room.js";
-import { RoomtypeSelector } from "./resources/roomtypeSelector.js";
 import { RoomsAdminPage } from "./rooms_admin_page.js";
 
 
 export class RoomsEditPage {
     parentPage: RoomsAdminPage;
-    roomTypeSelector?: RoomtypeSelector;
     modify: boolean = false;
 
     constructor(parentPage: RoomsAdminPage, modify: boolean) {
@@ -47,7 +45,7 @@ export class RoomsEditPage {
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization", this.parentPage.token);
         const raw = JSON.stringify(room);
-        console.log(raw);
+        
         const requestOptions: RequestInit = {
             method: "POST",
             headers: myHeaders,
@@ -62,12 +60,11 @@ export class RoomsEditPage {
     }
 
     private modifyRoom(room: Room) {
-
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization", this.parentPage.token);
         const raw = JSON.stringify(room);
-        console.log(raw);
+       
         const requestOptions: RequestInit = {
             method: "PUT",
             headers: myHeaders,
@@ -96,7 +93,6 @@ export class RoomsEditPage {
                 if (this.modify && modifiedRoom) {
                     this.modifyRoom(new Room(roomNumber, selectedRoomtypeId, modifiedRoom.id));
                 } else {
-                    console.log("new room");
                     this.newRoom(new Room(roomNumber, selectedRoomtypeId));
                 }
             }

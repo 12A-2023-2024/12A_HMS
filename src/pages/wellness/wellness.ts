@@ -39,6 +39,7 @@ export class WellnessPage extends Page {
   override getHtmlCallback() {
     this.getProductsData();
     this.loginformshow();
+    this.carlogolistener();
   }
   addToCart(e : HTMLElement){
     var cartData : HTMLElement = document.querySelector(".cartData")!;
@@ -56,9 +57,6 @@ export class WellnessPage extends Page {
         }
       });
     }
-    
-
-
   }
   addToCartBtnListener(){
     var cartbtn : NodeListOf<HTMLElement> = document.querySelectorAll("p.cartbtn")!;
@@ -71,6 +69,16 @@ export class WellnessPage extends Page {
         });
     });
   }
+  cartlogoclicked(){
+    alert("A vásárláshoz keressen fel egy kollegánkat!");
+  }
+
+  carlogolistener(){
+    document.querySelector(".cartImg")!.addEventListener("click", ()=>{
+      this.cartlogoclicked();
+    });
+  }
+
   loginformshow(){
     var loginsformbtn : HTMLElement = document.querySelector(".bejelentkezesSzöveg")! ;
     loginsformbtn.addEventListener("click", ()=>{
@@ -154,9 +162,12 @@ export class WellnessPage extends Page {
     });
   }
   LoginVisual() {
-    var form = document.getElementById("form") as HTMLElement;
-    form.innerHTML = "";
-    var innerheader = document.querySelector("#profilepicdiv") as HTMLElement;
+    var form = document.querySelector(".formforlogin")!;
+    form.className = "formforlogin collapse";
+    var logintext = document.querySelector(".bejelentkezesSzöveg")!;
+    console.log(logintext);
+    logintext.className = "font-bold bejelentkezesSzöveg collapse";
+    var innerheader = document.querySelector("#profilepicdiv")!;
     innerheader.innerHTML += `<img id="profilepic" src="" alt="Profile Picture" >`;
 
     if (localStorage.getItem("roles")?.includes("admin")) {

@@ -13,10 +13,12 @@ export class WellnessAdminPage extends Page {
         this.checkAdminPrivilege();
         this.addMainDivIfNotExistent();
         this.getProductsData();
+        this.carlogolistener();
     }
 
     addButtonEventListeners(){
-        
+      this.addToCartBtnListener();
+
     }
     checkAdminPrivilege(){
         if (!localStorage.getItem("roles")?.includes("admin")) {
@@ -40,8 +42,8 @@ export class WellnessAdminPage extends Page {
               if (i % 2 == 0) {
                 maindiv.innerHTML += `
                   <div class="bg-blue-100 w-2/5 h-1/6 flex flex-col items-end justify-between self-end rounded-md m-5">
-                    <h1 class="text-lg font-bold self-center" >
-                      ${i}. ${element.name}
+                    <h1 id="${i}element" class="text-lg font-bold self-center" >
+                      ${element.name}
                     </h1>
                     <p class="text-base font-semibold self-start m-2">
                       ${element.description}
@@ -57,7 +59,7 @@ export class WellnessAdminPage extends Page {
                           <p class="m-1 modifybtn"> Módósítás</p>
                         </div>
                         <div class="rounded-md border border-transparent bg-blue-900 w-28 text-center float-right m-2  ">
-                            <p class="m-1 cartbtn"> Kosárba</p>
+                            <p class="m-1 cartbtn"> Igénybevétel</p>
                         </div>
                       </div>
                     </div>`;
@@ -65,8 +67,8 @@ export class WellnessAdminPage extends Page {
               else{
                   maindiv.innerHTML += `
                     <div class="bg-blue-100 w-2/5 h-1/6 flex flex-col items-end justify-between rounded-md m-5">
-                      <h1 class="text-lg font-bold self-center" >
-                      ${i}. ${element.name}
+                      <h1 id="${i}element" class="text-lg font-bold self-center" >
+                      ${element.name}
                       </h1>
                       <p class="text-base font-semibold self-start m-2">
                         ${element.description}
@@ -82,7 +84,7 @@ export class WellnessAdminPage extends Page {
                           <p class="m-1 modifybtn"> Módósítás</p>
                         </div>
                         <div class="rounded-md border border-transparent bg-blue-900 w-28 text-center float-right m-2  ">
-                            <p class="m-1 cartbtn"> Kosárba</p>
+                            <p class="m-1 cartbtn"> Igénybevétel</p>
                         </div>
                       </div>
                     </div>`;
@@ -106,7 +108,63 @@ export class WellnessAdminPage extends Page {
             `;
         }
     }
+    modifywellnessproduct(){
 
+    }
+    deletewellnessproduct(){
+
+    }
+    makeanorder(e : string, roomnumber : number){
+
+    }
+    addToCart(e : HTMLElement){
+      var cartData : HTMLElement = document.querySelector(".cartData")!;
+      if(!cartData.innerHTML.includes(e.innerText)){
+        cartData.innerHTML += `
+          <p class="cartElement">${e.innerText} x1</p>
+        `;
+      }
+      else{
+        var cartelements : NodeListOf<HTMLElement> = document.querySelectorAll(".cartElement")!;
+        cartelements.forEach((elem)=>{
+          if(elem.innerText.includes(e.innerText)){
+            var asd : string[] = elem.innerText.split(" x");
+            elem.innerText = `${asd[0]} x${Number(asd[1])+1}`;
+          }
+        });
+      }
+    }
+    addToCartBtnListener(){
+      var cartbtn : NodeListOf<HTMLElement> = document.querySelectorAll("p.cartbtn")!;
+      var i : number = 0;
+      cartbtn.forEach((e)=>{
+          i++;
+          var selector : string = `${i}element`.toString();
+          e.addEventListener("click", ()=>{
+            this.addToCart(document.getElementById(selector)!);
+          });
+      });
+    }
+    cartlogoclicked(){
+      var asd : NodeListOf<HTMLElement> = document.querySelectorAll(".cartElement")!;
+      var listofnames : string[] = [];
+      asd.forEach((e)=>{
+        e.className = "cartElement hidden";
+        listofnames.push(e.innerText);
+      });
+      var roomnumber : number = 0;
+      listofnames.forEach((e)=>{
+        this.makeanorder(e, roomnumber);
+      });
+
+      var cartdata : HTMLElement = document.querySelector(".cartData")!;
+      cartdata.innerHTML = "";
+    }
+    carlogolistener(){
+      document.querySelector(".cartImg")!.addEventListener("click", ()=>{
+        this.cartlogoclicked();
+      });
+    }
 
 
 

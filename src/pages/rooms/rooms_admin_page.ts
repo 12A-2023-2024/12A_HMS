@@ -98,7 +98,6 @@ export class RoomsAdminPage extends Page {
         page.show(room);
     }
   
-rooms_adminPage
     private addRoom() { 
         const page = new RoomsEditPage(this, false);
         page.show();

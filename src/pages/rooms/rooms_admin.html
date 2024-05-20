@@ -1,26 +1,28 @@
 <h1 class="mb-2.5 font-bold text-4xl text-center mb-4">Szobák</h1>
+<div class="flex">
+    <div class="bg-neutral-300 room_container w-4/5 m-auto flex flex-wrap h-fit p-3">
 
-<div class="bg-neutral-300 room_container w-4/5 m-auto flex flex-wrap h-fit p-3">
-
-</div>
-
-<button id="new_room">Új szoba</button>
-
-<div id="room_edit" style="display: none;">
-    <h1 class="title">Szoba felvétele</h1>
-    <div class="form-container">
-        <form>
-            <div id="room_number_field" class="input_div">
-                <label for="room_number">Szoba száma:</label>
-                <input class="input_field" type="number" id="room_number" name="room_number"><br>
-            </div>
-
-            <div id="room_type_field" class="input_div">
-                <label for="room_type">Szoba típusa:</label>
-                <select class="input_field" id="room_type" name="room_type">
-            </div>
-
-            <input type="submit" value="Felvétel" class="submit">
-        </form>
     </div>
+
+    <button id="new_room" class="bg-neutral-200  h-fit p-2">Új szoba</button>
+
+    <div id="room_edit" style="display: none;" class="bg-neutral-200 w-fit">
+        <h1 class="title text-center text-xl font-bold mb-5 ">Szoba felvétele</h1>
+        <div class="form-container">
+            <form>
+                <div id="room_number_field" class="input_div m-2">
+                    <label for="room_number">Szoba száma:</label>
+                    <input class="input_field" type="number" id="room_number" name="room_number"><br>
+                </div>
+
+                <div id="room_type_field" class="input_div m-2">
+                    <label for="room_type">Szoba típusa:</label>
+                    <select class="input_field" id="room_type" name="room_type">
+                </div>
+
+                <input type="submit" value="Felvétel" class="cursor-pointer submit m-3 bg-neutral-200 hover:bg-neutral-400 p-2 font-bold">
+            </form>
+        </div>
+    </div>
+
 </div>

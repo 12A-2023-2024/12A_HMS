@@ -38,23 +38,57 @@ export class WellnessPage extends Page {
 
   override getHtmlCallback() {
     this.getProductsData();
+    this.loginformshow();
   }
-  addToCart(){
-    console.log("asd");
+  addToCart(e : HTMLElement){
+    var cartData : HTMLElement = document.querySelector(".cartData")!;
+    if(!cartData.innerHTML.includes(e.innerText)){
+      cartData.innerHTML += `
+        <p class="cartElement">${e.innerText} x1</p>
+      `;
+    }
+    else{
+      var cartelements : NodeListOf<HTMLElement> = document.querySelectorAll(".cartElement")!;
+      cartelements.forEach((elem)=>{
+        if(elem.innerText.includes(e.innerText)){
+          var asd : string[] = elem.innerText.split(" x");
+          elem.innerText = `${asd[0]} x${Number(asd[1])+1}`;
+        }
+      });
+    }
+    
+
+
   }
   addToCartBtnListener(){
     var cartbtn : NodeListOf<HTMLElement> = document.querySelectorAll("p.cartbtn")!;
     var i : number = 0;
     cartbtn.forEach((e)=>{
+        i++;
+        var selector : string = `${i}element`.toString();
         e.addEventListener("click", ()=>{
-          this.addToCart();
+          this.addToCart(document.getElementById(selector)!);
         });
     });
+  }
+  loginformshow(){
+    var loginsformbtn : HTMLElement = document.querySelector(".bejelentkezesSzöveg")! ;
+    loginsformbtn.addEventListener("click", ()=>{
+      var loginform : HTMLElement = document.querySelector(".formforlogin")!;
+      if(loginform.classList.contains("collapse")){
+        loginform.className = "formforlogin visible";
+      }
+      else{
+        loginform.className = "formforlogin collapse";
+      }
+    });
+    
   }
 
   addButtonEventListeners() {
     document.getElementById("btnconfirm")?.addEventListener("click", () => {
       this.login();
+      console.log("asd");
     });
     this.addToCartBtnListener();
   }

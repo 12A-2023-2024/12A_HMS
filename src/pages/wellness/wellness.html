@@ -1,10 +1,13 @@
 
 <div class="header">
-    <div class="innerheader">
-        <img class="logoImg" src=""  alt="LOGO" >
+    <div class="innerheader logoHeader">
+        <img class="float-left logoImg" src=""  alt="LOGO" >
+        <img class=" float-right cartImg" src="" alt="Cart">
     </div>
-    <div class="innerheader">
+    <div class="innerheader cartHeader float-right">
+        <div class="cartData">
 
+        </div>
     </div>
     <div class="innerheader">
 
@@ -17,15 +20,16 @@
         </div>
 
         <form id="form">
-            <p class="font-bold">
-                Bejelentkezés:
+            <p class="font-bold bejelentkezesSzöveg">
+                Bejelentkezés
             </p>
-            
+            <div class="formforlogin collapse">
             <label for="user">Username: </label> <br>
             <input type="text" id="user" name="user" placeholder="Userxy"></input> <br>
             <label for="pass">Password: </label> <br>
             <input type="password" id="pass" name="pass" placeholder="secPass123"></input> <br>
             <input type="button" id="btnconfirm" name="submit" value="Login"></input> <br>
+        </div>
         </form>
     </div>
     <div class="maincontainer bg-green-200 bg-opacity-30 w-4/5  h-screen m-auto flex flex-col h-screen ">

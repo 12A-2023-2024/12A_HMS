@@ -41,7 +41,7 @@ export class WellnessAdminPage extends Page {
                 maindiv.innerHTML += `
                   <div class="bg-blue-100 w-2/5 h-1/6 flex flex-col items-end justify-between self-end rounded-md m-5">
                     <h1 class="text-lg font-bold self-center" >
-                      ${element.name}
+                      ${i}. ${element.name}
                     </h1>
                     <p class="text-base font-semibold self-start m-2">
                       ${element.description}
@@ -49,16 +49,24 @@ export class WellnessAdminPage extends Page {
                     <p>
                       ${element.price} Ft
                     </p>
-                    <div class="rounded-md border border-transparent bg-blue-900 w-28 text-center float-right m-2  ">
-                      <p class="m-1 cartbtn"> Kosárba</p>
-                    </div>
-                  </div>`;
+                    <div>
+                        <div class="rounded-md border border-transparent bg-red-900 w-28 text-center float-right m-2  ">
+                          <p class="m-1 deletebtn"> Törlés</p>
+                        </div>
+                        <div class="rounded-md border border-transparent bg-green-900 w-28 text-center float-right m-2  ">
+                          <p class="m-1 modifybtn"> Módósítás</p>
+                        </div>
+                        <div class="rounded-md border border-transparent bg-blue-900 w-28 text-center float-right m-2  ">
+                            <p class="m-1 cartbtn"> Kosárba</p>
+                        </div>
+                      </div>
+                    </div>`;
               }
               else{
                   maindiv.innerHTML += `
                     <div class="bg-blue-100 w-2/5 h-1/6 flex flex-col items-end justify-between rounded-md m-5">
                       <h1 class="text-lg font-bold self-center" >
-                      ${element.name}
+                      ${i}. ${element.name}
                       </h1>
                       <p class="text-base font-semibold self-start m-2">
                         ${element.description}
@@ -66,8 +74,16 @@ export class WellnessAdminPage extends Page {
                       <p>
                       ${element.price} Ft
                       </p>
-                      <div class="rounded-md border border-transparent bg-blue-900 w-28 text-center float-right m-2  ">
-                        <p class="m-1 cartbtn"> Kosárba</p>
+                      <div>
+                        <div class="rounded-md border border-transparent bg-red-900 w-28 text-center float-right m-2  ">
+                          <p class="m-1 deletebtn"> Törlés</p>
+                        </div>
+                        <div class="rounded-md border border-transparent bg-green-900 w-28 text-center float-right m-2  ">
+                          <p class="m-1 modifybtn"> Módósítás</p>
+                        </div>
+                        <div class="rounded-md border border-transparent bg-blue-900 w-28 text-center float-right m-2  ">
+                            <p class="m-1 cartbtn"> Kosárba</p>
+                        </div>
                       </div>
                     </div>`;
               }

@@ -1,0 +1,78 @@
+body {
+    background-color: #fefae0;
+}
+
+.container {
+    width: 67vw;
+    height: 53vh;
+    background-color: #d4a373;
+    position: absolute;
+    top: 58vh;
+    left: 50vw;
+    margin-top: -26.5vh;
+    margin-left: -33.5vw;
+    border-radius: 3vh;
+}
+
+.title {
+    font-size: 70pt;
+    text-align: center;
+    color: #ccd5ae;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.input_div {
+    position: absolute;
+    font-size: 50pt;
+    left: 50%;
+    width: 40vw;
+    margin-left: -20vw;
+}
+
+#room_number_field {
+    top: 30%;
+}
+
+#room_type_field {
+    top: 50%;
+}
+
+.input_field {
+    width: 10vw;
+    height: 4vh;
+    position: relative;
+    font-size: 30pt;
+    border-radius: 1vh;
+    background-color: #e9edc9;
+}
+
+#room_type {
+    width: 15vw;
+    height: 5vh;
+    font-size: 30pt;
+}
+
+.submit {
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    margin-left: -5vw;
+    width: 10vw;
+    height: 5vh;
+    font-size: 30pt;
+}
+
+#redirect_to_roomtype {
+    position: absolute;
+    top: 50%;
+    left: 97%;
+    font-size: 40pt;
+    background-color: #00000038;
+    height: 5vh;
+}
+
+
+#redirect_to_roomtype p {
+    height: 4vh;
+    margin: 0;
+}

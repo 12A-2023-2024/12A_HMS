@@ -27,3 +27,16 @@ module.exports = {
   },
   plugins: [],
 }
+      },
+      colors: {
+          'beige': '#fefae0',
+          'dark-blue': '#231F20',
+          'card-color': '#FAEDCD',
+          'dark-beige': '#9D947E',
+      },
+    },
+  },
+
+
+
+};

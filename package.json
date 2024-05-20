@@ -11,6 +11,7 @@
     "tailwindcss": "^3.4.3"
   },
   "dependencies": {
+    "flowbite": "^2.3.0",
     "browserslist": "^4.23.0",
     "caniuse-lite": "^1.0.30001620",
     "typescript": "^5.4.5",

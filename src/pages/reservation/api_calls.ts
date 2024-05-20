@@ -98,15 +98,6 @@ export class API {
     fromDate: string | null = null,
     toDate: string | null = null,
   ): Promise<Room[]> {
-    const params = {
-      floor: floor,
-      fromPrice: fromPrice,
-      toPrice: toPrice,
-      capacity: capacity,
-      parameters: parameters,
-      fromDate: fromDate,
-      toDate: toDate,
-    };
     let url =
       "https://hms.jedlik.cloud/api/publicpages/findrooms?" + 
       (floor? "floor=" + floor + '&': '') +
@@ -115,7 +106,7 @@ export class API {
       (capacity? "capacity=" + capacity + '&': '') +
       (parameters? "parameters=" + parameters + '&': '') +
       (fromDate? "fromDate=" + fromDate + '&': '') +
-      (toDate? "toDate=" + toDate + '&': ')';
+      (toDate? "toDate=" + toDate + '&': '' );
 
     console.log(url.slice(0, -1));
     const method = "GET";

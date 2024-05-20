@@ -63,7 +63,6 @@ a[data-route].active {
 
 .ctCard{
   padding-inline: .5rem;
-  margin: auto;
   padding-block: 1rem;
   display: flex;
     width: 10rem;

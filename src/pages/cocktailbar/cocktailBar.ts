@@ -46,13 +46,12 @@ export class CocktailBar extends Page {
             let name = this.navItems.find((n) => {
                 return n.name === category
             })
-
-            console.log(name)
             name?.html?.classList.add("selectedNav");
             result.forEach(({id,name,price,description,imageUrls,categoryId,categoryName})=>{
                 
                 if(categoryName === category){
                     this.cocktailCards?.push(new CocktailCard(name,price,description,categoryName,imageUrls[0],".cocktailWrapper"))
+                    
                 }
             })
 

@@ -1,17 +1,23 @@
 import { CocktailBar } from "../../cocktailBar";
 import { CocktailEdit } from "../../cocktailEdit";
 import { CocktailOrder } from "../../cocktailOrder";
+import { CocktailCard } from "../cocktailCard/cocktailCard";
+import { CocktailCardBuyer } from "../cocktailNavProMax5gSpecialEditionEXLUSIVEPreorderBonus4kCollectorsEdition/cocktailCardBuyer";
 
 export class CocktailNav{
    
     html: HTMLElement | null = null;
     name: string = "";
     parent: CocktailBar | CocktailEdit | CocktailOrder | null = null;
+    cards: CocktailCardBuyer[] | CocktailCard[] = [];
+    id: number;
 
     constructor(id: number, name: string, place: string, parent: CocktailOrder | CocktailBar | CocktailEdit) {
         
         this.name = name;
         this.parent = parent
+        this.id = id;
+
         
         this.getHtml("src/pages/cocktailbar/components/cocktailNav/cocktailNav.html").then((html)=>{
             const wrapperDiv = document.createElement("div")

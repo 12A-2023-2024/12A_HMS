@@ -1,15 +1,45 @@
 <img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRzsYiL9kjdhPv0iYCewl6D8eUdJVV2nHA3avypXo0PZjvh4naJ" class="heroImg | w-full h-72 object-cover object-top" alt="">
-<div class="ctWrapperWrapper | flex justify-center gap-5">
-    <div>
-        <div class="ctLocalNavigation | flex flex-wrap justify-center gap-5 border-t-2 border-slate-900 mt-3 mb-14 pt-2">
+<div class="ctWrapperWrapper | flex w-10/12  gap-14 grow flex-col-reverse lg:flex-row justify-center mx-auto items-center lg:items-baseline ">
+    
+    <div class="grow">
+        <div class="ctLocalNavigation | min-w-3.5 flex flex-wrap justify-center gap-5 border-t-2 border-slate-900 mt-3 mb-14 pt-2">
         </div>
-            <div class="cocktailWrapper | flex flex-wrap justify-center gap-5 md:flex-col">
+            <div class="cocktailWrapper | flex flex-wrap justify-center  gap-10 ">
         
             </div>
         </div>
         
-        <div class="ctCart | w-64 bg-zinc-600 min-h-96 mt-3 rounded-xl">
-    
+        <div class="ctCart |  w-96  bg-zinc-400 shrink-0 mt-3 rounded-xl px-5 py-5 h-fit">
+            <!-- a selec menu for the room number and the list of ordered drinks and how much was from them with a plus and a minus and the price and a remove icon then a done and a cnacel button -->
+
+            <div class="ctCartHeader | flex justify-between items-center p-2 border-b-2 border-slate-900">
+                <h2 class="text-xl font-bold">Cart</h2>
+                <button class="ctCancel | text-slate-900">Cancel</button>
+            </div>
+            <div class="ctCartBody | p-2 mt-4">
+                <div class="ctCartRoom | flex justify-between items-center">
+                    <label for="roomNumber" class="">Room Number:</label>
+                    <select name="ctRoomNumber" id="ctRoomNumber" class="rounded-sm px-3 py-1">
+                        
+                    </select>
+                </div>
+
+                <div class="ctCartItems | mt-4 break-words">
+                    
+                </div>
+                
+
+                <div class="ctCartTotal | mt-4">
+                    <div class="ctCartTotalItem | flex justify-between items-center">
+                        <p>Total:</p>
+                        <p class="ctTotalPrice font-bold">0 Ft</p>
+                    </div>
+                </div>
+
+                <div class="ctCartButtons | mt-4">
+                    <button class="ctDone | bg-slate-900 text-zinc-400 w-full p-2 rounded-xl">Done</button>
+                </div>
+            </div>
         </div>
 </div>
 </div>

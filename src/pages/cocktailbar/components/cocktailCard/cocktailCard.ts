@@ -6,6 +6,7 @@ export class CocktailCard{
     description: string = "";
     category: string = "";
     img: string = "";
+    place: string;
 
     constructor(name: string, price: number, description: string, category: string, img: string,  place: string) {
         
@@ -16,6 +17,7 @@ export class CocktailCard{
         this.description = description;
         this.category = category;
         this.img = img;
+        this.place = place;
         
         this.getHtml("src/pages/cocktailbar/components/cocktailCard/cocktailCard.html").then((html)=>{
             const wrapperDiv = document.createElement("div")
@@ -49,7 +51,12 @@ export class CocktailCard{
 
         
     }
-    
+    readdToPlace(){
+        if(this.html){
+            const wrap = document.querySelector(this.place)
+            wrap?.appendChild(this.html)
+        }
+    }
     
     getHtml(url: string): Promise<string> {
         const requestOptions: RequestInit = {

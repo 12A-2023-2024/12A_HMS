@@ -18,7 +18,8 @@ export class cocktailModal {
             const price = this.modalWrapper.querySelector('input#priceInput') as HTMLInputElement
             const description = this.modalWrapper.querySelector('#descriptionInput') as HTMLInputElement
             const category = this.modalWrapper.querySelector('select#categoryInput') as HTMLSelectElement
-            const img = this.modalWrapper.querySelector('img#imgInput') as HTMLImageElement
+            const img = this.modalWrapper.querySelector('.ImgArea img') as HTMLImageElement
+            
 
             if (name && price && description && category && img) {
                 name.value = ActiveCard?.name ?? ""
@@ -33,9 +34,7 @@ export class cocktailModal {
                 
             }
 
-            document.querySelector('button#btnCancel')?.addEventListener('click', () => {
-                DropActive()
-            })
+            this.AddModalEventListeners()
             
         })
         
@@ -54,6 +53,36 @@ export class cocktailModal {
         })
         .catch( (error) => {
             throw new Error(error);
+        })
+    }
+
+    AddModalEventListeners() {
+        document.querySelector('button#btnCancel')?.addEventListener('click', () => {
+            DropActive()
+        })
+
+        const selectImg = document.querySelector('#selectImg') as HTMLElement
+        const file = document.querySelector('#fileInput') as HTMLInputElement
+        const imgArea = document.querySelector('.ImgArea') as HTMLElement
+        const imgElement = imgArea.querySelector('img') as HTMLImageElement
+
+        selectImg?.addEventListener('click', () => {
+            file.click()
+        })
+
+        file.addEventListener('change', () => {    
+            const img = file.files?.[0]
+            const reader = new FileReader()
+            reader.onload = () => {
+                const imgUrl = reader.result
+                imgElement.src = imgUrl?.toString() ?? ""                
+                imgArea?.classList.add('_active')
+
+                imgArea.dataset.img = img?.name
+            }
+            if (img) {
+                reader.readAsDataURL(img)
+            }
         })
     }
 }

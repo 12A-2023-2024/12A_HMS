@@ -1,25 +1,26 @@
-<h1 class="title">Szoba felvétele</h1>
-<div class="form-container">
-    <form>
-        <div id="room_number_field" class="input_div">
-            <label for="room_number">Szoba száma:</label>
-            <input class="input_field" type="text" id="room_number" name="room_number" required><br>
-        </div>
+<h1 class="mb-2.5 font-bold text-4xl text-center mb-4">Szobák</h1>
 
-        <div id="room_type_field" class="input_div">
-            <label for="room_type">Szoba típusa:</label>
-            <button type="button" id="room_type"></button>
-        </div>
+<div class="bg-neutral-300 room_container w-4/5 m-auto flex flex-wrap h-fit p-3">
 
-        <input type="submit" value="Felvétel" class="submit">
-    </form>
 </div>
 
-<div id="roomtype_popup" style="display: none; position: absolute; background-color: aqua; width: 35vw; left: 32.5vw;">
-    <button id="close" style="margin-left: 92%;">X</button>
-    <form></form>
-    <button id="roomtype_submit">Kész</button>
-    <button id="roomtype_new">Új felvétele</button>
-</div>
+<button id="new_room">Új szoba</button>
 
-<script type="module" src="../../../js/pages/rooms/rooms_admin.js"></script>
+<div id="room_edit" style="display: none;">
+    <h1 class="title">Szoba felvétele</h1>
+    <div class="form-container">
+        <form>
+            <div id="room_number_field" class="input_div">
+                <label for="room_number">Szoba száma:</label>
+                <input class="input_field" type="number" id="room_number" name="room_number"><br>
+            </div>
+
+            <div id="room_type_field" class="input_div">
+                <label for="room_type">Szoba típusa:</label>
+                <select class="input_field" id="room_type" name="room_type">
+            </div>
+
+            <input type="submit" value="Felvétel" class="submit">
+        </form>
+    </div>
+</div>

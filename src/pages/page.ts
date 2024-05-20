@@ -75,9 +75,11 @@ export class Page {
         .then( (response) => {
             if (response.status == 200) {
                 return response;
-            } else if (response.status == 500) {                    
+            } else if (response.status == 500) {
+                    alert(response.status)                    
                 throw response;
             } else {
+                    alert(response.status)
                 throw new Error(`Hiba a back-end hívás során (ErrorCode: ${response.status})`)
             }
         });

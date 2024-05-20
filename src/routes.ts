@@ -7,6 +7,7 @@ import { OffersPage } from "./pages/offers/offers.js";
 import { IntroductionAdminPage } from "./pages/introduction/introductionAdmin/introductoinAdmin.js";
 import { GalleryPage } from "./pages/gallery/gallery.js";
 import { GalleryAdminPage } from "./pages/gallery/admin/galleryAdmin.js";
+import { ContactAdminPage } from "./pages/contact/admin/contactAdmin.js";
 
 export const routes: {[key: string]: {page: any}} = {
     '': {
@@ -20,6 +21,9 @@ export const routes: {[key: string]: {page: any}} = {
     },
     'galleryAdmin': {
         page: GalleryAdminPage
+    },
+    'contactAdmin': {
+        page: ContactAdminPage
     },
     'contact': {
         page: ContactPage

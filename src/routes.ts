@@ -1,6 +1,8 @@
 import { ContactPage } from "./pages/contact/contact.js";
 import { HomePage } from "./pages/home/home.js";
 import { IntroductionPage } from "./pages/introduction/introduction.js";
+import { WellnessPage } from "./pages/wellness/wellness.js";
+import { WellnessAdminPage } from "./pages/wellness/wellness_admin.js";
 import { NewsPage } from "./pages/news/news.js";
 import { NewsAdminPage } from "./pages/news/newsadmin.js";
 import { OffersPage } from "./pages/offers/offers.js";
@@ -32,6 +34,11 @@ export const routes: {[key: string]: {page: any}} = {
     'contact': {
         page: ContactPage
     },
+    'services':{
+        page: WellnessPage
+    },
+    'servicesadmin':{
+        page: WellnessAdminPage
     'news':{
         page: NewsPage
     },

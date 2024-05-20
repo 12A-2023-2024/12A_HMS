@@ -9,6 +9,12 @@ module.exports = {
         lg: '976px',
         xl: '1440px',
      },
+     margin: {
+      'auto': 'auto',
+    },
+    height: {
+      'big' : '6000px'
+    },
       width: {
         '1/7': '14.2857143%',
         '2/7': '28.5714286%',

@@ -55,12 +55,14 @@ export class RoomsAdminPage extends Page {
 
                                 if (roomType && roomType.name) {
                                     container.innerHTML += `
-                                    <div id="room_${room.roomNumber}">
-                                        <p>${room.roomNumber}</p>
-                                        <p>${roomType.name}</p>
-                                        <button type="button" class="modify">✏️</button>
-                                        <button class="delete">🗑️</button>
-                                    </div>
+                                        <div class="m-2 border-solid border-2 border-slate-600 h-min p-1.5 w-fit" id="room_${room.roomNumber}">
+                                            <div class="grid gap-5 grid-flow-col auto-cols-max w-fit m-auto">
+                                                <p class="text-xl font-bold">${room.roomNumber}</p>
+                                                <p class="text-neutral-600">${roomType.name}</p>
+                                                <button type="button" class="modify">✏️</button>
+                                                <button class="delete">🗑️</button>
+                                            </div>
+                                        </div>
                                     `;
                                 }
                             });
@@ -83,8 +85,8 @@ export class RoomsAdminPage extends Page {
         });
     }
 
-    private modifyRoom(room: Room) { 
-        
+    private modifyRoom(room: Room) {
+
     }
 }
 

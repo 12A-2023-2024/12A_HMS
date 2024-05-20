@@ -19,7 +19,7 @@ function convertImagesArrayToBase64(formImages : File[]){
     return images;
 }
 
-const fileToBase64 = (file: File) : Promise<string> => new Promise((resolve, reject) => {
+export const fileToBase64 = (file: File) : Promise<string> => new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve((reader.result as string).replace('data:', '').replace(/^.+,/, ''));
     reader.onerror = reject;
@@ -33,17 +33,34 @@ function fetchRoomtype(roomtype : Roomtype){
 
     const raw = JSON.stringify(roomtype);
 
-    const requestOptions : RequestInit = {
-    method: "POST",
-    headers: myHeaders,
-    body: raw,
-    redirect: "follow"
-    };
+    if (page.modify) {
+       var  requestOptions = {
+            method: "PUT",
+            headers: {
+                "Authorization": page.token,
+                "Content-Type": "application/json"
+            },
+            body: raw,
+            redirect: "follow" as RequestRedirect | undefined
+        }
+        fetch(`https://hms.jedlik.cloud/api/rooms/types`, requestOptions)
+            .then((response) => response.text())
+            .then((result) => console.log(result))
+            .catch((error) => console.error(error));
+    }
+    else{
+        const requestOptions : RequestInit = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+        };
 
-    fetch("https://hms.jedlik.cloud/api/rooms/types", requestOptions)
-    .then((response) => response.text())
-    .then((result) => console.log(result))
-    .catch((error) => console.error(error));
+        fetch("https://hms.jedlik.cloud/api/rooms/types", requestOptions)
+        .then((response) => response.text())
+        .then((result) => console.log(result))
+        .catch((error) => console.error(error));
+    }
 }
 
 function addEventListeners(){

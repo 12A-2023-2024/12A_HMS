@@ -1,5 +1,5 @@
-import { Parameter } from "./parameter";
-import { RoomtypeAdminPage } from "../roomtype_admin_page";
+import { Parameter } from "./parameter.js";
+import { RoomtypeAdminPage } from "../roomtype_admin_page.js";
 
 export class Extras {
     parentPage: RoomtypeAdminPage;
@@ -121,7 +121,7 @@ export class Extras {
 }
 
 async function getAllParameters(parentPage: RoomtypeAdminPage): Promise<Parameter[]> {
-    let parameters: Parameter[] = new Array<Parameter>;
+    let parameters: Parameter[] = new Array<Parameter>();
     const requestOptions: RequestInit = {
         method: "GET",
         headers: { "Authorization": parentPage.token },

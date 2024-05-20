@@ -1,4 +1,4 @@
-import { RoomsAdminPage } from "../room_edit_page.js";
+import { RoomsAdminPage } from "../room_edit_window.js";
 import { Roomtype } from "./roomtype.js";
 
 export class RoomtypeSelector {

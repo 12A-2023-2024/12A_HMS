@@ -88,7 +88,6 @@ export class WellnessPage extends Page {
   addButtonEventListeners() {
     document.getElementById("btnconfirm")?.addEventListener("click", () => {
       this.login();
-      console.log("asd");
     });
     this.addToCartBtnListener();
   }
@@ -96,7 +95,6 @@ export class WellnessPage extends Page {
     this.fetch<WellnessProduct[]>("https://hms.jedlik.cloud/api/publicpages/wellnessproducts", "GET")
       .then((result) => {
         var maindiv = document.getElementById("maindiv") as HTMLElement;
-        // var contentCollection : HTMLCollection = maindiv.children;
         maindiv.innerHTML = "";
         var i: number = 0;
         result.forEach(element => {
@@ -104,44 +102,42 @@ export class WellnessPage extends Page {
           if (i % 2 == 0) {
             maindiv.innerHTML += `
             <div class="w-full self-end max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-            <a href="#">
+            <p>
                 <img class="p-8 rounded-t-lg" src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="product image" />
-            </a>
+            </p>
             <div class="px-5 pb-5">
-                <a href="#">
-                    <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">${element.name}</h5>
-                </a>
+                <p>
+                    <h5 id="${i}element" class=" text-xl font-semibold tracking-tight text-gray-900 dark:text-white">${element.name}</h5>
+                </p>
                 <div class="flex items-center mt-2.5 mb-5 text-gray-900 dark:text-white">
                 ${element.description}
                 </div>
                 <div class="flex items-center justify-between">
                     <span class="text-3xl font-bold text-gray-900 dark:text-white">${element.price} Ft</span>
-                    <a href="#" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Kosárba</a>
+                    <p class="cartbtn text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Kosárba</p>
                 </div>
             </div>
         </div>`;
-              console.log("button appended.");
           }
           else{
               maindiv.innerHTML += `
               <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-              <a href="#">
+              <p>
                   <img class="p-8 rounded-t-lg" src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="product image" />
-              </a>
+              </p>
               <div class="px-5 pb-5">
-                  <a href="#">
-                      <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">${element.name}</h5>
-                  </a>
+                  <p">
+                      <h5 id="${i}element" class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">${element.name}</h5>
+                  </p>
                   <div class="flex items-center mt-2.5 mb-5 text-gray-900 dark:text-white">
                   ${element.description}
                   </div>
                   <div class="flex items-center justify-between">
                       <span class="text-3xl font-bold text-gray-900 dark:text-white">${element.price} Ft</span>
-                      <a href="#" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Kosárba</a>
+                      <p class="cartbtn text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Kosárba</p>
                   </div>
               </div>
           </div>`;
-                console.log("button appended.");
           }
         });
         this.addButtonEventListeners();

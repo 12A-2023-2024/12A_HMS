@@ -3,10 +3,13 @@ import { RoomImage } from "./resources/image.js";
 import { login } from "./resources/login.js";
 import { Room } from "./resources/room.js";
 import { Roomtype } from "./resources/roomtype.js";
+import { RoomsEditPage } from "./room_edit_window.js";
 
 export class RoomsAdminPage extends Page {
     token: string = "";
     rooms: Room[] = [];
+    roomTypes: Roomtype[] = [];
+
     constructor() {
         super('/src/pages/rooms/rooms_admin.html');
 
@@ -14,19 +17,20 @@ export class RoomsAdminPage extends Page {
             this.token = result;
         })
             .then(() => {
-                this.fillContainer(this.token);
+                this.fillContainer();
             });
     }
 
-
-    private fillContainer(token: string) {
+    public fillContainer() {
         const container = document.querySelector(".room_container");
-        var roomTypes: Roomtype[] = [];
+        if (container) {
+            container.innerHTML = "";
+        }
 
         const requestOptions = {
             method: "GET",
             headers: {
-                "Authorization": token
+                "Authorization": this.token
             },
             redirect: "follow" as RequestRedirect | undefined
         };
@@ -42,12 +46,12 @@ export class RoomsAdminPage extends Page {
                     fetch("https://hms.jedlik.cloud/api/rooms/types", requestOptions)
                         .then((response) => response.json())
                         .then((result) => {
-                            roomTypes = result;
+                            this.roomTypes = result;
                         })
                         .then(() => {
                             this.rooms.forEach((room) => {
                                 var roomType: Roomtype = new Roomtype("", "", 0, 0, new Array<RoomImage>, new Array<Number>);
-                                roomTypes.forEach((roomtype) => {
+                                this.roomTypes.forEach((roomtype) => {
                                     if (roomtype.id === room.roomTypeId) {
                                         roomType = roomtype;
                                     }
@@ -81,10 +85,20 @@ export class RoomsAdminPage extends Page {
                 });
             });
         });
+
+        document.querySelector("#new_room")?.addEventListener("click", () => {
+            this.addRoom();
+        });
     }
 
-    private modifyRoom(room: Room) { 
-        
+    private modifyRoom(room: Room) {
+        const page = new RoomsEditPage(this, true);
+        page.show(room);
+    }
+
+    private addRoom() { 
+        const page = new RoomsEditPage(this, false);
+        page.show();
     }
 }
 

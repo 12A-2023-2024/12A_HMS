@@ -1,3 +1,3 @@
-import { RoomsAdminPage } from "./room_edit_page";
+import { RoomsAdminPage } from "./room_edit_window";
 
 const page = new RoomsAdminPage

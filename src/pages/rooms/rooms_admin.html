@@ -3,4 +3,26 @@
 <div class="room_container">
 
 </div>
+
+<button id="new_room">Új szoba</button>
+
+<div id="room_edit" style="display: none;">
+    <h1 class="title">Szoba felvétele</h1>
+    <div class="form-container">
+        <form>
+            <div id="room_number_field" class="input_div">
+                <label for="room_number">Szoba száma:</label>
+                <input class="input_field" type="number" id="room_number" name="room_number"><br>
+            </div>
+
+            <div id="room_type_field" class="input_div">
+                <label for="room_type">Szoba típusa:</label>
+                <select class="input_field" id="room_type" name="room_type">
+            </div>
+
+            <input type="submit" value="Felvétel" class="submit">
+        </form>
+    </div>
+</div>
+
 <script type="module" src="../../../js/pages/rooms/rooms_admin_page.js"></script>

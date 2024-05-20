@@ -39,15 +39,34 @@ export class WellnessPage extends Page {
   override getHtmlCallback() {
     this.getProductsData();
   }
-  addToCart(){
-    console.log("asd");
+  addToCart(e : HTMLElement){
+    var cartData : HTMLElement = document.querySelector(".cartData")!;
+    if(!cartData.innerHTML.includes(e.innerText)){
+      cartData.innerHTML += `
+        <p class="cartElement">${e.innerText} x1</p>
+      `;
+    }
+    else{
+      var cartelements : NodeListOf<HTMLElement> = document.querySelectorAll(".cartElement")!;
+      cartelements.forEach((elem)=>{
+        if(elem.innerText.includes(e.innerText)){
+          var asd : string[] = elem.innerText.split(" x");
+          elem.innerText = `${asd[0]} x${Number(asd[1])+1}`;
+        }
+      });
+    }
+    
+
+
   }
   addToCartBtnListener(){
     var cartbtn : NodeListOf<HTMLElement> = document.querySelectorAll("p.cartbtn")!;
     var i : number = 0;
     cartbtn.forEach((e)=>{
+        i++;
+        var selector : string = `${i}element`.toString();
         e.addEventListener("click", ()=>{
-          this.addToCart();
+          this.addToCart(document.getElementById(selector)!);
         });
     });
   }
@@ -69,8 +88,8 @@ export class WellnessPage extends Page {
           i++;
           if (i % 2 == 0) {
             maindiv.innerHTML += `
-              <div class="bg-blue-100 w-2/5 h-1/6 flex flex-col items-end justify-between self-end rounded-md m-5">
-                <h1 class="text-lg font-bold self-center" >
+              <div class=" bg-blue-100 w-2/5 h-1/6 flex flex-col items-end justify-between self-end rounded-md m-5">
+                <h1 id="${i}element" class=" text-lg font-bold self-center" >
                   ${element.name}
                 </h1>
                 <p class="text-base font-semibold self-start m-2">
@@ -83,12 +102,11 @@ export class WellnessPage extends Page {
                   <p class="m-1 cartbtn"> Kosárba</p>
                 </div>
               </div>`;
-              console.log("button appended.");
           }
           else{
               maindiv.innerHTML += `
-                <div class="bg-blue-100 w-2/5 h-1/6 flex flex-col items-end justify-between rounded-md m-5">
-                  <h1 class="text-lg font-bold self-center" >
+                <div class=" bg-blue-100 w-2/5 h-1/6 flex flex-col items-end justify-between rounded-md m-5">
+                  <h1 id="${i}element" class="text-lg font-bold self-center" >
                   ${element.name}
                   </h1>
                   <p class="text-base font-semibold self-start m-2">
@@ -101,7 +119,6 @@ export class WellnessPage extends Page {
                     <p class="m-1 cartbtn"> Kosárba</p>
                   </div>
                 </div>`;
-                console.log("button appended.");
           }
         });
         this.addButtonEventListeners();

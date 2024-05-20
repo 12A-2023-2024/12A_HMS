@@ -1,6 +1,3 @@
-import { NavBar } from "../../navbar.js";
-import { routes } from "../../routes.js";
-import { HomePage } from "../home/home.js";
 import { Login } from "../login/login.js";
 import { Page } from "../page.js";
 import { User } from "../login/user.js";
@@ -147,6 +144,8 @@ export class RestaurantAdminPage extends Page {
         this.URLs = this.removeItem(this.URLs,index)
         this.convertedImages= this.removeItem(this.convertedImages,index);
         this.loadModifyMealImages();
+        console.log(this.convertedImages)
+        console.log(this.URLs)
         this.deleteImgEventListeners(this.URLs)
       })
     });
@@ -208,9 +207,9 @@ export class RestaurantAdminPage extends Page {
         
         this.convertedImages.forEach(img => {
           if (!images.includes(img)) {
-            img.fileName = this.randomStringGenerator(20);
-            images.push(img);
-            
+            let ext = img.fileName.split('.')[1]
+            img.fileName = this.randomStringGenerator(20)+'.'+ext;
+            images.push(img);    
           }
         });
         let body = `
@@ -525,12 +524,8 @@ export class RestaurantAdminPage extends Page {
             this.loadMessageBox(err.message,true);
             this.closeModal();
           })
-
       }
-
     });
-
-
   }
 
   addModifyCategoryModalEventListeners(): void {

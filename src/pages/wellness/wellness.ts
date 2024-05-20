@@ -105,7 +105,7 @@ export class WellnessPage extends Page {
       .then((result) => {
         var maindiv = document.getElementById("maindiv") as HTMLElement;
         maindiv.innerHTML = "";
-        var srclist = [`src/pages/wellness/wellness_kepek/13-wellness-IMG_0763-800x533w.jpg`, "src/pages/wellness/wellness_kepek/wellness-hetvege-ajandekba.jpg", "src/pages/wellness/wellness_kepek/introduction-images-for-a-hotels-pool-bar-area (1).jpeg", "src/pages/wellness/wellness_kepek/iszappakolás2.jpg", "src/pages/wellness/wellness_kepek/xd.jpg", "src/pages/wellness/wellness_kepek/https___allyoucanmove.hu_media_aycm_gym_5eb2e18785c7a5.30261326.jpg", "src/pages/wellness/wellness_kepek/introduction-images-for-a-hotels-children-playground-area (3).jpeg"];
+        var srclist = [`src/pages/wellness/wellness_kepek/13-wellness-IMG_0763-800x533w.jpg`, "src/pages/wellness/wellness_kepek/wellness-hetvege-ajandekba.jpg", "src/pages/wellness/wellness_kepek/introduction-images-for-a-hotels-pool-bar-area (1).jpeg", "src/pages/wellness/wellness_kepek/iszappakolás2.jpg", "src/pages/wellness/wellness_kepek/xd.jpg", "src/pages/wellness/wellness_kepek/https___allyoucanmove.hu_media_aycm_gym_5eb2e18785c7a5.30261326.jpg", "src/pages/wellness/wellness_kepek/introduction-images-for-a-hotels-children-playground-area (3).jpeg", "src/pages/wellness/wellness_kepek/introduction-images-for-a-hotels-pool-bar-area (3).jpeg"];
         var i: number = 0; 
         result.forEach(element => {
           i++;

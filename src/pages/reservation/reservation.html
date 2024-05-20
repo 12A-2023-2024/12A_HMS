@@ -1,10 +1,106 @@
-<div class="flex bg-slate-500 px-5 py-5">
-    <div class="inline-block mx-auto">
-        <input id="startDate" type="date">
-        <input id="endDate" type="date">
-        <button id="addPerson">+</button>
-        <input id="personCount" type="text" value="1">
-        <button id="removePerson">-</button>
-        <button id="searchButton">Search</button>
+<div
+  id="container"
+  class="flex h-[calc(100vh-72px)] flex-col items-center justify-center bg-green-300 bg-[url('./src/pages/reservation/bg.jpg')]"
+>
+  <div
+    id="wrapper"
+    class="m-auto flex h-fit w-full max-w-[976px] flex-wrap items-center justify-stretch gap-2 bg-red-600 p-2"
+  >
+    <div
+      class="inputWrapper grow-2 flex h-10 min-w-[180px] flex-1 items-center justify-stretch"
+    >
+      <input id="startDate" type="date" class="m-0 h-full w-full text-center" />
     </div>
+    <div
+      class="inputWrapper grow-4 flex h-10 min-w-[180px] flex-1 items-center justify-stretch"
+    >
+      <input id="endDate" type="date" class="m-0 h-full w-full text-center" />
+    </div>
+    <div
+      class="inputWrapper grow-2 flex h-10 min-w-[180px] flex-1 items-center justify-stretch"
+    >
+      <button id="removePerson" class="h-fill aspect-square h-10">
+        <b>-</b>
+      </button>
+      <input
+        id="personCount"
+        type="text"
+        class="m-0 h-full w-full text-center"
+        value="1"
+      />
+      <button id="addPerson" class="h-fill aspect-square h-10"><b>+</b></button>
+    </div>
+    <div
+      class="inputWrapper flex h-10 shrink-0 grow-0 basis-[100%] items-center justify-stretch"
+    >
+      <button id="searchButton" class="m-0 h-full w-full">Search</button>
+    </div>
+  </div>
+  <div
+    id="resultContainer"
+    class="relative flex h-full w-full flex-row overflow-hidden bg-yellow-400"
+  >
+    <div
+      id="searchResults"
+      class="no-scrollbar m-auto mx-auto my-0 flex w-[976px] flex-row flex-wrap overflow-scroll bg-indigo-900 p-1"
+    ></div>
+  </div>
 </div>
+
+<template id="result-card-template">
+  <div class="cardImage h-full basis-[50%] bg-amber-700">
+    <img src="" alt="" srcset="" class="h-full w-full" />
+  </div>
+  <div class="cardDetailWrapper basis-[50%] bg-indigo-400">
+    <div class="cardTitle p2 flex h-1/6 justify-start bg-cyan-900 align-middle">
+      <h2 class="ml-2 mt-1">CardTitle</h2>
+    </div>
+    <div
+      class="cardProperties no-scrollbar flex h-4/6 flex-wrap gap-0 overflow-scroll bg-purple-400 p-2"
+    ></div>
+    <div class="book h-1/6 bg-green-950">
+      <button>Submit</button>
+    </div>
+    <div class="wrapper hidden">
+      <div
+        class="modalBackdrop absolute left-0 top-0 z-10 h-full w-full bg-black opacity-20"
+      ></div>
+      <div
+        class="modal absolute left-[20%] top-[20%] z-40 aspect-video h-3/6 w-[60%] bg-fuchsia-50"
+      ></div>
+    </div>
+  </div>
+</template>
+
+<template id="filter-menu-template">
+  <div
+    class="filterMenuContainer absolute left-2 top-2 h-[40px] w-[60px] overflow-hidden bg-green-400 p-2 hover:h-fit hover:w-fit"
+  >
+    <div id="Title" class="w-full text-lg font-bold"><h1>Filter</h1></div>
+    <hr class="mb-2 mt-2" />
+    <div class="priceRange w-full">
+      <label for="priceFrom">from: </label>
+      <input
+        type="number"
+        class="w-20"
+        name=""
+        min="0"
+        id="priceFrom"
+        oninput="this.value = Math.abs(this.value)"
+      />
+      <label for="priceto">to: </label>
+      <input
+        type="number"
+        class="w-20"
+        name=""
+        min="0"
+        id="priceto"
+        oninput="this.value = Math.abs(this.value)"
+      />
+    </div>
+    <hr class="mb-2 mt-2" />
+    <div class="filterMenuMain flex flex-col items-start"></div>
+    <hr class="mb-2 mt-2" />
+    <button>Submit</button>
+  </div>
+</template>

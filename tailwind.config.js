@@ -13,7 +13,7 @@ module.exports = {
       'auto': 'auto',
     },
     height: {
-      'big' : '8000px'
+      'big' : '6000px'
     },
     },
   },

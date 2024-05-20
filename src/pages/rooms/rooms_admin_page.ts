@@ -20,7 +20,7 @@ export class RoomsAdminPage extends Page {
 
 
     private fillContainer(token: string) {
-        const container = document.querySelector(".container");
+        const container = document.querySelector(".room_container");
         var roomTypes: Roomtype[] = [];
 
         const requestOptions = {

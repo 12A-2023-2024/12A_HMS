@@ -64,12 +64,6 @@ export class Page {
             body: body ? JSON.stringify(body) : null
         };
 
-        return requestOptions;
-    }
-
-    async fetchAny(url: string, method: string, body: any = null): Promise<Response>
-    {
-        const requestOptions = this.#getRequestInit(method, body);
         return fetch(url, requestOptions)
             .then((response) => {
                 if (response.status == 200) {

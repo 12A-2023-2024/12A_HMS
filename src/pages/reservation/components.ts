@@ -9,6 +9,9 @@ export class resultCard extends HTMLElement {
     this.title = title;
     this.data = data;
     this.imgsource = imgsource;
+    if (!this.imgsource) {
+      this.imgsource = "https://cdn.vectorstock.com/i/500p/82/99/no-image-available-like-missing-picture-vector-43938299.jpg"
+    }
   }
 
   popup() {}

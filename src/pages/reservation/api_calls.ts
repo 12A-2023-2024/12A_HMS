@@ -18,7 +18,7 @@ export class Guest {
   name: String;
   address: String;
   city: String;
-  postalcode: number;
+  postalcode: String;
   citizenship: String;
   dateofbirth: String;
   placeofbirth: String;
@@ -28,7 +28,7 @@ export class Guest {
     name: String,
     address: String,
     city: String,
-    post_code: number,
+    post_code: String,
     citizens: String,
     dateofbirth: String,
     placeofbirth: String,

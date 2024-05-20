@@ -128,7 +128,7 @@ export class RoomsAdminPage extends Page {
             redirect: "follow" as RequestRedirect | undefined
         };
 
-        fetch(`https://hms.jedlik.cloud/api/rooms/${room.roomNumber}`, requestOptions)
+        fetch(`https://hms.jedlik.cloud/api/rooms/${room.id}`, requestOptions)
             .then((response) => response.text())
             .then(() => this.fillContainer())
             .catch((error) => console.error(error));

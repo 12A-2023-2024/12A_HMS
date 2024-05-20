@@ -14,8 +14,10 @@ import { RestaurantStaffPage } from "./pages/restaurant/restaurantStaff.js";
 import { RestaurantPublicPage } from "./pages/restaurant/restaurantPublic.js";
 import { RestaurantAdminPage } from "./pages/restaurant/restaurantAdmin.js";
 import { Login } from "./pages/login/login.js";
+import { RoomtypeAdminPage } from "./pages/rooms/roomtype_admin_page.js";
+import { RoomsAdminPage } from "./pages/rooms/rooms_admin_page.js";
 
-export const routes: {[key: string]: {page: any}} = {
+export const routes: { [key: string]: { page: any } } = {
     '': {
         page: HomePage
     },
@@ -66,3 +68,13 @@ export const routes: {[key: string]: {page: any}} = {
     }
 }
 
+    'roomtype_admin': {
+        page: RoomtypeAdminPage
+    },
+    'rooms_admin': {
+        page: RoomsAdminPage
+    },
+    'room_test':{
+        page: RoomsAdminPage
+    }
+}

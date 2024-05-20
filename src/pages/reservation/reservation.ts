@@ -4,10 +4,10 @@ import { Datest } from "./date.js";
 import { filterMenu, resultCard } from "./components.js";
 
 export class ReservationPage extends Page {
-  api: API;
   constructor() {
-    super("/src/pages/reservation/reservation.html");
-    this.api = new API(this);
+    super("/src/pages/reservation/reservation.html")
+    let room = API.queryRooms();
+    console.log(room);
   }
 
   override getHtmlCallback() {
@@ -33,19 +33,19 @@ export class ReservationPage extends Page {
       isAvailable: true,
     };
 
-    const searchResult = document.getElementById("searchResults");
-    searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
-    searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
-    searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
-    searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
-    searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
-    searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
-    searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
-    searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
-    searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
-    searchResult?.appendChild(
-      new filterMenu(["4People", "2People", "1Person"]),
-    );
+    // const searchResult = document.getElementById("searchResults");
+    // searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
+    // searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
+    // searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
+    // searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
+    // searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
+    // searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
+    // searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
+    // searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
+    // searchResult?.appendChild(new resultCard("asd", "asd", hotelRoom));
+    // searchResult?.appendChild(
+    //   new filterMenu(["4People", "2People", "1Person"]),
+    // );
 
     addCallBacks();
   }

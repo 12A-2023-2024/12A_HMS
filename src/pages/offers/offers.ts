@@ -52,6 +52,7 @@ export class OffersPage extends Page {
                     console.log(list)
                     this.createBanner("Szobáink", src, "szoba", "?page=szobak", list)
                     }
+                )
     }
 
     getRooms(){

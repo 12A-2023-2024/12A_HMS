@@ -57,26 +57,38 @@ export class CocktailOrder extends Page {
             correspondingCategory.html?.classList.add("selectedNav")
         }
 
-        async sendOrderToDatabase(){
+        sendOrderToDatabase(){
             const roomNumber = document.getElementById("ctRoomNumber") as HTMLSelectElement
             const gid = roomNumber.options[roomNumber.selectedIndex].value as unknown as number
-            let isSuccessful = true;
-            await this.order.forEach(async (c)=>{
+            
+            let alerted = false;
+            let numberOf = 0;
+             this.order.forEach( (c)=>{
                 for(let i = 0; i < c.numberOf; i++)
                 {
-                    await this.query?.addSale(gid, c.id).then((result)=>{
-                        console.log(result)
+                    numberOf++;
+                    this.query?.addSale(gid, c.id).then((result)=>{
+                        
+                        numberOf--;;
+                        if(numberOf === 0)
+                        {
+                            alert("Sikeres rendelés!")
+                            
+                        }
                     })
                     .catch((error)=>{
-                        console.error(error)
-                        isSuccessful = false;
+                        if(!alerted)
+                            {
+                                alert("Sikertelen rendelés:" + error + " Kérjük próbálja újra!")
+                                alerted = true;
+                            }
+                        
                     })
                 }
                 c.setNumberOf(0);
             })
             this.order = []
-            console.log(isSuccessful)
-
+            
         }
 
     changeToCategory(category:string)
@@ -112,14 +124,8 @@ export class CocktailOrder extends Page {
                 
                 if(categoryName === category){
                     
-                    let card = new CocktailCardBuyer(id, name,price,description,categoryName,imageUrls[0],".cocktailWrapper",this)
+                    let card = new CocktailCardBuyer(id, name, price, description, categoryName, imageUrls[0],".cocktailWrapper", this)
                     correspondingCategory.cards.push(card)
-                    card = new CocktailCardBuyer(id, name,price,description,categoryName,imageUrls[0],".cocktailWrapper",this)
-                    correspondingCategory.cards.push(card)
-                    card = new CocktailCardBuyer(id, name,price,description,categoryName,imageUrls[0],".cocktailWrapper",this)
-                    correspondingCategory.cards.push(card)
-
-
 
                 }
             })

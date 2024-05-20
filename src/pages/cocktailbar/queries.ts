@@ -1,15 +1,14 @@
 export class ctQueries{
-    token: string = "U3JUZXXAC5LR5BGU5YBHPTF0F0DMH4YP6M66M5BEXGCRWXZZC0GCQ2O689H2M820IHLG2K7OHVB5CW0A2RVMFNI60YTQBLHQ7S50V8XLVG99A9TXVD8YMGMI";
+    token: string = "";
     baseUrl: string = "https://hms.jedlik.cloud/api/coctailbar/"
     constructor()
     {
-        this.getCategories();
-        this.doLogin();
+        
     }
 
     async doLogin(){
         const url = 'https://hms.jedlik.cloud/api/login';
-        this.fetch<{token:string, name:string, roles:string, validTo:string}>(url, 'POST', {
+        return this.fetch<{token:string, name:string, roles:string, validTo:string}>(url, 'POST', {
             "loginName": "admin",
             "password": "admin"
          })
@@ -20,6 +19,7 @@ export class ctQueries{
             .catch( (error) => {
                 console.log(error)
             })
+
     }
 
     async getCategories(){
@@ -70,7 +70,12 @@ export class ctQueries{
         }[]>(this.baseUrl + "sale/" + roomNumber, 'GET')
     }
 
-    fetch<T>(url: string, method: string, body: any = null): Promise<T> {
+    async fetch<T>(url: string, method: string, body: any = null): Promise<T> {
+        if(this.token == "" && url != 'https://hms.jedlik.cloud/api/login'){
+            await this.doLogin();
+        }
+
+
         const userInfo = localStorage.getItem('user');   
         let token = this.token;
         const requestOptions: RequestInit = {

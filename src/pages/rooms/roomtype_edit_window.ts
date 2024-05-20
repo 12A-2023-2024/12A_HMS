@@ -83,7 +83,6 @@ export class RoomTypeEditPage {
                 }
             });
             this.parentPage.extrasPopup?.hide();
-            this.hide();
         });
 
         document.querySelector("#extras_new")?.addEventListener("click", () => {

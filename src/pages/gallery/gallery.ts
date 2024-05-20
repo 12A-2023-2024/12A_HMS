@@ -43,10 +43,10 @@ export class GalleryPage extends Page {
                     let item = items[itemIdx++];
                     let imageWithLink = this.createElement<HTMLAnchorElement>("a");
                     let image = this.createElement<HTMLImageElement>("img");
-                    imageWithLink.href = item.href;
-                    image.src = item.pictureUrl;
-                    image.alt = item.alt;
-                    image.dataset.id = item.id.toString();
+                    imageWithLink.href = item.href ?? "";
+                    image.src = item.pictureUrl ?? "";
+                    image.alt = item.alt ?? "";
+                    image.dataset.id = item.id?.toString() ?? "";
                     image.className = `h-auto max-w-full rounded-lg`;
                     imageWithLink.appendChild(image);
                     imageColumns[colIdx].appendChild(imageWithLink);

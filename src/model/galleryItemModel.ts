@@ -1,7 +1,8 @@
-export interface GalleryItemModel
+export class GalleryItemModel
 {
-    id: number;
-    pictureUrl: string;
-    href: string;
-    alt: string;
+    id: number | undefined;
+    order: number | undefined;
+    pictureUrl: string | undefined;
+    href: string | undefined;
+    alt: string | undefined;
 }

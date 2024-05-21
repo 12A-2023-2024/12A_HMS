@@ -82,13 +82,22 @@ export class resultCard extends HTMLElement {
 
     const propeties = this.querySelector(".cardProperties") as HTMLElement;
     if (propeties != null) {
-      Object.keys(this.data).forEach((key) => {
-        const value = this.data[key];
-        const prop = document.createElement("p");
-        prop.classList.add("reservationpage-propertyWrapper");
-        prop.textContent = key + ": " + value;
-        propeties.appendChild(prop);
-      });
+      const prop = document.createElement("p");
+      prop.classList.add("reservationpage-propertyWrapper");
+      prop.textContent = "Szobaszám: " + this.data["roomNumber"];
+      propeties.appendChild(prop);
+      const prop2 = document.createElement("p");
+      prop2.classList.add("reservationpage-propertyWrapper");
+      prop2.textContent = "Férőhely: " + this.data["capacity"];
+      propeties.appendChild(prop2);
+      const prop3 = document.createElement("p");
+      prop3.classList.add("reservationpage-propertyWrapper");
+      prop3.textContent = "Forint/fő/éj: " + this.data["pricePerNigthPerPerson"];
+      propeties.appendChild(prop3);
+      const prop4 = document.createElement("p");
+      prop4.classList.add("reservationpage-propertyWrapper");
+      prop4.textContent = "Leírás: " + this.data["roomType"].description;
+      propeties.appendChild(prop4);
     }
 
     this.querySelector(".reserveBT")?.addEventListener("click", (e: any) => {

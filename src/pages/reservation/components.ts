@@ -2,6 +2,7 @@ import { Guest } from "./api_calls.js";
 
 export class reserveForm extends HTMLElement {
   number: Number;
+
   constructor(num: number) {
     super();
 
@@ -19,7 +20,6 @@ export class reserveForm extends HTMLElement {
     if (h3Element) {
       h3Element.textContent = "Person " + this.number;
     }
-
   }
 
   getAllInfo() {
@@ -50,8 +50,6 @@ export class resultCard extends HTMLElement {
       this.imgsource = "https://cdn.vectorstock.com/i/500p/82/99/no-image-available-like-missing-picture-vector-43938299.jpg"
     }
   }
-
-
   connectedCallback() {
     const template = document.getElementById(
       "result-card-template",
@@ -91,13 +89,14 @@ export class resultCard extends HTMLElement {
     }
 
     this.querySelector(".reserveBT")?.addEventListener("click", (e: any) => {
+      (document.querySelector("#searchResults") as HTMLElement).style.overflow = "hidden";
+      (document.querySelector("#searchButton") as HTMLButtonElement).disabled = true;
+
       let modal = (document.querySelector("#popupWrapper") as HTMLElement);
       let personCout = document.querySelector("#personCount") as HTMLInputElement
       modal.style.display = "block"
       let modalinhalt = document.querySelector("#Theactualpopup") as HTMLElement
       for (let index = 0; index < Number(personCout.value); index++) {
-        console.log("done did something");
-
         modalinhalt.appendChild(new reserveForm(index + 1));
       }
     })

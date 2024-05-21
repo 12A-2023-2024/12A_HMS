@@ -26,14 +26,14 @@ export class ReservationPage extends Page {
 
     customElements.define("result-card", resultCard);
     customElements.define("filter-menu", filterMenu);
-    customElements.define("reserve-form", reserveForm)
+    customElements.define("reserve-form", reserveForm);
 
     const wrapper = document.getElementById("wrapper") as HTMLElement;
     const parameterList: any[] = [];
-    API.queryParameters().then((parameters: any) => {
-      parameters.forEach((parameter: any) => {
-        parameterList.push(parameter)
-      });
+    // API.queryParameters().then((parameters: any) => {
+    //   parameters.forEach((parameter: any) => {
+    //     parameterList.push(parameter)
+    //   });
       wrapper.appendChild(new filterMenu(parameterList));
 
       // 1. Create the main div (inputWrapper)
@@ -64,7 +64,7 @@ export class ReservationPage extends Page {
             searchResult?.appendChild(new resultCard(room.roomType.name, room.roomType.imageUrls[0], room));
           });
         });
-      });
+      // });
     });
     addCallBacks();
   }
@@ -95,7 +95,9 @@ function addCallBacks() {
 
 
   document.querySelector("#PopUpCLoseBt")?.addEventListener("click", (e) => {
+    (document.querySelector("#searchResults") as HTMLElement).style.overflow = "scroll";
     (document.querySelector("#popupWrapper") as HTMLElement).style.display = "none";
+    (document.querySelector("#searchButton") as HTMLButtonElement).disabled = false;
     const formElements = document.querySelectorAll(".form");
 
     formElements.forEach(formElement => {
@@ -118,7 +120,8 @@ function addCallBacks() {
 
     for (const obj of raw_guest_info) {
       for (const value of Object.values(obj)) {
-        if (value === undefined || value === null || value === '' || (Array.isArray(value) && value.length === 0)) {
+        if (value === undefined || value === null || value === '') {
+          console.log(raw_guest_info);
           (document.querySelector("#form-error-message") as HTMLElement).style.display = "block"
           setTimeout(() => { (document.querySelector("#form-error-message") as HTMLElement).style.display = "none" }, 5000);
         } else {

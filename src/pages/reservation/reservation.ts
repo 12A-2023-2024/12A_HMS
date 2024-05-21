@@ -1,7 +1,7 @@
 import { Page } from "../page.js";
 import { API, Room } from "./api_calls.js";
 import { Datest } from "./date.js";
-import { filterMenu, resultCard } from "./components.js";
+import { filterMenu, reserveForm, resultCard } from "./components.js";
 
 export class ReservationPage extends Page {
   token: string = '';
@@ -21,16 +21,47 @@ export class ReservationPage extends Page {
 
     customElements.define("result-card", resultCard);
     customElements.define("filter-menu", filterMenu);
+    customElements.define("reserve-form", reserveForm)
 
-    const searchResult = document.getElementById("searchResults") as HTMLElement;
+    const wrapper = document.getElementById("wrapper") as HTMLElement;
     const parameterList: any[] = [];
     API.queryParameters().then((parameters: any) => {
       parameters.forEach((parameter: any) => {
         parameterList.push(parameter)
       });
-      searchResult.appendChild(new filterMenu(parameterList));
+      wrapper.appendChild(new filterMenu(parameterList));
+
+      // 1. Create the main div (inputWrapper)
+      const inputWrapper = document.createElement('div');
+      inputWrapper.className = 'inputWrapper flex h-10 shrink-0 grow-0 basis-[100%]     items-center justify-stretch';
+
+      // 2. Create the search button
+      const searchButton = document.createElement('button');
+      searchButton.id = 'searchButton';
+      searchButton.className = 'm-0 h-full w-full rounded-lg bg-[#f25f3a]';
+      searchButton.textContent = 'Search'; // Add th
+      inputWrapper.appendChild(searchButton);
+      wrapper.appendChild(inputWrapper);
+
+      searchButton.addEventListener('click', () => {
+        const personCountField = document.getElementById('personCount') as HTMLInputElement;
+        const floor = 0; // create search field
+        const fromPrice = null;
+        const toPrice = null;
+        const capacity = Number.parseInt(personCountField.value);
+        const fromDate = startDateField.value;
+        const toDate = endDateField.value;
+        const searchResult = document.getElementById("searchResults") as HTMLElement;
+        searchResult.appendChild(new resultCard("asd", "asd", {}))
+        API.queryRooms(floor, fromPrice, toPrice, capacity, filterMenu.get_checked_parameters(), fromDate, toDate).then((rooms) => {
+          console.log(filterMenu.get_checked_parameters());
+          searchResult.innerHTML = "";
+          rooms.forEach(room => {
+            searchResult?.appendChild(new resultCard(room.roomType.name, room.roomType.imageUrls[0], room));
+          });
+        });
+      });
     });
-    
     addCallBacks();
   }
 }
@@ -58,22 +89,35 @@ function addCallBacks() {
     personCountField.value = newValue.toString();
   });
 
-  // Search command
-  const searchButton = document.getElementById('searchButton') as HTMLElement;
-  searchButton.addEventListener('click', () => {
-    const floor = 0; // create search field
-    const fromPrice = null;
-    const toPrice = null;
-    const capacity = Number.parseInt(personCountField.value);
-    const fromDate = startDateField.value;
-    const toDate = endDateField.value;
-    const searchResult = document.getElementById("searchResults") as HTMLElement;
-    API.queryRooms(floor, fromPrice, toPrice, capacity, filterMenu.get_checked_parameters(), fromDate, toDate).then((rooms) => {
-      console.log(filterMenu.get_checked_parameters());
-      searchResult.innerHTML = "";
-      rooms.forEach(room => {
-        searchResult?.appendChild(new resultCard(room.roomType.name, room.roomType.imageUrls[0], room));
-      });
+
+  document.querySelector("#PopUpCLoseBt")?.addEventListener("click", (e) => {
+    (document.querySelector("#popupWrapper") as HTMLElement).style.display = "none";
+    const formElements = document.querySelectorAll(".form");
+
+    formElements.forEach(formElement => {
+      formElement.remove();
     });
-  });
+  })
+
+  const modalSubmitButton = document.querySelector("#submit-modal");
+  modalSubmitButton?.addEventListener("click", (e) => {
+    const elements: any = document.querySelectorAll("reserve-form");
+    const raw_guest_info: Object[] = [];
+    elements.forEach((e: any) => {
+      raw_guest_info.push(e.getAllInfo());
+    })
+
+    for (const obj of raw_guest_info) {
+      for (const value of Object.values(obj)) {
+        if (value === undefined || value === null || value === '' || (Array.isArray(value) && value.length === 0)) {
+          (document.querySelector("#form-error-message") as HTMLElement).style.display = "block"
+          setTimeout(() => { (document.querySelector("#form-error-message") as HTMLElement).style.display = "none" }, 5000);
+        } else {
+
+        }
+      }
+    }
+
+  })
+  // Search command
 }

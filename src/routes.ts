@@ -65,9 +65,7 @@ export const routes: { [key: string]: { page: any } } = {
     },
     'login':{
         page:Login
-    }
-}
-
+    },
     'roomtype_admin': {
         page: RoomtypeAdminPage
     },

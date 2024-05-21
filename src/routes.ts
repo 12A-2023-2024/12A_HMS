@@ -1,25 +1,3 @@
-<<<<<<< HEAD
-import { ContactPage } from "./pages/contact/contact.js";
-import { HomePage } from "./pages/home/home.js";
-import { IntroductionPage } from "./pages/introduction/introduction.js";
-import { ReservationPage } from "./pages/reservation/reservation.js";
-
-export const routes: { [key: string]: { page: any } } = {
-    '': {
-        page: HomePage
-    },
-    'introduction': {
-        page: IntroductionPage
-    },
-    'contact': {
-        page: ContactPage
-    },
-    'reservation': {
-        page: ReservationPage
-    }
-
-}
-=======
 import { ContactPage } from "./pages/contact/contact.js";
 import { HomePage } from "./pages/home/home.js";
 import { IntroductionPage } from "./pages/introduction/introduction.js";
@@ -38,6 +16,7 @@ import { RestaurantAdminPage } from "./pages/restaurant/restaurantAdmin.js";
 import { Login } from "./pages/login/login.js";
 import { RoomtypeAdminPage } from "./pages/rooms/roomtype_admin_page.js";
 import { RoomsAdminPage } from "./pages/rooms/rooms_admin_page.js";
+import { ReservationPage } from "./pages/reservation/reservation.js";
 
 export const routes: { [key: string]: { page: any } } = {
     '': {
@@ -58,16 +37,16 @@ export const routes: { [key: string]: { page: any } } = {
     'contact': {
         page: ContactPage
     },
-    'services':{
+    'services': {
         page: WellnessPage
     },
-    'servicesadmin':{
+    'servicesadmin': {
         page: WellnessAdminPage
     },
-    'news':{
+    'news': {
         page: NewsPage
     },
-    'newsadmin':{
+    'newsadmin': {
         page: NewsAdminPage
     },
     'offers': {
@@ -85,8 +64,8 @@ export const routes: { [key: string]: { page: any } } = {
     'restaurantAdmin': {
         page: RestaurantAdminPage
     },
-    'login':{
-        page:Login
+    'login': {
+        page: Login
     },
     'roomtype_admin': {
         page: RoomtypeAdminPage
@@ -94,8 +73,10 @@ export const routes: { [key: string]: { page: any } } = {
     'rooms_admin': {
         page: RoomsAdminPage
     },
-    'room_test':{
+    'room_test': {
         page: RoomsAdminPage
+    },
+    'reservation': {
+        page: ReservationPage
     }
 }
->>>>>>> 3f5f50da225f197a4478f1f26a443cefdaa34ffb

@@ -1,21 +1,3 @@
-<<<<<<< HEAD
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ["./**/*.{html,js}"],
-  theme: {
-    extend: {
-      screens: {
-        sm: '480px',
-        md: '768px',
-        lg: '976px',
-        xl: '1440px',
-     },
-    },
-  },
-  plugins: [],
-}
-
-=======
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./**/*.{html,js}"],
@@ -51,4 +33,3 @@ module.exports = {
   },
   plugins: [],
 }
->>>>>>> 3f5f50da225f197a4478f1f26a443cefdaa34ffb

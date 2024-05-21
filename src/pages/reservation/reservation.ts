@@ -1,8 +1,13 @@
 import { Page } from "../page.js";
-import { API, Room } from "./api_calls.js";
+import { API, Guest, Room } from "./api_calls.js";
 import { Datest } from "./date.js";
 import { filterMenu, reserveForm, resultCard } from "./components.js";
 
+let roomNumber = 0;
+
+export function setRoomNumber(number: number) {
+  roomNumber = number
+}
 export class ReservationPage extends Page {
   token: string = '';
   constructor() {
@@ -54,7 +59,6 @@ export class ReservationPage extends Page {
         const searchResult = document.getElementById("searchResults") as HTMLElement;
         searchResult.appendChild(new resultCard("asd", "asd", {}))
         API.queryRooms(floor, fromPrice, toPrice, capacity, filterMenu.get_checked_parameters(), fromDate, toDate).then((rooms) => {
-          console.log(filterMenu.get_checked_parameters());
           searchResult.innerHTML = "";
           rooms.forEach(room => {
             searchResult?.appendChild(new resultCard(room.roomType.name, room.roomType.imageUrls[0], room));
@@ -97,12 +101,17 @@ function addCallBacks() {
     formElements.forEach(formElement => {
       formElement.remove();
     });
-  })
+
+    const actualPopup = document.querySelector("#Theactualpopup");
+    const reserveFroms = actualPopup?.querySelectorAll("reserve-form") as NodeListOf<Element>;
+    reserveFroms.forEach(form => {
+      actualPopup?.removeChild(form)
+    });
 
   const modalSubmitButton = document.querySelector("#submit-modal");
   modalSubmitButton?.addEventListener("click", (e) => {
     const elements: any = document.querySelectorAll("reserve-form");
-    const raw_guest_info: Object[] = [];
+    const raw_guest_info: Guest[] = [];
     elements.forEach((e: any) => {
       raw_guest_info.push(e.getAllInfo());
     })
@@ -113,7 +122,7 @@ function addCallBacks() {
           (document.querySelector("#form-error-message") as HTMLElement).style.display = "block"
           setTimeout(() => { (document.querySelector("#form-error-message") as HTMLElement).style.display = "none" }, 5000);
         } else {
-
+          API.reserveRoom()
         }
       }
     }

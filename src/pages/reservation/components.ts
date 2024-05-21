@@ -1,3 +1,5 @@
+import { Guest } from "./api_calls.js";
+
 export class reserveForm extends HTMLElement {
   number: Number;
   constructor(num: number) {
@@ -21,19 +23,14 @@ export class reserveForm extends HTMLElement {
   }
 
   getAllInfo() {
-    const data: { [key: string]: string } = {};
-    // Array of input IDs to collect
-    const inputIds = ['name', 'addr', 'city', 'nationality', 'birthdate', 'birthplace', 'passport'];
-
-    for (const inputId of inputIds) {
-      const inputElement = this.querySelector<HTMLInputElement>(`#${inputId}`);
-      if (inputElement) {
-        data[inputId] = inputElement.value; // Store the value under the input ID
-      } else {
-        console.warn(`Input element with ID #${inputId} not found in the form.`);
-        data[inputId] = ''; // Store an empty value if the input is missing
-      }
-    }
+    const data: Guest = new Guest("", "", "", "", "", "", "", "");
+    data.name = (this.querySelector<HTMLInputElement>(`#name`) as HTMLInputElement).value;
+    data.address = (this.querySelector<HTMLInputElement>(`#addr`) as HTMLInputElement).value;
+    data.city = (this.querySelector<HTMLInputElement>(`#city`) as HTMLInputElement).value;
+    data.citizenship = (this.querySelector<HTMLInputElement>(`#nationality`) as HTMLInputElement).value;
+    data.dateofbirth = (this.querySelector<HTMLInputElement>(`#birthdate`) as HTMLInputElement).value;
+    data.placeofbirth = (this.querySelector<HTMLInputElement>(`#birthplace`) as HTMLInputElement).value;
+    data.passportnumber = (this.querySelector<HTMLInputElement>(`#passport`) as HTMLInputElement).value;
     return data;
   }
 }
@@ -98,13 +95,11 @@ export class resultCard extends HTMLElement {
       let personCout = document.querySelector("#personCount") as HTMLInputElement
       modal.style.display = "block"
       let modalinhalt = document.querySelector("#Theactualpopup") as HTMLElement
-
       for (let index = 0; index < Number(personCout.value); index++) {
         console.log("done did something");
 
         modalinhalt.appendChild(new reserveForm(index + 1));
       }
-
     })
   }
 }

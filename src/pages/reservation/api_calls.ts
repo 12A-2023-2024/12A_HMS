@@ -1,6 +1,3 @@
-import { Page } from "../page";
-import { ReservationPage } from "./reservation";
-
 export type Room = {
   id: number,
   roomNumber: string,

@@ -1,4 +1,5 @@
 import { Guest } from "./api_calls.js";
+import { setRoomNumber } from "./reservation.js";
 
 export class reserveForm extends HTMLElement {
   number: Number;
@@ -27,10 +28,12 @@ export class reserveForm extends HTMLElement {
     data.name = (this.querySelector<HTMLInputElement>(`#name`) as HTMLInputElement).value;
     data.address = (this.querySelector<HTMLInputElement>(`#addr`) as HTMLInputElement).value;
     data.city = (this.querySelector<HTMLInputElement>(`#city`) as HTMLInputElement).value;
+    data.postalcode = (this.querySelector<HTMLInputElement>(`#postalcode`) as HTMLInputElement).value;
     data.citizenship = (this.querySelector<HTMLInputElement>(`#nationality`) as HTMLInputElement).value;
     data.dateofbirth = (this.querySelector<HTMLInputElement>(`#birthdate`) as HTMLInputElement).value;
     data.placeofbirth = (this.querySelector<HTMLInputElement>(`#birthplace`) as HTMLInputElement).value;
     data.passportnumber = (this.querySelector<HTMLInputElement>(`#passport`) as HTMLInputElement).value;
+    console.log(data.passportnumber)
     return data;
   }
 }
@@ -92,6 +95,7 @@ export class resultCard extends HTMLElement {
       (document.querySelector("#searchResults") as HTMLElement).style.overflow = "hidden";
       (document.querySelector("#searchButton") as HTMLButtonElement).disabled = true;
 
+      setRoomNumber(this.data.roomNumber);
       let modal = (document.querySelector("#popupWrapper") as HTMLElement);
       let personCout = document.querySelector("#personCount") as HTMLInputElement
       modal.style.display = "block"
@@ -154,7 +158,6 @@ export class filterMenu extends HTMLElement {
         params += param.getAttribute("id")?.slice(12) + ';';
       }
     }
-
     return params.slice(0, -1);
   }
 }

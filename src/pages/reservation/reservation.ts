@@ -7,6 +7,7 @@ let roomNumber = 0;
 
 export function setRoomNumber(number: number) {
   roomNumber = number
+  console.log(roomNumber)
 }
 export class ReservationPage extends Page {
   token: string = '';
@@ -30,10 +31,10 @@ export class ReservationPage extends Page {
 
     const wrapper = document.getElementById("wrapper") as HTMLElement;
     const parameterList: any[] = [];
-    // API.queryParameters().then((parameters: any) => {
-    //   parameters.forEach((parameter: any) => {
-    //     parameterList.push(parameter)
-    //   });
+    API.queryParameters().then((parameters: any) => {
+      parameters.forEach((parameter: any) => {
+        parameterList.push(parameter)
+      });
       wrapper.appendChild(new filterMenu(parameterList));
 
       // 1. Create the main div (inputWrapper)
@@ -57,14 +58,13 @@ export class ReservationPage extends Page {
         const fromDate = startDateField.value;
         const toDate = endDateField.value;
         const searchResult = document.getElementById("searchResults") as HTMLElement;
-        searchResult.appendChild(new resultCard("asd", "asd", {}))
         API.queryRooms(floor, fromPrice, toPrice, capacity, filterMenu.get_checked_parameters(), fromDate, toDate).then((rooms) => {
           searchResult.innerHTML = "";
           rooms.forEach(room => {
             searchResult?.appendChild(new resultCard(room.roomType.name, room.roomType.imageUrls[0], room));
           });
         });
-      // });
+      });
     });
     addCallBacks();
   }
@@ -109,8 +109,9 @@ function addCallBacks() {
     reserveFroms.forEach(form => {
       actualPopup?.removeChild(form)
     });
-
+  })
   const modalSubmitButton = document.querySelector("#submit-modal");
+  console.log(modalSubmitButton)
   modalSubmitButton?.addEventListener("click", (e) => {
     const elements: any = document.querySelectorAll("reserve-form");
     const raw_guest_info: Guest[] = [];
@@ -124,12 +125,27 @@ function addCallBacks() {
           console.log(raw_guest_info);
           (document.querySelector("#form-error-message") as HTMLElement).style.display = "block"
           setTimeout(() => { (document.querySelector("#form-error-message") as HTMLElement).style.display = "none" }, 5000);
-        } else {
-          API.reserveRoom()
+          return;
         }
       }
     }
+    const startDate = (document.querySelector("#startDate") as HTMLInputElement).value
+    const endDate = (document.querySelector("#endDate") as HTMLInputElement).value
+    API.reserveRoom(roomNumber, startDate, endDate, raw_guest_info);
+    (document.querySelector("#searchResults") as HTMLElement).style.overflow = "scroll";
+    (document.querySelector("#popupWrapper") as HTMLElement).style.display = "none";
+    (document.querySelector("#searchButton") as HTMLButtonElement).disabled = false;
+    const formElements = document.querySelectorAll(".form");
 
+    formElements.forEach(formElement => {
+      formElement.remove();
+    });
+
+    const actualPopup = document.querySelector("#Theactualpopup");
+    const reserveFroms = actualPopup?.querySelectorAll("reserve-form") as NodeListOf<Element>;
+    reserveFroms.forEach(form => {
+      actualPopup?.removeChild(form)
+    });
   })
   // Search command
 }

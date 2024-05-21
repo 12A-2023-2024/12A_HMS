@@ -74,14 +74,9 @@ a[data-route].active {
   margin: 0;
   /* m-0 */
   font-size: small;
-  height: 2.5rem;
   /* h-2 (translates to 8px, which is 0.5rem) */
   width: fit-content;
   /* w-fit */
-  background-color: rgb(209 213 219);
   padding: 0.5rem;
   border-radius: 0.5rem;
-
-  text-align: center;
-  /* text-center */
 }

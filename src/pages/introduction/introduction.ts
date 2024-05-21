@@ -5,49 +5,49 @@ import { Scroll } from "./scroll.js";
 
 export class IntroductionPage extends Page {
 
-    data: introductionModel[] |undefined
+    data: introductionModel[] | undefined
     constructor() {
         super('/src/pages/introduction/introduction.html');
     }
 
-    override getHtmlCallback(){
+    override getHtmlCallback() {
         this.login()
         this.getDatas()
     }
 
-    createScroll(){
+    createScroll() {
         const container = document.querySelector<HTMLElement>('.scroll-container');
-        if (this.data && container){
+        if (this.data && container) {
             this.data.sort((a, b) => a.order - b.order);
             this.data.forEach(model => {
-                if (model.section === "carousel"){
+                if (model.section === "carousel") {
                     container.innerHTML += `<div
                     class="snap-center w-full flex-shrink-0 flex items-center justify-center text-8xl">
                         <img class="object-cover w-full max-h-80 cursor-pointer" src="${model.pictureUrl}" alt="${model.alt}" href="${model.href}" onclick="window.open('${model.href}')">
                     </div>`
                 }
             });
-        }else{
+        } else {
         }
 
-        if (container){
+        if (container) {
             new Scroll(container, 2000)
         }
     }
 
-    createBanner(){
+    createBanner() {
         const container = document.querySelector<HTMLElement>('.banner-main');
-        if (this.data && container){
+        if (this.data && container) {
             this.data.sort((a, b) => a.order - b.order);
-            this.data.forEach(model =>{
-                if (model.section === "banner"){
+            this.data.forEach(model => {
+                if (model.section === "banner") {
                     const title: string[] | undefined = model.text?.split("<li>")
                     let listElement: string | undefined = ""
-                    if (title){
+                    if (title) {
                         const kezdetIndex = model.text?.indexOf(title[0]);
-    
+
                         // Ha található a "kezdet" a szövegben
-                        if (kezdetIndex != undefined){
+                        if (kezdetIndex != undefined) {
                             if (kezdetIndex !== -1) {
                                 listElement = model.text?.substring(kezdetIndex + title[0].length);
                             } else {
@@ -69,12 +69,12 @@ export class IntroductionPage extends Page {
 
                 }
             })
-        }else{
+        } else {
         }
     }
 
 
-    getDatas(){
+    getDatas() {
         const url: string = "https://hms.jedlik.cloud/api/about/introduction";
         const method: string = "GET";
         this.fetch<introductionModel[]>(url, method).then(
@@ -86,15 +86,15 @@ export class IntroductionPage extends Page {
         );
     }
 
-    login(){
+    login() {
         const url: string = "https://hms.jedlik.cloud/api/login"
         const method: string = "POST"
-        const body: any= {
+        const body: any = {
             loginName: "admin",
             password: "admin"
-         }
+        }
         const data = this.fetch<Login>(url, method, body)
-        data.then( (result) => {
+        data.then((result) => {
             localStorage.setItem('user', JSON.stringify(result));
         })
     }

@@ -1,0 +1,117 @@
+<div id="container"
+  class="flex h-[calc(100vh-72px)] flex-col items-center justify-center bg-[url('./src/pages/reservation/bg.jpg')]">
+  <div id="wrapper"
+    class="m-auto flex h-fit w-full max-w-[976px] flex-wrap items-center justify-stretch gap-2 bg-gray-200 p-2 rounded-tl-lg rounded-tr-lg">
+    <div class="inputWrapper grow-2 flex h-10 min-w-[180px] flex-1 items-center justify-stretch">
+      <input id="startDate" type="date" class="m-0 h-full w-full text-center rounded-lg" />
+    </div>
+    <div class="inputWrapper grow-2 flex h-10 min-w-[180px] flex-1 items-center justify-stretch">
+      <input id="endDate" type="date" class="m-0 h-full w-full text-center rounded-lg" />
+    </div>
+
+    <div class="inputWrapper grow-2 flex h-10 min-w-[180px] flex-1 items-center justify-stretch ">
+      <button id="removePerson" class="h-fill aspect-square h-10 bg-[#f25f3a]  rounded-tl-lg rounded-bl-lg">
+        <b>-</b>
+      </button>
+      <input id="personCount" type="text" class="m-0 h-full w-full text-center" value="1" />
+      <button id="addPerson"
+        class="h-fill  aspect-square h-10 bg-[#f25f3a] rounded-tr-lg rounded-br-lg"><b>+</b></button>
+    </div>
+    <div class="inputWrapper grow-2 flex h-10 min-w-[180px] flex-1 items-center justify-stretch ">
+      <div class="priceRange h-full flex ">
+        <input type="number" class="w-1/2 h-full text-center  rounded-tl-lg rounded-bl-lg" name="" min="0"
+          id="priceFrom" placeholder="min" oninput="this.value = Math.abs(this.value)" />
+        <input type="number" class="w-[50%] h-full text-center rounded-tr-lg rounded-br-lg" name="" min="0" id="priceto"
+          placeholder="max" oninput="this.value = Math.abs(this.value)" />
+      </div>
+    </div>
+
+  </div>
+  <div id="resultContainer" class="relative flex h-full w-full flex-row overflow-hidden">
+    <div id="searchResults"
+      class="no-scrollbar m-auto mx-auto my-0 flex w-[976px] flex-row flex-wrap overflow-scroll bg-gray-50 p-1 relative">
+
+    </div>
+    <div id="popupWrapper" class="hidden">
+      <div class="dim w-full h-[200%] bg-black absolute top-0 left-0 opacity-50 z-10"></div>
+      <div class="modal w-[450px] h-[80%] bg-white absolute top-[10%] left-[calc(50%-225px)] rounded-lg z-30">
+        <div class="heading relative h-10">
+          <h2 class="absolute left-2 top-2">Reservation of Roomm x</h2>
+          <button id="PopUpCLoseBt" class="absolute h-10 aspect-square right-0  flex align-middle justify-center">
+            <p class="absolute top-[7px] text-xxl text-[#f25f3a]"><b>X</b></p>
+          </button>
+        </div>
+        <div id="Theactualpopup"
+          class="overflow-scroll no-scrollbar w-full h-full bg-gray-200 p-2 pb-12 rounded-bl-lg rounded-br-lg relative">
+          <button id="submit-modal"
+            class="w-[calc(450px-16px)] h-10 bg-[#f25f3a] rounded-lg fixed bottom-[40px] ">Submit</button>
+          <div id="form-error-message"
+            class="w-[calc(450px-16px)] h-10 text-red-600 font-bold bg-[#ffffff] rounded-lg fixed bottom-[88px] hidden flex align-middle justify-center">
+            Please fill out all the fields</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <template id="result-card-template">
+    <div class="cardImage h-full basis-[50%]">
+      <img src="" alt="" srcset="" class="h-full w-full object-cover p-1 rounded-lg" />
+    </div>
+    <div class="cardDetailWrapper basis-[50%] p-1 flex flex-col">
+      <div class="cardTitle p2 flex h-10 justify-start  align-middle rounded-tl-lg rounded-tr-lg">
+        <b>
+          <h2 class="ml-2 mt-2 text-sm">CardTitle</h2>
+        </b>
+      </div>
+      <div class="cardProperties no-scrollbar flex-grow overflow-scroll bg-white rounded-lg p-2">
+      </div>
+      <div class="book h-1/6">
+        <button class="reserveBT w-full h-full bg-[#f25f3a] rounded-lg">Reserve</button>
+      </div>
+    </div>
+  </template>
+
+  <template id="filter-menu-template">
+    <div
+      class="inputWrapper flex min-h-10 shrink-0 grow-0 basis-full items-center justify-start bg-white flex-wrap text-1 rounded-lg">
+
+    </div>
+  </template>
+
+  <template id="guest-reserve-form">
+    <div id="person-x" class="form p-2">
+      <h3 class=" text-xl pb-2"><b>Person x</b></h3>
+      <div class="row flex h-10 bg-white rounded-lg p-1 my-1">
+        <div class="label w-[50%] "><label for="name" class="block w-fit mt-1 ml-2">Name:</label></div>
+        <div class="input w-[50%]"><input class="h-full w-full rounded-lg" type="text" name="" id="name"
+            placeholder="Abos Geri"></div>
+      </div>
+      <div class="row flex bg-white rounded-lg p-1 my-1">
+        <div class="label w-[50%] "><label for="addr" class="block w-fit mt-1 ml-2">Cim:</label></div>
+        <div class="input w-[50%]">
+          <input class="h-10 w-full rounded-lg mb-1 " placeholder="Street and num" type="text" name="" id="addr">
+          <input class="h-10 w-full rounded-lg mb-1" placeholder="City" type="text" name="" id="city">
+          <input class="h-10 w-full rounded-lg" placeholder="ZIP and num" type="number" name="" id="postalcode">
+        </div>
+      </div>
+      <div class="row flex h-10 bg-white rounded-lg p-1 my-1">
+        <div class="label w-[50%] "><label for="nationality" class="block w-fit mt-1 ml-2">Nationality:</label></div>
+        <div class="input w-[50%]"><input class="h-full w-full rounded-lg" placeholder="Hungarian" type="text" name=""
+            id="nationality"></div>
+      </div>
+      <div class="row flex h-10 bg-white rounded-lg p-1 my-1">
+        <div class="label w-[50%] "><label for="birthdate" class="block w-fit mt-1 ml-2">Birthdate:</label></div>
+        <div class="input w-[50%]"><input class="h-full w-full rounded-lg" type="date" name="" id="birthdate"></div>
+      </div>
+      <div class="row flex h-10 bg-white rounded-lg p-1 my-1">
+        <div class="label w-[50%] "><label for="birthplace" class="block w-fit mt-1 ml-2">Birthplace:</label></div>
+        <div class="input w-[50%] "><input class="h-full w-full rounded-lg" type="text" name="" id="birthplace"
+            placeholder="Győr"></div>
+      </div>
+      <div class="row flex h-10 bg-white rounded-lg p-1 my-1">
+        <div class="label w-[50%] "><label for="passport" class="block w-fit mt-1 ml-2">Passport number:</label></div>
+        <div class="input w-[50%] "><input class="h-full w-full rounded-lg" type="text" name="" id="passport"
+            placeholder="NK23498DG"></div>
+      </div>
+    </div>
+  </template>

@@ -16,23 +16,21 @@ export class RestaurantAdminPage extends Page {
   convertedImages:MealImage[]=[];
   constructor() {
     super('/src/pages/restaurant/restaurantAdmin.html');
-    let userString = localStorage.getItem('user');  
-    if (userString) {
-      let user:User = JSON.parse(userString);
-      let diff:number = new Date(user.validTo).getTime() - new Date().getTime();
-      if (user.roles.includes('admin') && diff>0) {
-        this.loadCategories('#mainMessageBoxDiv', '#mainMessage');
-      }
-      else{
-        new Login();
-      }
-    }else{
-      new Login();
-    }
   }
 
   override getHtmlCallback(): void {
     this.addEventListeners();
+    let body = `{
+      "loginName": "admin",
+      "password": "admin"
+   }`
+    this.fetch<User>('https://hms.jedlik.cloud/api/login', 'POST', body)
+      .then((result:User) => {
+          localStorage.setItem('user', JSON.stringify(result))
+          this.loadCategories('#mainMessageBoxDiv', '#mainMessage');
+
+      })
+      .catch((err:Error)=>{console.log(err.message)})
   }
   randomStringGenerator(length:number) {
     let result = '';
